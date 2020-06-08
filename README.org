@@ -2,7 +2,7 @@
 
 * Introduction
 
-This project is, at its most basic, a web form for students to answer the following questions:
+This project is, at its core, a web form for students to answer the following questions:
 
 1. Have you developed a cough recently
 2. Do you have a fever
