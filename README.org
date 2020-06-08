@@ -1,0 +1,15 @@
+#+TITLE: README
+
+* Introduction
+
+This project is, at its most basic, a web form for students to answer the following questions:
+
+1. Have you developed a cough recently
+2. Do you have a fever
+3. Have you been around anyone with COVID
+
+If they answer =yes= to any of those questions, the campus health center should be alerted, and a record of the information should be stored for 30 days
+
+
+* Building
+To run the frontend locally, in the =src/main/react=  folder run the command: =npm i && npm start=
