@@ -4,7 +4,7 @@
 
 This project is, at its core, a web form for students to answer the following questions:
 
-1. Have you developed a cough recently
+1. Have you developed a cough / shortness of breath recently
 2. Do you have a fever
 3. Have you been around anyone with COVID
 
