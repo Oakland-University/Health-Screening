@@ -48,28 +48,28 @@ export default function HealthQuestions() {
             Do you have a fever of 100° F (37.8° C) or higher?
           </FormLabel>
           <RadioGroup
-            aria-label='gender'
-            name='gender1'
+            aria-label='fever'
+            name='fever'
             value={fever}
             onChange={(event) => set_fever(event.target.value)}
             className={classes.radioGroup}
           >
-            <FormControlLabel value='yesb' control={<Radio />} label='Yes' />
-            <FormControlLabel value='no' control={<Radio />} label='No' />
+            <FormControlLabel value='true' control={<Radio />} label='Yes' />
+            <FormControlLabel value='false' control={<Radio />} label='No' />
           </RadioGroup>
           <FormLabel component='legend'>
             Have you had close contact with someone diagnosed with COVID-19
             within the past 14 days?
           </FormLabel>
           <RadioGroup
-            aria-label='gender'
-            name='gender1'
+            aria-label='exposure'
+            name='exposure'
             value={contact}
             onChange={(event) => set_contact(event.target.value)}
             className={classes.radioGroup}
           >
-            <FormControlLabel value='yesc' control={<Radio />} label='Yes' />
-            <FormControlLabel value='not' control={<Radio />} label='No' />
+            <FormControlLabel value='true' control={<Radio />} label='Yes' />
+            <FormControlLabel value='false' control={<Radio />} label='No' />
           </RadioGroup>
         </FormControl>
       </CardContent>

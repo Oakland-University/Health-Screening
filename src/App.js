@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '25%', // 16:9
     height: 0,
   },
+  cardActionStyle: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  }
 }))
 
 export default function App() {
@@ -53,7 +57,8 @@ export default function App() {
         })
       }
     } else {
-      console.log('stuff')
+      //TODO: Error handling if neither view is chosen
+      console.error('Unkown view selected')
     }
   }
 
@@ -82,7 +87,7 @@ export default function App() {
           />
         )}
       </CardContent>
-      <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
+    <CardActions className={classes.cardActionStyle}>
         <Button color='secondary' variant='outlined' onClick={handle_click}>
           {view === 'guest' ? 'Next' : 'Submit'}
         </Button>
