@@ -8,5 +8,5 @@ public class Constants {
           + " (?, ?, ?, ?, ?, ?, ?)                                                                              "
           + "                                                                                                    ");
 
-  public static final String GET_ALL_RESPONSES = ("select * from health_screening ");
+  public static final String GET_ALL_RESPONSES = ("select * from screening.health_screening ");
 }
