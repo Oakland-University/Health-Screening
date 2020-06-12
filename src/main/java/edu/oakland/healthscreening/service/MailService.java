@@ -29,15 +29,14 @@ public class MailService {
         "A potential positive self-screening response was submitted by a "
             + info.getAccountType()
             + ":\n\n"
-            + "<strong>Information about this person:</strong>\n"
+            + "Information about this person:\n"
             + "\tName: "
             + info.getName()
             + "\n\tPhone: "
             + info.getPhone()
             + "\n\tEmail: "
             + info.getEmail()
-            + "\n\n<strong>Information about this person:</strong>\n"
-            + "Responses: "
+            + "\n\nResponses: \n\t- "
             + info.responseSummary());
     mailSender.send(msg);
   }
