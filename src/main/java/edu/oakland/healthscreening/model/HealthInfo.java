@@ -1,6 +1,8 @@
 package edu.oakland.healthscreening.model;
 
 import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
 
 import lombok.Data;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,6 +22,24 @@ public class HealthInfo {
 
   public boolean shouldStayHome() {
     return (coughing || feverish || exposed);
+  }
+
+  public String responseSummary() {
+    List<String> summaryList = new LinkedList<>();
+
+    if (coughing) {
+      summaryList.add("has a cough or shortness of breath");
+    }
+
+    if (feverish) {
+      summaryList.add("has a fever");
+    }
+
+    if (exposed) {
+      summaryList.add("has been exposed to someone with COVID");
+    }
+
+    return summaryList.toString();
   }
 
   public static RowMapper<HealthInfo> mapper =

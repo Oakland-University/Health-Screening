@@ -2,6 +2,7 @@ package edu.oakland.healthscreening.controller;
 
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.HealthInfo;
+import edu.oakland.healthscreening.service.MailService;
 
 import java.util.List;
 
@@ -16,14 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class HealthScreeningController {
   @Autowired private Postgres postgres;
+  @Autowired private MailService mailService;
 
   @PostMapping("health-info")
   public void saveHealthInfo(@RequestBody HealthInfo info) {
     // TODO set account type based on bearer token presence
 
     if (info.shouldStayHome()) {
-      // email GHC
+      mailService.notifyHealthCenter(info);
     }
+
     postgres.saveHealthInfo(info);
   }
 
