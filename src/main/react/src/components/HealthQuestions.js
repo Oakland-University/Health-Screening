@@ -15,12 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function HealthQuestions() {
+export default function HealthQuestions(props) {
   const classes = useStyles()
 
-  const [cough, set_cough] = React.useState(false)
-  const [fever, set_fever] = React.useState(false)
-  const [contact, set_contact] = React.useState(false)
+  const { cough, fever, exposure } = props.questions
 
   return (
     <>
@@ -38,7 +36,7 @@ export default function HealthQuestions() {
             aria-label='cough'
             name='cough'
             value={cough}
-            onChange={(event) => set_cough(event.target.value)}
+            onChange={(event) => props.set_questions({...props.questions, cough: event.target.value})}
             className={classes.radioGroup}
           >
             <FormControlLabel value='true' control={<Radio />} label='Yes' />
@@ -51,7 +49,7 @@ export default function HealthQuestions() {
             aria-label='fever'
             name='fever'
             value={fever}
-            onChange={(event) => set_fever(event.target.value)}
+            onChange={(event) => props.set_questions({...props.questions, fever: event.target.value})}
             className={classes.radioGroup}
           >
             <FormControlLabel value='true' control={<Radio />} label='Yes' />
@@ -64,8 +62,8 @@ export default function HealthQuestions() {
           <RadioGroup
             aria-label='exposure'
             name='exposure'
-            value={contact}
-            onChange={(event) => set_contact(event.target.value)}
+            value={exposure}
+            onChange={(event) => props.set_questions({...props.questions, exposure: event.target.value})}
             className={classes.radioGroup}
           >
             <FormControlLabel value='true' control={<Radio />} label='Yes' />
