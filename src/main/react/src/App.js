@@ -40,9 +40,9 @@ export default function App() {
   })
 
   const [questions, set_questions] = React.useState({
-    cough: false,
-    fever: false,
-    exposure: false,
+    cough: null,
+    fever: null,
+    exposure: null,
   })
 
   const handle_click = () => {
@@ -66,6 +66,7 @@ export default function App() {
   }
 
   const final_page = () => {
+    console.log(questions)
     if (questions.cough || questions.fever || questions.exposure) {
       return (
         <Typography variant='body1' component='p'>
@@ -106,7 +107,7 @@ export default function App() {
             set_questions={set_questions}
           />
         )}
-        {view === 'submitted' && final_page() }
+        { view === 'submitted' && final_page() }
       </CardContent>
     <CardActions className={classes.cardActionStyle}>
         {view !== 'submitted' &&

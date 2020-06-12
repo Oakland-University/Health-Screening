@@ -36,11 +36,11 @@ export default function HealthQuestions(props) {
             aria-label='cough'
             name='cough'
             value={cough}
-            onChange={(event) => props.set_questions({...props.questions, cough: event.target.value})}
+            onChange={(event) => props.set_questions({...props.questions, cough: (event.target.value === 'true')})}
             className={classes.radioGroup}
           >
-            <FormControlLabel value='true' control={<Radio />} label='Yes' />
-            <FormControlLabel value='false' control={<Radio />} label='No' />
+            <FormControlLabel value={true} control={<Radio />} label='Yes' />
+            <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
           <FormLabel component='legend'>
             Do you have a fever of 100° F (37.8° C) or higher?
@@ -49,11 +49,11 @@ export default function HealthQuestions(props) {
             aria-label='fever'
             name='fever'
             value={fever}
-            onChange={(event) => props.set_questions({...props.questions, fever: event.target.value})}
+            onChange={(event) => props.set_questions({...props.questions, fever: (event.target.value === 'true')})}
             className={classes.radioGroup}
           >
-            <FormControlLabel value='true' control={<Radio />} label='Yes' />
-            <FormControlLabel value='false' control={<Radio />} label='No' />
+            <FormControlLabel value={true} control={<Radio />} label='Yes' />
+            <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
           <FormLabel component='legend'>
             Have you had close contact with someone diagnosed with COVID-19
@@ -63,11 +63,11 @@ export default function HealthQuestions(props) {
             aria-label='exposure'
             name='exposure'
             value={exposure}
-            onChange={(event) => props.set_questions({...props.questions, exposure: event.target.value})}
+            onChange={(event) => props.set_questions({...props.questions, exposure: (event.target.value === 'true')})}
             className={classes.radioGroup}
           >
-            <FormControlLabel value='true' control={<Radio />} label='Yes' />
-            <FormControlLabel value='false' control={<Radio />} label='No' />
+            <FormControlLabel value={true} control={<Radio />} label='Yes' />
+            <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
         </FormControl>
       </CardContent>
