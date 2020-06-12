@@ -3,6 +3,7 @@ package edu.oakland.healthscreening.service;
 import edu.oakland.healthscreening.model.HealthInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,9 +14,12 @@ public class MailService {
 
   @Autowired private MailSender mailSender;
 
+  @Value("${health-screening.health-center-address}")
+  String healthCenterAddress;
+
   public void notifyHealthCenter(HealthInfo info) throws MailException {
     SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setTo("amgoodfellow@oakland.edu");
+    msg.setTo(healthCenterAddress);
     msg.setSubject("Student Health Screening");
     msg.setText(
         "A potential positive self-screening response was submitted by a "
