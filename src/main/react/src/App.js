@@ -70,7 +70,7 @@ export default function App() {
     if (questions.cough || questions.fever || questions.exposure) {
       return (
         <Typography variant='body1' component='p'>
-          Please do not come to campus. GHC will be notified of your condition, and will be in contact for next steps
+          Please do not come to campus. GHC will be notified of your condition, and will be in contact with you for the next steps
         </Typography>
       )
     } else {
@@ -95,8 +95,8 @@ export default function App() {
       />
       <CardContent>
         <Typography variant='body2' color='textSecondary' component='p'>
-          Anyone intending to visit campus is required to fill out this simple
-          health screening beforehand.
+          Anyone intending on visiting campus is required to fill out this
+          health screening form beforehand.
         </Typography>
         {view === 'guest' && (
           <UserInfo user_info={user_info} set_user_info={set_user_info} />

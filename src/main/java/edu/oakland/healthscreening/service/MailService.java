@@ -17,22 +17,26 @@ public class MailService {
   @Value("${health-screening.health-center-address}")
   String healthCenterAddress;
 
+  @Value("${health-screening.email-from}")
+  String mailFrom;
+
   public void notifyHealthCenter(HealthInfo info) throws MailException {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setTo(healthCenterAddress);
+    msg.setFrom(mailFrom);
     msg.setSubject("Student Health Screening");
     msg.setText(
         "A potential positive self-screening response was submitted by a "
             + info.getAccountType()
             + ":\n\n"
-            + "Information about this person:\n"
-            + "Name: "
+            + "<strong>Information about this person:</strong>\n"
+            + "\tName: "
             + info.getName()
-            + ", Phone: "
+            + "\n\tPhone: "
             + info.getPhone()
-            + ", Email: "
+            + "\n\tEmail: "
             + info.getEmail()
-            + "\nInformation about this person:\n"
+            + "\n\n<strong>Information about this person:</strong>\n"
             + "Responses: "
             + info.responseSummary());
     mailSender.send(msg);

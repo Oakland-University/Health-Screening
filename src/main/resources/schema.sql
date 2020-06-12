@@ -1,5 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS screening AUTHORIZATION uportal;
 
+CREATE TYPE account_type AS ENUM ('guest', 'student');
 
 CREATE TABLE IF NOT EXISTS screening.health_screening (
     id serial primary key,

@@ -39,7 +39,7 @@ public class HealthInfo {
       summaryList.add("has been exposed to someone with COVID");
     }
 
-    return summaryList.toString();
+    return String.join("\n\t- ", summaryList);
   }
 
   public static RowMapper<HealthInfo> mapper =
