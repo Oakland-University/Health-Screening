@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id "com.diffplug.gradle.spotless" version "4.3.0"
     id 'org.springframework.boot' version '2.3.0.RELEASE'
@@ -28,6 +30,22 @@ spotless {
   }
 }
 
+processResources {
+  filesMatching("**/application.properties") {
+    def props = new Properties()
+
+	file(System.getenv("PORTAL_HOME") + "/global.properties").withInputStream {
+		props.load(it)
+	}
+
+	file(System.getenv("PORTAL_HOME") + "/uPortal.properties").withInputStream {
+		props.load(it)
+	}
+
+	filter(ReplaceTokens, tokens: props)
+
+  }
+}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
