@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
+import { submit_form } from './api/api'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,9 +40,9 @@ export default function App() {
   })
 
   const [questions, set_questions] = React.useState({
-    cough: false,
-    fever: false,
-    exposure: false,
+    cough: null,
+    fever: null,
+    exposure: null,
   })
 
   const handle_click = () => {
@@ -56,9 +57,28 @@ export default function App() {
           phone_error: !user_info.phone,
         })
       }
+    } else if (view === 'student') {
+      submit_form(user_info, questions)
+      set_view('submitted')
     } else {
-      //TODO: Error handling if neither view is chosen
       console.error('Unkown view selected')
+    }
+  }
+
+  const final_page = () => {
+    console.log(questions)
+    if (questions.cough || questions.fever || questions.exposure) {
+      return (
+        <Typography variant='body1' component='p'>
+          Please do not come to campus. GHC will be notified of your condition, and they will be in contact with you for the next steps.
+        </Typography>
+      )
+    } else {
+      return (
+        <Typography variant='body1' component='p'>
+          Thank you for taking the time to fill out this form
+        </Typography>
+      )
     }
   }
 
@@ -75,22 +95,26 @@ export default function App() {
       />
       <CardContent>
         <Typography variant='body2' color='textSecondary' component='p'>
-          Anyone intending to visit campus is required to fill out this simple
-          health screening beforehand.
+          Anyone intending on visiting campus is required to fill out this
+          health screening form beforehand.
         </Typography>
-        {view === 'guest' ? (
+        {view === 'guest' && (
           <UserInfo user_info={user_info} set_user_info={set_user_info} />
-        ) : (
+        )}
+        {view === 'student' && (
           <HealthQuestions
             questions={questions}
             set_questions={set_questions}
           />
         )}
+        { view === 'submitted' && final_page() }
       </CardContent>
     <CardActions className={classes.cardActionStyle}>
-        <Button color='secondary' variant='outlined' onClick={handle_click}>
+        {view !== 'submitted' &&
+         <Button color='secondary' variant='outlined' onClick={handle_click}>
           {view === 'guest' ? 'Next' : 'Submit'}
-        </Button>
+         </Button>
+        }
       </CardActions>
     </Card>
   )

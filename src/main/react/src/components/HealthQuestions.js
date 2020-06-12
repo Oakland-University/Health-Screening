@@ -15,12 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function HealthQuestions() {
+export default function HealthQuestions(props) {
   const classes = useStyles()
 
-  const [cough, set_cough] = React.useState(false)
-  const [fever, set_fever] = React.useState(false)
-  const [contact, set_contact] = React.useState(false)
+  const { cough, fever, exposure } = props.questions
 
   return (
     <>
@@ -38,11 +36,11 @@ export default function HealthQuestions() {
             aria-label='cough'
             name='cough'
             value={cough}
-            onChange={(event) => set_cough(event.target.value)}
+            onChange={(event) => props.set_questions({...props.questions, cough: (event.target.value === 'true')})}
             className={classes.radioGroup}
           >
-            <FormControlLabel value='true' control={<Radio />} label='Yes' />
-            <FormControlLabel value='false' control={<Radio />} label='No' />
+            <FormControlLabel value={true} control={<Radio />} label='Yes' />
+            <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
           <FormLabel component='legend'>
             Do you have a fever of 100° F (37.8° C) or higher?
@@ -51,11 +49,11 @@ export default function HealthQuestions() {
             aria-label='fever'
             name='fever'
             value={fever}
-            onChange={(event) => set_fever(event.target.value)}
+            onChange={(event) => props.set_questions({...props.questions, fever: (event.target.value === 'true')})}
             className={classes.radioGroup}
           >
-            <FormControlLabel value='true' control={<Radio />} label='Yes' />
-            <FormControlLabel value='false' control={<Radio />} label='No' />
+            <FormControlLabel value={true} control={<Radio />} label='Yes' />
+            <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
           <FormLabel component='legend'>
             Have you had close contact with someone diagnosed with COVID-19
@@ -64,12 +62,12 @@ export default function HealthQuestions() {
           <RadioGroup
             aria-label='exposure'
             name='exposure'
-            value={contact}
-            onChange={(event) => set_contact(event.target.value)}
+            value={exposure}
+            onChange={(event) => props.set_questions({...props.questions, exposure: (event.target.value === 'true')})}
             className={classes.radioGroup}
           >
-            <FormControlLabel value='true' control={<Radio />} label='Yes' />
-            <FormControlLabel value='false' control={<Radio />} label='No' />
+            <FormControlLabel value={true} control={<Radio />} label='Yes' />
+            <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
         </FormControl>
       </CardContent>

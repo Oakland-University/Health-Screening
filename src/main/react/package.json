@@ -1,7 +1,8 @@
 {
-  "name": "student-health-screening",
+  "name": "health-screening",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8095",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
