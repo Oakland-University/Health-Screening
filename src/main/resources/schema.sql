@@ -1,4 +1,7 @@
-CREATE TABLE IF NOT EXISTS health_screening (
+CREATE SCHEMA IF NOT EXISTS screening AUTHORIZATION uportal;
+
+
+CREATE TABLE IF NOT EXISTS screening.health_screening (
     id serial primary key,
     account_type text not null default 'guest',
     pidm text,
