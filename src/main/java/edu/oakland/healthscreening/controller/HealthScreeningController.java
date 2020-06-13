@@ -33,7 +33,8 @@ public class HealthScreeningController {
       Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
       info.setAccountType("student");
       info.setPidm(personInfo.get("pidm").asString());
-      info.setName(personInfo.get("givenName") == null ? null : personInfo.get("givenName").asString());
+      info.setName(
+          personInfo.get("givenName") == null ? null : personInfo.get("givenName").asString());
       info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
       info.setPhone(
           personInfo.get("telephoneNumber") == null

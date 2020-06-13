@@ -4,6 +4,7 @@
   var path = '${pageContext.request.contextPath}'
   var token  = '${bearer.getEncryptedToken()}'
   var IS_DEMO = false
+  var IS_GUEST_VIEW = (token === null)
 </script>
 <!--  <link href='//fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'> -->
 <div id="health-screening">

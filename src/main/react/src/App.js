@@ -11,6 +11,8 @@ import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
 import { submit_form } from './api/api'
 
+/*global IS_GUEST_VIEW*/
+
 const useStyles = makeStyles((theme) => ({
   media: {
     paddingTop: '25%', // 16:9
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
   const classes = useStyles()
 
-  const [view, set_view] = React.useState('guest')
+  const [view, set_view] = React.useState(IS_GUEST_VIEW ? 'guest' : 'student')
 
   const [user_info, set_user_info] = React.useState({
     name: '',
