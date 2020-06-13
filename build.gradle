@@ -91,6 +91,27 @@ repositories {
   mavenCentral()
 }
 
+publishing {
+  publications {
+    mavenWeb(MavenPublication) {
+      version = '0.0.1'
+      from components.web
+    }
+  }
+  repositories {
+    maven {
+      credentials {
+        username "$mavenUser"
+        password "$mavenPassword"
+      }
+
+      url "https://maven.oakland.edu/repository/uPortal"
+      name "nexus"
+    }
+  }
+}
+
+
 dependencies {
     implementation 'org.jasig.portal:uPortal-soffit-renderer:5.6.0'
     implementation 'edu.oakland:soffit-auth:1.0.0.RC'
@@ -99,7 +120,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     compileOnly 'org.projectlombok:lombok'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

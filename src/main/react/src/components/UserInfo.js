@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid'
 
 const useStyles = makeStyles((theme) => ({
   radioGroup: {
-    disaply: 'flex',
+    display: 'flex',
     flexDirection: 'row',
   },
 }))
