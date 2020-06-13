@@ -38,7 +38,7 @@ ReactDOM.render(
       </MuiThemeProvider>
     </StylesProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById(project_name)
 )
 
 // If you want your app to work offline and load faster, you can change

@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
   cardActionStyle: {
     display: 'flex',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 }))
 
 export default function App() {
@@ -66,11 +66,11 @@ export default function App() {
   }
 
   const final_page = () => {
-    console.log(questions)
     if (questions.cough || questions.fever || questions.exposure) {
       return (
         <Typography variant='body1' component='p'>
-          Please do not come to campus. GHC will be notified of your condition, and they will be in contact with you for the next steps.
+          Please do not come to campus. GHC will be notified of your condition,
+          and they will be in contact with you for the next steps.
         </Typography>
       )
     } else {
@@ -107,14 +107,14 @@ export default function App() {
             set_questions={set_questions}
           />
         )}
-        { view === 'submitted' && final_page() }
+        {view === 'submitted' && final_page()}
       </CardContent>
-    <CardActions className={classes.cardActionStyle}>
-        {view !== 'submitted' &&
-         <Button color='secondary' variant='outlined' onClick={handle_click}>
-          {view === 'guest' ? 'Next' : 'Submit'}
-         </Button>
-        }
+      <CardActions className={classes.cardActionStyle}>
+        {view !== 'submitted' && (
+          <Button color='secondary' variant='outlined' onClick={handle_click}>
+            {view === 'guest' ? 'Next' : 'Submit'}
+          </Button>
+        )}
       </CardActions>
     </Card>
   )

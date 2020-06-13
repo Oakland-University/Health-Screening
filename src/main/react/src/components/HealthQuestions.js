@@ -36,7 +36,12 @@ export default function HealthQuestions(props) {
             aria-label='cough'
             name='cough'
             value={cough}
-            onChange={(event) => props.set_questions({...props.questions, cough: (event.target.value === 'true')})}
+            onChange={(event) =>
+              props.set_questions({
+                ...props.questions,
+                cough: event.target.value === 'true',
+              })
+            }
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -49,7 +54,12 @@ export default function HealthQuestions(props) {
             aria-label='fever'
             name='fever'
             value={fever}
-            onChange={(event) => props.set_questions({...props.questions, fever: (event.target.value === 'true')})}
+            onChange={(event) =>
+              props.set_questions({
+                ...props.questions,
+                fever: event.target.value === 'true',
+              })
+            }
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -63,7 +73,12 @@ export default function HealthQuestions(props) {
             aria-label='exposure'
             name='exposure'
             value={exposure}
-            onChange={(event) => props.set_questions({...props.questions, exposure: (event.target.value === 'true')})}
+            onChange={(event) =>
+              props.set_questions({
+                ...props.questions,
+                exposure: event.target.value === 'true',
+              })
+            }
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
