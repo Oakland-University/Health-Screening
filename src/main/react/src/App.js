@@ -68,14 +68,14 @@ export default function App() {
     if (questions.cough || questions.fever || questions.exposure) {
       return (
         <Typography variant='body1' component='p'>
-          Please do not come to campus. GHC will be notified of your condition,
-          and they will be in contact with you for the next steps.
+          Please do not come to campus. GHC will be notified,
+          and may reach out to you.
         </Typography>
       )
     } else {
       return (
         <Typography variant='body1' component='p'>
-          Thank you for taking the time to fill out this form
+          Thank you for taking the time to fill out this form.
         </Typography>
       )
     }
