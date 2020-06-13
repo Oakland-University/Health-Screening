@@ -12,6 +12,7 @@ import UserInfo from './components/UserInfo'
 import { submit_form } from './api/api'
 
 /*global IS_GUEST_VIEW*/
+/*global PICTURE_URL*/
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -89,7 +90,7 @@ export default function App() {
       />
       <CardMedia
         className={classes.media}
-        image='./covid.jpg'
+        image={PICTURE_URL}
         title='Coronavirus'
       />
       <CardContent>

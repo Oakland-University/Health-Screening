@@ -5,6 +5,7 @@
   var token  = '${bearer.getEncryptedToken()}'
   var IS_DEMO = false
   var IS_GUEST_VIEW = '${bearer.username}' === 'guest'
+  var PICTURE_URL = '${pageContext.request.contextPath}/static/covid.jpg'
 </script>
 <!--  <link href='//fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'> -->
 <div id="health-screening">
