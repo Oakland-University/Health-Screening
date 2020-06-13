@@ -12,9 +12,6 @@ import UserInfo from './components/UserInfo'
 import { submit_form } from './api/api'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 750,
-  },
   media: {
     paddingTop: '25%', // 16:9
     height: 0,

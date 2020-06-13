@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
     disaply: 'flex',
     flexDirection: 'row',
   },
+  formLabel: {
+    marginBottom: '0px !important',
+    border: 'none'
+  }
 }))
 
 export default function HealthQuestions(props) {
@@ -28,7 +32,7 @@ export default function HealthQuestions(props) {
         </Typography>
 
         <FormControl component='fieldset'>
-          <FormLabel component='legend'>
+          <FormLabel className={classes.formLabel}component='legend'>
             Do you have a cough (or change in a chronic cough) or shortness of
             breath?
           </FormLabel>
@@ -47,7 +51,7 @@ export default function HealthQuestions(props) {
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
-          <FormLabel component='legend'>
+          <FormLabel className={classes.formLabel}component='legend'>
             Do you have a fever of 100° F (37.8° C) or higher?
           </FormLabel>
           <RadioGroup
@@ -65,7 +69,7 @@ export default function HealthQuestions(props) {
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
-          <FormLabel component='legend'>
+          <FormLabel className={classes.formLabel}component='legend'>
             Have you had close contact with someone diagnosed with COVID-19
             within the past 14 days?
           </FormLabel>

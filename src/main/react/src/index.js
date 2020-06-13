@@ -4,6 +4,7 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { StylesProvider, createGenerateClassName } from '@material-ui/styles'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { CssBaseline } from '@material-ui/core'
 
 /* global token */
 const project_name = 'health-screening'
@@ -32,6 +33,7 @@ const generateClassName = createGenerateClassName({
 
 ReactDOM.render(
   <React.StrictMode>
+    <CssBaseline />
     <StylesProvider generateClassName={generateClassName}>
       <MuiThemeProvider theme={theme}>
         <App />
