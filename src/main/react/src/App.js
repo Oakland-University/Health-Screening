@@ -93,10 +93,10 @@ export default function App() {
         title='Coronavirus'
       />
       <CardContent>
-        <Typography variant='body2' color='textSecondary' component='p'>
+        {view !== 'submitted' && <Typography variant='body2' color='textSecondary' component='p'>
           Anyone intending on visiting campus is required to fill out this
           health screening form beforehand.
-        </Typography>
+        </Typography>}
         {view === 'guest' && (
           <UserInfo user_info={user_info} set_user_info={set_user_info} />
         )}
