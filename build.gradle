@@ -78,6 +78,19 @@ processResources {
   }
 }
 
+repositories {
+  maven {
+    url "https://maven.oakland.edu/repository/public"
+    name "nexus"
+    credentials {
+      username "$mavenUser"
+      password "$mavenPassword"
+    }
+  }
+  mavenLocal()
+  mavenCentral()
+}
+
 dependencies {
     implementation 'org.jasig.portal:uPortal-soffit-renderer:5.6.0'
     implementation 'edu.oakland:soffit-auth:1.0.0.RC'
