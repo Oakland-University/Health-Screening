@@ -1,4 +1,5 @@
 /*global IS_DEMO*/
+/* global token */
 
 export const submit_form = async (user_info, questions) => {
   if (IS_DEMO) {
@@ -16,11 +17,12 @@ export const submit_form = async (user_info, questions) => {
   }
 
   try {
-    const response = await fetch('/api/v1/health-info', {
+    const response = await fetch('/health-screening/api/v1/health-info', {
       credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+         Authorization: 'Bearer ' + token
       },
       method: 'POST',
       body: JSON.stringify(request_body),

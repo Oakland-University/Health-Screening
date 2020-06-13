@@ -23,6 +23,7 @@ public class Postgres {
           info.getAccountType(),
           info.getPidm(),
           info.getEmail(),
+          info.getName(),
           info.getPhone(),
           info.isCoughing(),
           info.isFeverish(),

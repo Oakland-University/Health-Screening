@@ -3,6 +3,7 @@
 <script>
   var path = '${pageContext.request.contextPath}'
   var token  = '${bearer.getEncryptedToken()}'
+  var IS_DEMO = false
 </script>
 <!--  <link href='//fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'> -->
 <div id="health-screening">
