@@ -1,6 +1,7 @@
 package edu.oakland.healthscreening.controller;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.HealthInfo;
@@ -38,17 +39,25 @@ public class HealthScreeningController {
     log.error("Invalid JWT", e);
   }
 
+  @ResponseStatus(value = INTERNAL_SERVER_ERROR, reason = "Unspecified exception")
+  @ExceptionHandler(Exception.class)
+  public void generalError(Exception e) {
+    log.error("Unspecified exception", e);
+  }
+
   @PostMapping("health-info")
   public void saveHealthInfo(@RequestBody HealthInfo info, HttpServletRequest request)
       throws SoffitAuthException {
 
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
-    if (personInfo.get("pidm") == null) {
+    Claim pidm = personInfo.get("pidm");
+
+    if (pidm == null) {
       info.setAccountType("guest");
     } else {
       info.setAccountType("student");
-      info.setPidm(personInfo.get("pidm").asString());
+      info.setPidm(pidm.asString());
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
       info.setPhone(
