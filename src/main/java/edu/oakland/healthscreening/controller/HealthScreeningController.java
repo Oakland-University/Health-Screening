@@ -34,7 +34,7 @@ public class HealthScreeningController {
       info.setAccountType("student");
       info.setPidm(personInfo.get("pidm").asString());
       info.setName(
-          personInfo.get("givenName") == null ? null : personInfo.get("givenName").asString());
+          personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
       info.setPhone(
           personInfo.get("telephoneNumber") == null
