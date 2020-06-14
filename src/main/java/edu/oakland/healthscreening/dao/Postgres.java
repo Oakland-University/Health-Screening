@@ -1,7 +1,6 @@
 package edu.oakland.healthscreening.dao;
 
-import static edu.oakland.healthscreening.dao.Constants.GET_ALL_RESPONSES;
-import static edu.oakland.healthscreening.dao.Constants.INSERT_HEALTH_INFO;
+import static edu.oakland.healthscreening.dao.Constants.*;
 
 import edu.oakland.healthscreening.model.HealthInfo;
 
@@ -23,6 +22,7 @@ public class Postgres {
           info.getAccountType(),
           info.getPidm(),
           info.getEmail(),
+          info.getName(),
           info.getPhone(),
           info.isCoughing(),
           info.isFeverish(),
@@ -32,5 +32,9 @@ public class Postgres {
 
   public List<HealthInfo> getHealthInfo() {
     return postgresTemplate.query(GET_ALL_RESPONSES, HealthInfo.mapper);
+  }
+
+  public HealthInfo getRecentSubmission(String pidm) {
+    return postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper);
   }
 }

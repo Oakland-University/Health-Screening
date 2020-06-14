@@ -13,4 +13,17 @@ Content-Type: application/json
 
 # Get a list of all responses
 
-GET http://localhost:8095/api/v1/health-info
+GET http://localhost:8095/health-screening/api/v1/health-info
+
+# BLO
+#
+POST http://localhost:8080/health-screening/api/v1/health-info
+Content-Type: application/json
+{
+"accountType": "student",
+"phone": "5555555555",
+"email": "student@oakland.edu",
+"coughing": false,
+"feverish": false,
+"exposed": false
+}

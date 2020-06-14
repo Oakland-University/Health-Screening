@@ -24,7 +24,10 @@ public class MailService {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setTo(healthCenterAddress);
     msg.setFrom(mailFrom);
-    msg.setSubject(info.getAccountType().contains("student") ? "Student Health Screening" : "Guest Health Screening");
+    msg.setSubject(
+        info.getAccountType().equals("student")
+            ? "Student Health Screening"
+            : "Guest Health Screening");
     msg.setText(
         "A potential positive self-screening response was submitted by a "
             + info.getAccountType()

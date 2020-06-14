@@ -11,13 +11,13 @@ import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
 import { submit_form } from './api/api'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 750,
-  },
+/*global IS_GUEST_VIEW*/
+/*global PICTURE_URL*/
+
+const useStyles = makeStyles(theme => ({
   media: {
     paddingTop: '25%', // 16:9
-    height: 0,
+    height: 0
   },
   cardActionStyle: {
     display: 'flex',
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
   const classes = useStyles()
 
-  const [view, set_view] = React.useState('guest')
+  const [view, set_view] = React.useState(IS_GUEST_VIEW ? 'guest' : 'student')
 
   const [user_info, set_user_info] = React.useState({
     name: '',
@@ -36,13 +36,13 @@ export default function App() {
     email: '',
     email_error: false,
     phone: '',
-    phone_error: false,
+    phone_error: false
   })
 
   const [questions, set_questions] = React.useState({
     cough: null,
     fever: null,
-    exposure: null,
+    exposure: null
   })
 
   const handle_click = () => {
@@ -54,10 +54,15 @@ export default function App() {
           ...user_info,
           name_error: !user_info.name,
           email_error: !user_info.email,
-          phone_error: !user_info.phone,
+          phone_error: !user_info.phone
         })
       }
     } else if (view === 'student') {
+      const { cough, fever, exposure } = questions
+
+      if (cough === null || fever === null || exposure === null) {
+        return
+      }
       submit_form(user_info, questions)
       set_view('submitted')
     } else {
@@ -66,17 +71,17 @@ export default function App() {
   }
 
   const final_page = () => {
-    console.log(questions)
     if (questions.cough || questions.fever || questions.exposure) {
       return (
         <Typography variant='body1' component='p'>
-          Please do not come to campus. GHC will be notified of your condition, and they will be in contact with you for the next steps.
+          Please do not come to campus. GHC will be notified, and may reach out
+          to you.
         </Typography>
       )
     } else {
       return (
         <Typography variant='body1' component='p'>
-          Thank you for taking the time to fill out this form
+          Thank you for taking the time to fill out this form.
         </Typography>
       )
     }
@@ -90,14 +95,16 @@ export default function App() {
       />
       <CardMedia
         className={classes.media}
-        image='./covid.jpg'
+        image={'/health-screening/static/covid.jpg'}
         title='Coronavirus'
       />
       <CardContent>
-        <Typography variant='body2' color='textSecondary' component='p'>
-          Anyone intending on visiting campus is required to fill out this
-          health screening form beforehand.
-        </Typography>
+        {view !== 'submitted' && (
+          <Typography variant='body2' color='textSecondary' component='p'>
+            Anyone intending on visiting campus is required to fill out this
+            health screening form beforehand.
+          </Typography>
+        )}
         {view === 'guest' && (
           <UserInfo user_info={user_info} set_user_info={set_user_info} />
         )}
@@ -107,14 +114,14 @@ export default function App() {
             set_questions={set_questions}
           />
         )}
-        { view === 'submitted' && final_page() }
+        {view === 'submitted' && final_page()}
       </CardContent>
-    <CardActions className={classes.cardActionStyle}>
-        {view !== 'submitted' &&
-         <Button color='secondary' variant='outlined' onClick={handle_click}>
-          {view === 'guest' ? 'Next' : 'Submit'}
-         </Button>
-        }
+      <CardActions className={classes.cardActionStyle}>
+        {view !== 'submitted' && (
+          <Button color='secondary' variant='outlined' onClick={handle_click}>
+            {view === 'guest' ? 'Next' : 'Submit'}
+          </Button>
+        )}
       </CardActions>
     </Card>
   )

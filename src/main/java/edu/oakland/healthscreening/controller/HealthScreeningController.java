@@ -1,16 +1,28 @@
 package edu.oakland.healthscreening.controller;
 
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.HealthInfo;
 import edu.oakland.healthscreening.service.MailService;
+import edu.oakland.soffit.auth.AuthService;
+import edu.oakland.soffit.auth.SoffitAuthException;
 
 import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
+import com.auth0.jwt.interfaces.Claim;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,10 +30,41 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthScreeningController {
   @Autowired private Postgres postgres;
   @Autowired private MailService mailService;
+  @Autowired private AuthService authorizer;
+  private final Logger log = LoggerFactory.getLogger("health-screening");
+
+  @ResponseStatus(value = UNAUTHORIZED, reason = "Invalid JWT")
+  @ExceptionHandler(SoffitAuthException.class)
+  public void soffitError(SoffitAuthException e) {
+    log.error("Invalid JWT", e);
+  }
+
+  @ResponseStatus(value = INTERNAL_SERVER_ERROR, reason = "Unspecified exception")
+  @ExceptionHandler(Exception.class)
+  public void generalError(Exception e) {
+    log.error("Unspecified exception", e);
+  }
 
   @PostMapping("health-info")
-  public void saveHealthInfo(@RequestBody HealthInfo info) {
-    // TODO set account type based on bearer token presence
+  public void saveHealthInfo(@RequestBody HealthInfo info, HttpServletRequest request)
+      throws SoffitAuthException {
+
+    Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
+
+    Claim pidm = personInfo.get("pidm");
+
+    if (pidm == null) {
+      info.setAccountType("guest");
+    } else {
+      info.setAccountType("student");
+      info.setPidm(pidm.asString());
+      info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
+      info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
+      info.setPhone(
+          personInfo.get("telephoneNumber") == null
+              ? null
+              : personInfo.get("telephoneNumber").asString());
+    }
 
     if (info.shouldStayHome()) {
       mailService.notifyHealthCenter(info);
@@ -31,7 +74,14 @@ public class HealthScreeningController {
   }
 
   @GetMapping("health-info")
-  public List<HealthInfo> getHealthInfo() {
-    return postgres.getHealthInfo();
+  public List<HealthInfo> getHealthInfo() throws SoffitAuthException {
+    throw new SoffitAuthException("User not allowed access to this resource", null);
+  }
+
+  @GetMapping("health-info/current-user")
+  public HealthInfo getUserInfo(HttpServletRequest request) throws SoffitAuthException {
+    String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
+
+    return postgres.getRecentSubmission(pidm);
   }
 }

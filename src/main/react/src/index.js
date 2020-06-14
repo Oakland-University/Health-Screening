@@ -4,6 +4,7 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { StylesProvider, createGenerateClassName } from '@material-ui/styles'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { CssBaseline } from '@material-ui/core'
 
 /* global token */
 const project_name = 'health-screening'
@@ -14,31 +15,32 @@ const theme = createMuiTheme({
       light: '#b89f74',
       main: '#877148',
       dark: '#58461f',
-      contrastText: '#fff',
+      contrastText: '#fff'
     },
     secondary: {
       light: '#56a2ea',
       main: '#0074b7',
       dark: '#004987',
-      contrastText: '#fff',
-    },
-  },
+      contrastText: '#fff'
+    }
+  }
 })
 
 const generateClassName = createGenerateClassName({
   productionPrefix: project_name,
-  disableGlobal: true,
+  disableGlobal: true
 })
 
 ReactDOM.render(
   <React.StrictMode>
+    <CssBaseline />
     <StylesProvider generateClassName={generateClassName}>
       <MuiThemeProvider theme={theme}>
         <App />
       </MuiThemeProvider>
     </StylesProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById(project_name)
 )
 
 // If you want your app to work offline and load faster, you can change
