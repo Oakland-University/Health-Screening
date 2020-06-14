@@ -95,7 +95,7 @@ export default function App() {
       />
       <CardMedia
         className={classes.media}
-        image={PICTURE_URL}
+        image={'/health-screening/static/covid.jpg'}
         title='Coronavirus'
       />
       <CardContent>
