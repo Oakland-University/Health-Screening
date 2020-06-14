@@ -14,15 +14,15 @@ import { submit_form } from './api/api'
 /*global IS_GUEST_VIEW*/
 /*global PICTURE_URL*/
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   media: {
     paddingTop: '25%', // 16:9
-    height: 0,
+    height: 0
   },
   cardActionStyle: {
     display: 'flex',
-    justifyContent: 'flex-end',
-  },
+    justifyContent: 'flex-end'
+  }
 }))
 
 export default function App() {
@@ -36,13 +36,13 @@ export default function App() {
     email: '',
     email_error: false,
     phone: '',
-    phone_error: false,
+    phone_error: false
   })
 
   const [questions, set_questions] = React.useState({
     cough: null,
     fever: null,
-    exposure: null,
+    exposure: null
   })
 
   const handle_click = () => {
@@ -54,10 +54,15 @@ export default function App() {
           ...user_info,
           name_error: !user_info.name,
           email_error: !user_info.email,
-          phone_error: !user_info.phone,
+          phone_error: !user_info.phone
         })
       }
     } else if (view === 'student') {
+      const { cough, fever, exposure } = questions
+
+      if (cough === null || fever === null || exposure === null) {
+        return
+      }
       submit_form(user_info, questions)
       set_view('submitted')
     } else {
@@ -69,8 +74,8 @@ export default function App() {
     if (questions.cough || questions.fever || questions.exposure) {
       return (
         <Typography variant='body1' component='p'>
-          Please do not come to campus. GHC will be notified,
-          and may reach out to you.
+          Please do not come to campus. GHC will be notified, and may reach out
+          to you.
         </Typography>
       )
     } else {
@@ -94,10 +99,12 @@ export default function App() {
         title='Coronavirus'
       />
       <CardContent>
-        {view !== 'submitted' && <Typography variant='body2' color='textSecondary' component='p'>
-          Anyone intending on visiting campus is required to fill out this
-          health screening form beforehand.
-        </Typography>}
+        {view !== 'submitted' && (
+          <Typography variant='body2' color='textSecondary' component='p'>
+            Anyone intending on visiting campus is required to fill out this
+            health screening form beforehand.
+          </Typography>
+        )}
         {view === 'guest' && (
           <UserInfo user_info={user_info} set_user_info={set_user_info} />
         )}

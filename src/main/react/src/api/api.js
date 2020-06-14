@@ -13,7 +13,7 @@ export const submit_form = async (user_info, questions) => {
     email: user_info.email,
     coughing: questions.cough,
     feverish: questions.fever,
-    exposed: questions.exposure,
+    exposed: questions.exposure
   }
 
   try {
@@ -22,10 +22,10 @@ export const submit_form = async (user_info, questions) => {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-         Authorization: 'Bearer ' + token
+        Authorization: 'Bearer ' + token
       },
       method: 'POST',
-      body: JSON.stringify(request_body),
+      body: JSON.stringify(request_body)
     })
     return await response.json()
   } catch (err) {
