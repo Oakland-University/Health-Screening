@@ -10,7 +10,6 @@ import FormLabel from '@material-ui/core/FormLabel'
 
 const useStyles = makeStyles(theme => ({
   radioGroup: {
-    disaply: 'flex',
     flexDirection: 'row'
   },
   formLabel: {
