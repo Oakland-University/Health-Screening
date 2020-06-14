@@ -39,12 +39,22 @@ public class HealthScreeningController {
   }
 
   @PostMapping("health-info")
-  public void saveHealthInfo(@RequestBody HealthInfo info, HttpServletRequest request) {
+  public void saveHealthInfo(@RequestBody HealthInfo info, HttpServletRequest request)
+      throws SoffitAuthException {
 
-    try {
-      info = getInfoFromBearer(request, info);
-    } catch (SoffitAuthException e) {
+    Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
+
+    if (personInfo.get("pidm") == null) {
       info.setAccountType("guest");
+    } else {
+      info.setAccountType("student");
+      info.setPidm(personInfo.get("pidm").asString());
+      info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
+      info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
+      info.setPhone(
+          personInfo.get("telephoneNumber") == null
+              ? null
+              : personInfo.get("telephoneNumber").asString());
     }
 
     if (info.shouldStayHome()) {
@@ -64,20 +74,5 @@ public class HealthScreeningController {
     String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
 
     return postgres.getRecentSubmission(pidm);
-  }
-
-  private HealthInfo getInfoFromBearer(HttpServletRequest request, HealthInfo info)
-      throws SoffitAuthException {
-    Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
-    info.setAccountType("student");
-    info.setPidm(personInfo.get("pidm").asString());
-    info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
-    info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
-    info.setPhone(
-        personInfo.get("telephoneNumber") == null
-            ? null
-            : personInfo.get("telephoneNumber").asString());
-
-    return info;
   }
 }
