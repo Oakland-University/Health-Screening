@@ -42,3 +42,8 @@ After setting up your DB, and creating the env variable =PORTAL_HOME= with =glob
 And your backend should be started up
 ** Inside uPortal
 To be added...
+* Screenshots
+** Guest View
+[[file:screenshots/guest-view.png][guest-view]]
+** Health Form
+[[file:screenshots/health-form.png][health-form]]

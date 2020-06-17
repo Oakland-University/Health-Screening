@@ -1,4 +1,4 @@
-##### Issue location:*
+##### Issue location:
 
 ```<path_to_issue```
 
