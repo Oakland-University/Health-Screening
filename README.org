@@ -1,4 +1,4 @@
-#+TITLE: README
+#+TITLE: COVID-19 Health Screening
 
 * Introduction
 
@@ -12,4 +12,33 @@ If they answer =yes= to any of those questions, the campus health center should 
 
 
 * Building
+
+** Detached Frontend
 To run the frontend locally, in the =src/main/react=  folder run the command: =npm i && npm start=
+** Backend
+*** Database
+This is a gradle-based spring-boot project made with the Spring-Initializer, so most commands should look pretty familiar.
+
+We use Postgres as a database at Oakland, so some functions (like =now()=) in our =schema.sql= /might/ not work on your RDBMS. If you do use postgres as well, then all you need to do is run the command:
+
+#+BEGIN_SRC bash
+psql -U <username> -d <dbname> -f src/main/resources/schema.sql
+#+END_SRC
+
+Although Spring does support auto-running the =schema.sql= file on bootRun, we don't take advantage of that feature.
+
+*** Environment Variables
+This application is designed to be a /Soffit/ - a SpringBoot webapp designed to run inside of the OpenSource uPortal project. It can also run outside of that context, if desired.
+
+However, as it's currently configured, it tries to grab some application properties from the env variable =PORTAL_HOME=. That's a directory with two properties files in it. =global.properties= and =uPortal.properties=. In those files we define our database connection details, JWT signing key, and the email we want to notify about potential positive cases.
+
+*** Running
+After setting up your DB, and creating the env variable =PORTAL_HOME= with =global.properties= and =uPortal.properties= (OR hardcoding the values), run the command:
+
+#+BEGIN_SRC bash
+./gradlew clean bootRun
+#+END_SRC
+
+And your backend should be started up
+** Inside uPortal
+To be added...
