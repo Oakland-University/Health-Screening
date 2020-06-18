@@ -44,6 +44,10 @@ And your backend should be started up
 To be added...
 * Screenshots
 ** Guest View
+#+ATTR_HTML: width="300px"
+#+ATTR_ORG: :width 300
 [[./screenshots/guest-view.png]]
 ** Health Form
+#+ATTR_HTML: width="300px"
+#+ATTR_ORG: :width 300
 [[./screenshots/health-form.png]]
