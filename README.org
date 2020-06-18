@@ -44,6 +44,6 @@ And your backend should be started up
 To be added...
 * Screenshots
 ** Guest View
-[[file:screenshots/guest-view.png][guest-view]]
+[[./screenshots/guest-view.png]]
 ** Health Form
-[[file:screenshots/health-form.png][health-form]]
+[[./screenshots/health-form.png]]
