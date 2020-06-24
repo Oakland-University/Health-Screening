@@ -13,4 +13,7 @@ public class Constants {
 
   public static final String GET_RECENT_INFO =
       ("select * from screening.health_screening where age(submission_time) < INTERVAL '1 day' and pidm = ? order by submission_time desc limit 1");
+
+  public static final String DELETE_OLD_RECORDS =
+      ("delete from screening.health_screening where age(submission_time) >= INTERVAL '30 days'");
 }

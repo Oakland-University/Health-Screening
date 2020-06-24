@@ -24,23 +24,26 @@ public class MailService {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setTo(healthCenterAddress);
     msg.setFrom(mailFrom);
-    msg.setSubject(
-        info.getAccountType().equals("student")
-            ? "Student Health Screening"
-            : "Guest Health Screening");
-    msg.setText(
-        "A potential positive self-screening response was submitted by a "
-            + info.getAccountType()
-            + ":\n\n"
-            + "Information about this person:\n"
-            + "\tName: "
-            + info.getName()
-            + "\n\tPhone: "
-            + info.getPhone()
-            + "\n\tEmail: "
-            + info.getEmail()
-            + "\n\nResponses: \n\t- "
-            + info.responseSummary());
+    msg.setSubject(getEmailSubject(info));
+    msg.setText(info.summarize());
     mailSender.send(msg);
+  }
+
+  private String getEmailSubject(HealthInfo info) {
+
+    switch (info.getAccountType()) {
+      case STUDENT:
+        return "Student Health Screening";
+      case GUEST:
+        return "Guest Health Screening";
+      case STAFF:
+        return "Staff Health Screening";
+      case FACULTY:
+        return "Faculty Health Screening";
+      case STUDENT_EMPLOYEE:
+        return "Student Employee Health Screening";
+      default:
+        return "Health Screening";
+    }
   }
 }
