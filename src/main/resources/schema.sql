@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS screening AUTHORIZATION uportal;
 
-CREATE TYPE IF NOT EXISTS account_type AS ENUM ('guest', 'student', 'faculty', 'staff', 'student_employee');
+CREATE TYPE account_type AS ENUM ('guest', 'student', 'faculty', 'staff', 'student_employee');
 
 CREATE TABLE IF NOT EXISTS screening.health_screening (
     id serial primary key,
@@ -31,10 +31,10 @@ CREATE TABLE IF NOT EXISTS screening.analytics (
 
 /* For converting from the original schema to the current one */
 
-alter type account_type
-    add value 'faculty' after 'student',
-    add value 'staff' after 'faculty',
-    add value 'student_employee' after 'staff';
+alter type screening.account_type add value 'faculty' after 'student';
+alter type screening.account_type add value 'staff' after 'faculty';
+alter type screening.account_type add value 'student_employee' after 'staff';
+
 
 alter table screening.health_screening
     add column supervisor_email text,
