@@ -1,9 +1,10 @@
 package edu.oakland.healthscreening.controller;
 
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import edu.oakland.healthscreening.dao.Postgres;
+import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.HealthInfo;
 import edu.oakland.healthscreening.service.MailService;
 import edu.oakland.soffit.auth.AuthService;
@@ -12,6 +13,7 @@ import edu.oakland.soffit.auth.SoffitAuthException;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import com.auth0.jwt.interfaces.Claim;
 import org.slf4j.Logger;
@@ -46,17 +48,19 @@ public class HealthScreeningController {
   }
 
   @PostMapping("health-info")
-  public void saveHealthInfo(@RequestBody HealthInfo info, HttpServletRequest request)
+  public void saveHealthInfo(@Valid @RequestBody HealthInfo info, HttpServletRequest request)
       throws SoffitAuthException {
 
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
     Claim pidm = personInfo.get("pidm");
 
+    // TODO Handle all cases and abstract to seperate method
+
     if (pidm == null) {
-      info.setAccountType("guest");
+      info.setAccountType(AccountType.GUEST);
     } else {
-      info.setAccountType("student");
+      info.setAccountType(AccountType.STUDENT);
       info.setPidm(pidm.asString());
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());

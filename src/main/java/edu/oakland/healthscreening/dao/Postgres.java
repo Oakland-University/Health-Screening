@@ -37,4 +37,8 @@ public class Postgres {
   public HealthInfo getRecentSubmission(String pidm) {
     return postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper);
   }
+
+  public void deleteOldRecords() {
+    postgresTemplate.update(DELETE_OLD_RECORDS);
+  }
 }
