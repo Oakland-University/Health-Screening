@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS screening AUTHORIZATION uportal;
 
-CREATE TYPE account_type AS ENUM ('guest', 'student', 'faculty', 'staff', 'student_employee');
+CREATE TYPE screening.account_type AS ENUM ('guest', 'student', 'faculty', 'staff', 'student_employee');
 
 CREATE TABLE IF NOT EXISTS screening.health_screening (
     id serial primary key,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS screening.analytics (
     is_coughing boolean not null,
     is_feverish boolean not null,
     is_exposed boolean not null,
-    submission time timestamp not null default now()
+    submission_time timestamp not null default now(),
     notes text
 );
 
