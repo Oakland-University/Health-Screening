@@ -5,11 +5,11 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   radioGroup: {
     display: 'flex',
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 }))
 
 export default function UserInfo(props) {
@@ -21,7 +21,7 @@ export default function UserInfo(props) {
     email,
     email_error,
     phone,
-    phone_error
+    phone_error,
   } = props.user_info
 
   return (
@@ -40,10 +40,10 @@ export default function UserInfo(props) {
               label='Name'
               variant='outlined'
               value={name}
-              onChange={event =>
+              onChange={(event) =>
                 props.set_user_info({
                   ...props.user_info,
-                  name: event.target.value
+                  name: event.target.value,
                 })
               }
             />
@@ -56,10 +56,10 @@ export default function UserInfo(props) {
               label='Email'
               variant='outlined'
               value={email}
-              onChange={event =>
+              onChange={(event) =>
                 props.set_user_info({
                   ...props.user_info,
-                  email: event.target.value
+                  email: event.target.value,
                 })
               }
             />
@@ -72,10 +72,10 @@ export default function UserInfo(props) {
               label='Phone Number'
               variant='outlined'
               value={phone}
-              onChange={event =>
+              onChange={(event) =>
                 props.set_user_info({
                   ...props.user_info,
-                  phone: event.target.value
+                  phone: event.target.value,
                 })
               }
             />

@@ -10,19 +10,20 @@ import Typography from '@material-ui/core/Typography'
 import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
 import { submit_form } from './api/api'
+import BannerCard from './components/BannerCard'
 
 /*global IS_GUEST_VIEW*/
 /*global PICTURE_URL*/
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   media: {
     paddingTop: '25%', // 16:9
-    height: 0
+    height: 0,
   },
   cardActionStyle: {
     display: 'flex',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 }))
 
 export default function App() {
@@ -36,13 +37,13 @@ export default function App() {
     email: '',
     email_error: false,
     phone: '',
-    phone_error: false
+    phone_error: false,
   })
 
   const [questions, set_questions] = React.useState({
     cough: null,
     fever: null,
-    exposure: null
+    exposure: null,
   })
 
   const handle_click = () => {
@@ -54,7 +55,7 @@ export default function App() {
           ...user_info,
           name_error: !user_info.name,
           email_error: !user_info.email,
-          phone_error: !user_info.phone
+          phone_error: !user_info.phone,
         })
       }
     } else if (view === 'student') {
@@ -86,6 +87,8 @@ export default function App() {
       )
     }
   }
+
+  return <BannerCard type='allowed' text='blob' />
 
   return (
     <Card className={classes.root}>

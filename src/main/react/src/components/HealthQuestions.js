@@ -8,24 +8,20 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   radioGroup: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   formLabel: {
     marginBottom: '0px !important',
-    border: 'none'
-  }
+    border: 'none',
+  },
 }))
 
 export default function HealthQuestions(props) {
   const classes = useStyles()
 
-  const {
-    cough,
-    fever,
-    exposure,
-  } = props.questions
+  const { cough, fever, exposure } = props.questions
 
   return (
     <>
@@ -43,10 +39,10 @@ export default function HealthQuestions(props) {
             aria-label='cough'
             name='cough'
             value={cough}
-            onChange={event =>
+            onChange={(event) =>
               props.set_questions({
                 ...props.questions,
-                cough: event.target.value === 'true'
+                cough: event.target.value === 'true',
               })
             }
             className={classes.radioGroup}
@@ -61,10 +57,10 @@ export default function HealthQuestions(props) {
             aria-label='fever'
             name='fever'
             value={fever}
-            onChange={event =>
+            onChange={(event) =>
               props.set_questions({
                 ...props.questions,
-                fever: event.target.value === 'true'
+                fever: event.target.value === 'true',
               })
             }
             className={classes.radioGroup}
@@ -80,10 +76,10 @@ export default function HealthQuestions(props) {
             aria-label='exposure'
             name='exposure'
             value={exposure}
-            onChange={event =>
+            onChange={(event) =>
               props.set_questions({
                 ...props.questions,
-                exposure: event.target.value === 'true'
+                exposure: event.target.value === 'true',
               })
             }
             className={classes.radioGroup}
