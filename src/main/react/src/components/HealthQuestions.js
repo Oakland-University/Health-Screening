@@ -10,9 +10,9 @@ import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   radioGroup: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   formLabel: {
     marginBottom: '0px !important',
@@ -57,10 +57,10 @@ export default function HealthQuestions(props) {
             aria-label='cough'
             name='cough'
             value={cough}
-            onChange={event =>
+            onChange={(event) =>
               props.set_questions({
                 ...props.questions,
-                cough: event.target.value === 'true'
+                cough: event.target.value === 'true',
               })
             }
             className={classes.radioGroup}
@@ -75,10 +75,10 @@ export default function HealthQuestions(props) {
             aria-label='fever'
             name='fever'
             value={fever}
-            onChange={event =>
+            onChange={(event) =>
               props.set_questions({
                 ...props.questions,
-                fever: event.target.value === 'true'
+                fever: event.target.value === 'true',
               })
             }
             className={classes.radioGroup}
@@ -94,10 +94,10 @@ export default function HealthQuestions(props) {
             aria-label='exposure'
             name='exposure'
             value={exposure}
-            onChange={event =>
+            onChange={(event) =>
               props.set_questions({
                 ...props.questions,
-                exposure: event.target.value === 'true'
+                exposure: event.target.value === 'true',
               })
             }
             className={classes.radioGroup}

@@ -11,20 +11,21 @@ import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
 import FinalPage from './components/FinalPage'
 import { submit_form } from './api/api'
+import BannerCard from './components/BannerCard'
 
 /*global PICTURE_URL*/
 /*global PHONE*/
 /*global ACCOUNT_TYPE*/
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   media: {
     paddingTop: '25%', // 16:9
-    height: 0
+    height: 0,
   },
   cardActionStyle: {
     display: 'flex',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 }))
 
 export default function App() {
@@ -38,13 +39,13 @@ export default function App() {
     email: '',
     email_error: false,
     phone: '',
-    phone_error: false
+    phone_error: false,
   })
 
   const [questions, set_questions] = React.useState({
     cough: null,
     fever: null,
-    exposure: null
+    exposure: null,
   })
 
   const handle_click = () => {
@@ -56,7 +57,7 @@ export default function App() {
           ...user_info,
           name_error: !user_info.name,
           email_error: !user_info.email,
-          phone_error: !user_info.phone
+          phone_error: !user_info.phone,
         })
       }
     } else if (view === 'screening-form') {
@@ -74,6 +75,25 @@ export default function App() {
       console.error('Unkown view selected')
     }
   }
+
+  const final_page = () => {
+    if (questions.cough || questions.fever || questions.exposure) {
+      return (
+        <Typography variant='body1' component='p'>
+          Please do not come to campus. GHC will be notified, and may reach out
+          to you.
+        </Typography>
+      )
+    } else {
+      return (
+        <Typography variant='body1' component='p'>
+          Thank you for taking the time to fill out this form.
+        </Typography>
+      )
+    }
+  }
+
+  return <BannerCard type='allowed' text='blob' />
 
   return (
     <Card className={classes.root}>
