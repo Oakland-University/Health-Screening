@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 export default function HealthQuestions(props) {
   const classes = useStyles()
 
-  const has_phone = (!!PHONE && !!ACCOUNT_TYPE)
+  const has_phone = ((!!PHONE || PHONE === '[]') && !!ACCOUNT_TYPE)
 
   const {
     cough,
