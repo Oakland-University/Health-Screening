@@ -19,7 +19,7 @@ public class Postgres {
     postgresTemplate.update(
         INSERT_HEALTH_INFO,
         new Object[] {
-          info.getAccountType(),
+          info.getAccountType().toString(),
           info.getPidm(),
           info.getEmail(),
           info.getName(),

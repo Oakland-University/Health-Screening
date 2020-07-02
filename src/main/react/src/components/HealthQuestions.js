@@ -7,6 +7,8 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
+import TextField from '@material-ui/core/TextField'
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles(theme => ({
   radioGroup: {
@@ -15,11 +17,23 @@ const useStyles = makeStyles(theme => ({
   formLabel: {
     marginBottom: '0px !important',
     border: 'none'
+  },
+  phoneDivider: {
+    marginTop: 20
+  },
+  phoneLabel: {
+    marginTop: 20
   }
 }))
 
+
+/*global PHONE*/
+/*global ACCOUNT_TYPE*/
+
 export default function HealthQuestions(props) {
   const classes = useStyles()
+
+  const has_phone = (!ACCOUNT_TYPE || (!!PHONE && PHONE !== '[]'))
 
   const {
     cough,
@@ -91,6 +105,28 @@ export default function HealthQuestions(props) {
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
+          {!has_phone &&
+           <>
+             <Divider className={classes.phoneDivider}/>
+             <Typography paragraph className={classes.phoneLabel}>
+              It looks like we don't have your phone number on file. Please fill it out below.
+            </Typography>
+            <TextField
+              required
+              error={props.user_info.phone_error}
+              id='outlined-required'
+              label='Phone Number'
+              variant='outlined'
+              value={props.user_info.phone}
+              onChange={event =>
+                props.set_user_info({
+                  ...props.user_info,
+                  phone: event.target.value
+                })
+              }
+            />
+           </>
+          }
         </FormControl>
       </CardContent>
     </>

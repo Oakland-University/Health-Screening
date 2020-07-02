@@ -9,10 +9,12 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
+import FinalPage from './components/FinalPage'
 import { submit_form } from './api/api'
 
-/*global IS_GUEST_VIEW*/
 /*global PICTURE_URL*/
+/*global PHONE*/
+/*global ACCOUNT_TYPE*/
 
 const useStyles = makeStyles(theme => ({
   media: {
@@ -28,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 export default function App() {
   const classes = useStyles()
 
-  const [view, set_view] = React.useState(IS_GUEST_VIEW ? 'guest' : 'student')
+  const [view, set_view] = React.useState(!ACCOUNT_TYPE ? 'guest' : 'screening-form')
 
   const [user_info, set_user_info] = React.useState({
     name: '',
@@ -48,7 +50,7 @@ export default function App() {
   const handle_click = () => {
     if (view === 'guest') {
       if (user_info.name && user_info.email && user_info.phone) {
-        set_view('student')
+        set_view('screening-form')
       } else {
         set_user_info({
           ...user_info,
@@ -57,33 +59,19 @@ export default function App() {
           phone_error: !user_info.phone
         })
       }
-    } else if (view === 'student') {
+    } else if (view === 'screening-form') {
       const { cough, fever, exposure } = questions
 
-      if (cough === null || fever === null || exposure === null) {
+      if (cough === null || fever === null || exposure === null || ((!PHONE || PHONE === '[]') && !user_info.phone)) {
+        if (!user_info.phone) {
+          set_user_info({...user_info, phone_error: true})
+        }
         return
       }
       submit_form(user_info, questions)
       set_view('submitted')
     } else {
       console.error('Unkown view selected')
-    }
-  }
-
-  const final_page = () => {
-    if (questions.cough || questions.fever || questions.exposure) {
-      return (
-        <Typography variant='body1' component='p'>
-          Please do not come to campus. GHC will be notified, and may reach out
-          to you.
-        </Typography>
-      )
-    } else {
-      return (
-        <Typography variant='body1' component='p'>
-          Thank you for taking the time to fill out this form.
-        </Typography>
-      )
     }
   }
 
@@ -103,18 +91,23 @@ export default function App() {
           <Typography variant='body2' color='textSecondary' component='p'>
             Anyone intending on visiting campus is required to fill out this
             health screening form beforehand.
+            <br/>
+            Please be aware that GHC will be notified of your response.
           </Typography>
         )}
         {view === 'guest' && (
           <UserInfo user_info={user_info} set_user_info={set_user_info} />
         )}
-        {view === 'student' && (
+        {view === 'screening-form' && (
           <HealthQuestions
             questions={questions}
             set_questions={set_questions}
+            user_info={user_info}
+            set_user_info={set_user_info}
+            view={view}
           />
         )}
-        {view === 'submitted' && final_page()}
+        {view === 'submitted' && <FinalPage questions={questions}/>}
       </CardContent>
       <CardActions className={classes.cardActionStyle}>
         {view !== 'submitted' && (
