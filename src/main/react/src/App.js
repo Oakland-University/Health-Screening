@@ -62,7 +62,7 @@ export default function App() {
     } else if (view === 'screening-form') {
       const { cough, fever, exposure } = questions
 
-      if (cough === null || fever === null || exposure === null || ((!!PHONE && PHONE !== '[]') && !user_info.phone)) {
+      if (cough === null || fever === null || exposure === null || ((!PHONE || PHONE === '[]') && !user_info.phone)) {
         if (!user_info.phone) {
           set_user_info({...user_info, phone_error: true})
         }
