@@ -30,8 +30,7 @@ const useStyles = makeStyles(theme => ({
 export default function App() {
   const classes = useStyles()
 
-  //const [view, set_view] = React.useState(!ACCOUNT_TYPE ? 'guest' : 'screening-form')
-  const [view, set_view] = React.useState('screening-form')
+  const [view, set_view] = React.useState(!ACCOUNT_TYPE ? 'guest' : 'screening-form')
 
   const [user_info, set_user_info] = React.useState({
     name: '',
