@@ -35,4 +35,10 @@ public enum AccountType {
         throw new IllegalArgumentException("Incorrect account type provided");
     }
   }
+
+  @Override
+  public String toString() {
+    return super.toString().toLowerCase();
+  }
+
 }
