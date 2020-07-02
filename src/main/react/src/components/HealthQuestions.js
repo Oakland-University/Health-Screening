@@ -7,7 +7,7 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
-import { TextField } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles(theme => ({
@@ -17,6 +17,12 @@ const useStyles = makeStyles(theme => ({
   formLabel: {
     marginBottom: '0px !important',
     border: 'none'
+  },
+  phoneDivider: {
+    marginTop: 20
+  },
+  phoneLabel: {
+    marginTop: 20
   }
 }))
 
@@ -101,8 +107,8 @@ export default function HealthQuestions(props) {
           </RadioGroup>
           {!has_phone &&
            <>
-            <Divider style={{marginTop: 20}}/>
-            <Typography paragraph style={{marginTop: 20}}>
+             <Divider className={classes.phoneDivider}/>
+             <Typography paragraph className={classes.phoneLabel}>
               It looks like we don't have your phone number on file. Please fill it out below.
             </Typography>
             <TextField
