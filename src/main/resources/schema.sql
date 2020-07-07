@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS screening.health_screening (
     pidm text,
     email text not null,
     phone text,
+    name text,
     is_coughing boolean not null,
     is_feverish boolean not null,
     is_exposed boolean not null,
