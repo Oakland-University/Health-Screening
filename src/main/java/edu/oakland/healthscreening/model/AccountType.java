@@ -40,5 +40,4 @@ public enum AccountType {
   public String toString() {
     return super.toString().toLowerCase();
   }
-
 }

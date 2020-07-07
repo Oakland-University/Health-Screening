@@ -18,16 +18,23 @@ public class Postgres {
   public void saveHealthInfo(HealthInfo info) {
     postgresTemplate.update(
         INSERT_HEALTH_INFO,
-        new Object[] {
-          info.getAccountType().toString(),
-          info.getPidm(),
-          info.getEmail(),
-          info.getName(),
-          info.getPhone(),
-          info.isCoughing(),
-          info.isFeverish(),
-          info.isExposed()
-        });
+        info.getAccountType().toString(),
+        info.getPidm(),
+        info.getEmail(),
+        info.getName(),
+        info.getPhone(),
+        info.isCoughing(),
+        info.isFeverish(),
+        info.isExposed());
+  }
+
+  public void saveAnalyticInfo(HealthInfo info) {
+    postgresTemplate.update(
+        INSERT_ANALYTICS,
+        info.getAccountType().toString(),
+        info.isCoughing(),
+        info.isFeverish(),
+        info.isExposed());
   }
 
   public List<HealthInfo> getHealthInfo() {
@@ -35,7 +42,7 @@ public class Postgres {
   }
 
   public HealthInfo getRecentSubmission(String pidm) {
-    return postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper);
+    return postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm);
   }
 
   public void deleteOldRecords() {
