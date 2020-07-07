@@ -87,8 +87,8 @@ export default function HealthQuestions(props) {
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
           <FormLabel className={classes.formLabel} component='legend'>
-            Have you had close contact with someone diagnosed with COVID-19
-            within the past 14 days?
+            Have you had known close contact (within 6 feet for 15 minutes) with
+            someone diagnosed with COVID-19 in the past 14 days?
           </FormLabel>
           <RadioGroup
             aria-label='exposure'
@@ -109,7 +109,7 @@ export default function HealthQuestions(props) {
            <>
              <Divider className={classes.phoneDivider}/>
              <Typography paragraph className={classes.phoneLabel}>
-              It looks like we don't have your phone number on file. Please fill it out below.
+               It looks like we don't have your phone number on file. Please fill it out below.
             </Typography>
             <TextField
               required
