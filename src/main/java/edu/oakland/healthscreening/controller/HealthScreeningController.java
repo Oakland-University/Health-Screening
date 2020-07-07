@@ -12,6 +12,8 @@ import edu.oakland.soffit.auth.SoffitAuthException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -88,7 +90,7 @@ public class HealthScreeningController {
   }
 
   @GetMapping("health-info/current-user")
-  public HealthInfo getUserInfo(HttpServletRequest request) throws SoffitAuthException {
+  public Optional<HealthInfo> getUserInfo(HttpServletRequest request) throws SoffitAuthException {
     String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
 
     return postgres.getRecentSubmission(pidm);
