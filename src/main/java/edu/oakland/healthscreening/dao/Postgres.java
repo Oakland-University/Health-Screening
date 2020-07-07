@@ -34,7 +34,7 @@ public class Postgres {
     postgresTemplate.update(
         INSERT_ANALYTICS,
         new Object[] {
-          info.getAccountType(), info.isCoughing(), info.isFeverish(), info.isExposed()
+          info.getAccountType().toString(), info.isCoughing(), info.isFeverish(), info.isExposed()
         });
   }
 
