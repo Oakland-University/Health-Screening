@@ -4,7 +4,7 @@ CREATE TYPE screening.account_type AS ENUM ('guest', 'student', 'faculty', 'staf
 
 CREATE TABLE IF NOT EXISTS screening.health_screening (
     id serial primary key,
-    account_type account_type not null default 'guest',
+    account_type screening.account_type not null default 'guest',
     pidm text,
     email text not null,
     phone text,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS screening.health_screening (
 
 CREATE TABLE IF NOT EXISTS screening.analytics (
     id serial primary key,
-    account_type account_type not null default 'guest',
+    account_type screening.account_type not null default 'guest',
     is_coughing boolean not null,
     is_feverish boolean not null,
     is_exposed boolean not null,
@@ -40,4 +40,7 @@ alter table screening.health_screening
     add column supervisor_email text,
     add column supervisor_name text,
     add column supervisor_phone text,
-    add column notes text;
+    add column notes text,
+    alter column account_type drop default,
+    alter column account_type type screening.account_type USING account_type::screening.account_type,
+    alter column account_type set default 'guest';
