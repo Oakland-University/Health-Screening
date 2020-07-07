@@ -78,7 +78,7 @@ export default function App() {
   return (
     <Card className={classes.root}>
       <CardHeader
-        title='Student Health Screening'
+        title='Health Screening'
         subheader='Oakland University'
       />
       <CardMedia
