@@ -9,6 +9,13 @@ public class Constants {
               + "   (CAST(? as account_type), ?, ?, ?, ?, ?, ?, ?)                                  ")
           .replaceAll("\\s+", " ");
 
+  public static final String INSERT_ANALYTICS =
+      (" INSERT INTO screening.analytics                                                            "
+              + "   (account_type, is_coughing, is_feverish, is_exposed)                            "
+              + " VALUES                                                                            "
+              + "   (CAST(? as account_type), ?, ?, ?)                                              ")
+          .replaceAll("\\s+", " ");
+
   public static final String GET_ALL_RESPONSES = ("select * from screening.health_screening ");
 
   public static final String GET_RECENT_INFO =

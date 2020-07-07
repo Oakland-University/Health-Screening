@@ -64,12 +64,14 @@ public class HealthScreeningController {
       info.setPidm(pidm.asString());
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
-      //
+
       //  Only replace the provided phone if it's null or empty
       if (info.getPhone() == null || info.getPhone().isEmpty()) {
-        info.setPhone(personInfo.get("telephoneNumber") == null ? null : personInfo.get("telephoneNumber").asString());
+        info.setPhone(
+            personInfo.get("telephoneNumber") == null
+                ? null
+                : personInfo.get("telephoneNumber").asString());
       }
-
     }
 
     if (info.shouldStayHome()) {
@@ -77,6 +79,7 @@ public class HealthScreeningController {
     }
 
     postgres.saveHealthInfo(info);
+    postgres.saveAnalyticInfo(info);
   }
 
   @GetMapping("health-info")

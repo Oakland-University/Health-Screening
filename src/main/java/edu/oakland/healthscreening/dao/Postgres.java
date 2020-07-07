@@ -30,6 +30,14 @@ public class Postgres {
         });
   }
 
+  public void saveAnalyticInfo(HealthInfo info) {
+    postgresTemplate.update(
+        INSERT_ANALYTICS,
+        new Object[] {
+          info.getAccountType(), info.isCoughing(), info.isFeverish(), info.isExposed()
+        });
+  }
+
   public List<HealthInfo> getHealthInfo() {
     return postgresTemplate.query(GET_ALL_RESPONSES, HealthInfo.mapper);
   }
