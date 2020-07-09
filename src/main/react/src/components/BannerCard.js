@@ -148,7 +148,6 @@ const Prompt = (props) => {
   )
 }
 
-<<<<<<< HEAD
 const Warning = (props) => {
   const classes = useStyles()
   return (
