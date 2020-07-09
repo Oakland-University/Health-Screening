@@ -50,6 +50,7 @@ export default function App() {
     set_modal_open(user_status === 'not-completed')
   }, [user_status])
 
+
   const banner_action = () => console.log('blob')
 
   return (

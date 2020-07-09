@@ -114,8 +114,7 @@ const Certificate = (props) => {
         </Button>
         {false && (
           <Button color='secondary' variant='outlined'>
-            {' '}
-            props.action}> Email Certificate
+             Email Certificate
           </Button>
         )}
       </CardActions>
@@ -149,6 +148,7 @@ const Prompt = (props) => {
   )
 }
 
+<<<<<<< HEAD
 const Warning = (props) => {
   const classes = useStyles()
   return (
