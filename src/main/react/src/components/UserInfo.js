@@ -1,20 +1,17 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-
-const useStyles = makeStyles((theme) => ({
-  radioGroup: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-}))
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  update_name,
+  update_email,
+  update_phone,
+} from '../actions/main-actions'
 
 export default function UserInfo(props) {
-  const classes = useStyles()
-
+  const dispatch = useDispatch()
   const {
     name,
     name_error,
@@ -22,7 +19,7 @@ export default function UserInfo(props) {
     email_error,
     phone,
     phone_error,
-  } = props.user_info
+  } = useSelector((state) => state)
 
   return (
     <>
@@ -40,12 +37,7 @@ export default function UserInfo(props) {
               label='Name'
               variant='outlined'
               value={name}
-              onChange={(event) =>
-                props.set_user_info({
-                  ...props.user_info,
-                  name: event.target.value,
-                })
-              }
+              onChange={(event) => dispatch(update_name(event.target.value))}
             />
           </Grid>
           <Grid item sm={4}>
@@ -56,12 +48,7 @@ export default function UserInfo(props) {
               label='Email'
               variant='outlined'
               value={email}
-              onChange={(event) =>
-                props.set_user_info({
-                  ...props.user_info,
-                  email: event.target.value,
-                })
-              }
+              onChange={(event) => dispatch(update_email(event.target.value))}
             />
           </Grid>
           <Grid item sm={4}>
@@ -72,12 +59,7 @@ export default function UserInfo(props) {
               label='Phone Number'
               variant='outlined'
               value={phone}
-              onChange={(event) =>
-                props.set_user_info({
-                  ...props.user_info,
-                  phone: event.target.value,
-                })
-              }
+              onChange={(event) => dispatch(update_phone(event.target.value))}
             />
           </Grid>
         </Grid>

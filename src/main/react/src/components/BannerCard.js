@@ -31,6 +31,17 @@ const useStyles = makeStyles((theme) => ({
   media: {
     paddingTop: '20%', // 16:9
     height: 0,
+    color: 'red',
+  },
+  certificateMedia: {
+    paddingTop: '12%',
+    height: 0,
+    backgroundImage: 'linear-gradient(green, green)',
+  },
+  disallowedMedia: {
+    paddingTop: '12%',
+    height: 0,
+    backgroundImage: 'linear-gradient(#d32f2f, #d32f2f)',
   },
 }))
 
@@ -55,7 +66,7 @@ const determine_color = (type) => {
 
 const BannerCard = (props) => {
   const classes = useStyles()
-  const { type, text, show_link, link_url } = props
+  const { type, submission_time, banner_action } = props
 
   const icon = determine_color(type)
 
@@ -64,21 +75,23 @@ const BannerCard = (props) => {
       <CardHeader
         avatar={icon}
         title='OU Health Screening'
-        subheader='Submitted today at 11:20am'
+        subheader={
+          submission_time &&
+          `Submitted at ${submission_time.toLocaleTimeString()}`
+        }
       />
-      <CardMedia
-        className={classes.media}
-        image={'./covid.png'}
-        title='Coronavirus'
-      />
-      <CertificateContent />
+      {type === 'not-completed' && <Prompt action={banner_action} />}
+      {type === 'allowed' && <Certificate action={banner_action} />}
+      {type === 'disallowed' && <Warning />}
     </Card>
   )
 }
 
-const CertificateContent = () => {
+const Certificate = (props) => {
+  const classes = useStyles()
   return (
     <>
+      <CardMedia className={classes.certificateMedia} />
       <CardContent>
         <Typography variant='body1' gutterBottom>
           <Box textAlign='center'>
@@ -86,13 +99,12 @@ const CertificateContent = () => {
           </Box>
         </Typography>
         <Typography variant='body1' style={{ fontSize: 34, padding: 16 }}>
-          <Box textAlign='center'>
-            {new Date().toDateString()}
-          </Box>
+          <Box textAlign='center'>{new Date().toDateString()}</Box>
         </Typography>
         <Typography variant='body1'>
           <Box textAlign='center'>
-            Email <a href={`mailto:${EMAIL}`}>{EMAIL}</a> a copy of this certificate
+            Email <a href={`mailto:${EMAIL}`}>{EMAIL}</a> a copy of this
+            certificate
           </Box>
         </Typography>
       </CardContent>
@@ -100,10 +112,56 @@ const CertificateContent = () => {
         <Button color='secondary' variant='outlined'>
           Send Email
         </Button>
-        {false && <Button color='secondary' variant='outlined'>
-          Fill Out Form
-        </Button>}
+        {false && (
+          <Button color='secondary' variant='outlined'>
+            {' '}
+            props.action}> Email Certificate
+          </Button>
+        )}
       </CardActions>
+    </>
+  )
+}
+
+const Prompt = (props) => {
+  const classes = useStyles()
+  return (
+    <>
+      <CardMedia
+        className={classes.media}
+        image={'./covid.png'}
+        title='Coronavirus'
+      />
+      <CardContent>
+        <Typography variant='body1' gutterBottom>
+          <Box textAlign='center'>
+            Anyone intending on visiting campus is required to fill out the OU
+            Health Screening Form beforehand.
+          </Box>
+        </Typography>
+      </CardContent>
+      <CardActions style={{ justifyContent: 'right' }}>
+        <Button color='secondary' variant='outlined'>
+          Fill Out Form
+        </Button>
+      </CardActions>
+    </>
+  )
+}
+
+const Warning = (props) => {
+  const classes = useStyles()
+  return (
+    <>
+      <CardMedia className={classes.disallowedMedia} />
+      <CardContent>
+        <Typography variant='body1' gutterBottom>
+          <Box textAlign='center'>
+            Based on your answers to the health screening form, we ask that you
+            stay off campus
+          </Box>
+        </Typography>
+      </CardContent>
     </>
   )
 }

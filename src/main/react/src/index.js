@@ -5,6 +5,8 @@ import * as serviceWorker from './serviceWorker'
 import { StylesProvider, createGenerateClassName } from '@material-ui/styles'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
+import store from './store'
+import { Provider } from 'react-redux'
 
 /* global token */
 const project_name = 'health-screening'
@@ -36,7 +38,9 @@ ReactDOM.render(
     <CssBaseline />
     <StylesProvider generateClassName={generateClassName}>
       <MuiThemeProvider theme={theme}>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </MuiThemeProvider>
     </StylesProvider>
   </React.StrictMode>,
