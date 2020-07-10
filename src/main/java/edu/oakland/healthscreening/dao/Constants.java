@@ -24,8 +24,23 @@ public class Constants {
               + " FROM                                       "
               + "   screening.health_screening               "
               + " WHERE                                      "
-              + "   age(submission_time) < INTERVAL '1 day'  "
+              + "   age(submission_time) <= INTERVAL '1 day'  "
               + "   AND pidm = ?                             "
+              + " ORDER BY                                   "
+              + "   submission_time DESC                     "
+              + " LIMIT 1                                    ")
+          .replaceAll("\\s+", " ");
+
+  public static final String GET_GUEST_INFO =
+      (" SELECT                                     "
+              + "   *                                        "
+              + " FROM                                       "
+              + "   screening.health_screening               "
+              + " WHERE                                      "
+              + "   age(submission_time) <= INTERVAL '1 day' "
+              + "   AND name = ?                             "
+              + "   AND email = ?                            "
+              + "   AND phone = ?                            "
               + " ORDER BY                                   "
               + "   submission_time DESC                     "
               + " LIMIT 1                                    ")

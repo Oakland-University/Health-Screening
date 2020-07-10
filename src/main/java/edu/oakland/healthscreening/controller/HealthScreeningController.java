@@ -13,7 +13,6 @@ import edu.oakland.soffit.auth.SoffitAuthException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -94,5 +94,24 @@ public class HealthScreeningController {
     String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
 
     return postgres.getRecentSubmission(pidm);
+  }
+
+  @GetMapping("health-info/certificate-email")
+  public void getCertificateEmail(
+      HttpServletRequest request,
+      @RequestParam String name,
+      @RequestParam String phone,
+      @RequestParam String email)
+      throws SoffitAuthException {
+    Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
+
+    Claim pidm = personInfo.get("pidm");
+
+    if (pidm == null) {
+      mailService.sendGuestCertificate(name, phone, email);
+
+    } else {
+      mailService.sendAuthenticatedCertificate(pidm.asString());
+    }
   }
 }

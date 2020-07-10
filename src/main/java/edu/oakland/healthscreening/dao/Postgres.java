@@ -51,6 +51,15 @@ public class Postgres {
     }
   }
 
+  public Optional<HealthInfo> getGuestSubmission(String name, String email, String phone) {
+    try {
+      return Optional.of(
+          postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, name, email, phone));
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
+  }
+
   public void deleteOldRecords() {
     postgresTemplate.update(DELETE_OLD_RECORDS);
   }
