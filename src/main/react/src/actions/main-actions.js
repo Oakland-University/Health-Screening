@@ -1,4 +1,4 @@
-import { get_user_submission } from '../api/api'
+import { get_user_submission, submit_form } from '../api/api'
 
 export function update_lookup_id(new_id) {
   return function (dispatch) {
@@ -61,12 +61,27 @@ export const press_modal_button = () => (dispatch, getState) => {
     payload = 'health-screening'
   } else if (current_page === 'health-screening') {
     payload = 'submitted'
+
+    const {
+      fever,
+      cough,
+      exposure,
+      name,
+      email,
+      phone,
+      account_type,
+    } = getState()
+
+    if (cough !== null && fever !== null && exposure !== null) {
+      submit_form(
+        { fever, cough, exposure },
+        { name, email, phone, account_type }
+      )
+    }
   } else {
     console.error('Trying to switch from page', current_page)
     return
   }
-
-  console.log(current_page, payload)
 
   dispatch({ type: 'UPDATE_MODAL_PAGE', payload })
 }

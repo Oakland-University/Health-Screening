@@ -47,11 +47,10 @@ export default function App() {
   const [modal_open, set_modal_open] = useState(user_status === 'not-completed')
 
   useEffect(() => {
-    set_modal_open(user_status === 'not-completed')
-  }, [user_status])
-
-
-  const banner_action = () => console.log('blob')
+    set_modal_open(
+      user_status === 'not-completed' || modal_page === 'submitted'
+    )
+  }, [user_status, modal_page])
 
   return (
     <>
@@ -95,7 +94,7 @@ export default function App() {
           </CardActions>
         </Card>
       </Dialog>
-      <BannerCard type={user_status} action={banner_action} />
+      <BannerCard type={user_status} set_modal_open={set_modal_open} />
     </>
   )
 }

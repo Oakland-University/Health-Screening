@@ -70,10 +70,16 @@ export default function reducer(state = initial_state, action) {
             : action.payload
 
         return { ...state, name_error, email_error, phone_error, modal_page }
-      } else {
-        // do other stuff
-        return
+      } else if (action.payload === 'submitted') {
+        const { cough, fever, exposure } = state
+        const user_status =
+          cough || fever || exposure ? 'disallowed' : 'allowed'
+
+        if (cough !== null && fever !== null && exposure !== null) {
+          return { ...state, modal_page: action.payload, user_status }
+        }
       }
+      return { ...state }
     }
 
     default:

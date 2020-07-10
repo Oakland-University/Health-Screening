@@ -80,7 +80,9 @@ const BannerCard = (props) => {
           `Submitted at ${submission_time.toLocaleTimeString()}`
         }
       />
-      {type === 'not-completed' && <Prompt action={banner_action} />}
+      {type === 'not-completed' && (
+        <Prompt set_modal_open={props.set_modal_open} />
+      )}
       {type === 'allowed' && <Certificate action={banner_action} />}
       {type === 'disallowed' && <Warning />}
     </Card>
@@ -109,14 +111,13 @@ const Certificate = (props) => {
         </Typography>
       </CardContent>
       <CardActions style={{ justifyContent: 'right' }}>
-        <Button color='secondary' variant='outlined'>
+        <Button
+          color='secondary'
+          variant='outlined'
+          onClick={() => console.log('send email')}
+        >
           Send Email
         </Button>
-        {false && (
-          <Button color='secondary' variant='outlined'>
-             Email Certificate
-          </Button>
-        )}
       </CardActions>
     </>
   )
@@ -140,7 +141,11 @@ const Prompt = (props) => {
         </Typography>
       </CardContent>
       <CardActions style={{ justifyContent: 'right' }}>
-        <Button color='secondary' variant='outlined'>
+        <Button
+          color='secondary'
+          variant='outlined'
+          onClick={() => props.set_modal_open(true)}
+        >
           Fill Out Form
         </Button>
       </CardActions>
