@@ -7,6 +7,8 @@
   var PICTURE_URL = '${pageContext.request.contextPath}/static/covid.jpg'
   var PHONE = '${bearer.attributes.telephoneNumber}'
   var ACCOUNT_TYPE = '${bearer.attributes.eduPersonPrimaryAffiliation}'
+  var NAME = '${bearer.attributes.displayName}'
+  var EMAIL = '${bearer.attributes.mail}'
 </script>
 <div id="health-screening">
   An error occurred

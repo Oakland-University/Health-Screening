@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography'
 import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
 import FinalPage from './components/FinalPage'
-import { submit_form, get_user_submission } from './api/api'
 import BannerCard from './components/BannerCard'
 import { useMediaQuery, useTheme, Dialog } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
@@ -44,7 +43,7 @@ export default function App() {
   const modal_page = useSelector((state) => state.modal_page)
   const user_status = useSelector((state) => state.user_status)
 
-  const [modal_open, set_modal_open] = useState(user_status === 'not-completed')
+  const [modal_open, set_modal_open] = useState(false)
 
   useEffect(() => {
     set_modal_open(

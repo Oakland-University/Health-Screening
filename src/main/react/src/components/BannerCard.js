@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core'
 
 /*global EMAIL*/
+/*global NAME*/
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -91,13 +92,16 @@ const BannerCard = (props) => {
 
 const Certificate = (props) => {
   const classes = useStyles()
+  const name = NAME ? NAME.replace('[', '').replace(']', '') : EMAIL
   return (
     <>
       <CardMedia className={classes.certificateMedia} />
       <CardContent>
         <Typography variant='body1' gutterBottom>
           <Box textAlign='center'>
-            This student is permitted on campus for the duration of:
+            Thank you for doing your part to keep the campus healthy!
+            <br />
+            This is a certificate for {name} to be on campus for the duration of
           </Box>
         </Typography>
         <Typography variant='body1' style={{ fontSize: 34, padding: 16 }}>
