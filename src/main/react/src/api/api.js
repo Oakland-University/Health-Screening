@@ -39,7 +39,7 @@ export const get_user_submission = async () => {
   }
 
   try {
-    const response = await fetch('/health-screening/api/v1/current-user', {
+    const response = await fetch('/health-screening/api/v1/health-info/current-user', {
       credentials: 'include',
       headers: {
         Accept: 'application/json',
