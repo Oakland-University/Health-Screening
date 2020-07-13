@@ -57,7 +57,7 @@ export const get_user_submission = async () => {
   }
 }
 
-export const get_certificate_email = async (name, email, phone) => {
+export const send_certificate_email = async (name, email, phone) => {
   if (IS_DEMO) {
     return
   }
@@ -66,7 +66,7 @@ export const get_certificate_email = async (name, email, phone) => {
 
   try {
     const response = await fetch(
-      '/health-screening/api/v1/health-info/current-user' + query_params,
+      '/health-screening/api/v1/health-info/certificate-email' + query_params,
       {
         credentials: 'include',
         headers: {
@@ -77,7 +77,7 @@ export const get_certificate_email = async (name, email, phone) => {
         method: 'GET',
       }
     )
-    return await response.json()
+    return await response.ok()
   } catch (err) {
     return err
   }

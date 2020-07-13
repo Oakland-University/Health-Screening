@@ -16,7 +16,7 @@ import {
   Button,
 } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
-import {get_certificate_email} from '../api/api'
+import {send_certificate_email} from '../api/api'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -123,7 +123,7 @@ const Certificate = (props) => {
         <Button
           color='secondary'
           variant='outlined'
-          onClick={() => get_certificate_email(name, email, phone)}
+          onClick={() => send_certificate_email(name, email, phone)}
         >
           Send Email
         </Button>
