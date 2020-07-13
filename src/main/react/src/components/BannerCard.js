@@ -137,7 +137,7 @@ const Prompt = (props) => {
     <>
       <CardMedia
         className={classes.media}
-        image={'./covid.png'}
+        image={'/health-screening/static/multiple-covid.jpg'}
         title='Coronavirus'
       />
       <CardContent>

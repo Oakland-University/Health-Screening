@@ -62,7 +62,7 @@ export default function App() {
           <CardHeader title='Health Screening' subheader='Oakland University' />
           <CardMedia
             className={classes.media}
-            image={'/health-screening/static/covid.jpg'}
+            image={'/health-screening/static/multiple-covid.jpg'}
             title='Coronavirus'
           />
           <CardContent>
