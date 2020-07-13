@@ -58,7 +58,7 @@ export default function App() {
         open={modal_open}
         onClose={() => set_modal_open(false)}
       >
-        <Card className={classes.root}>
+        <Card className={classes.root} style={{overflowY: 'scroll'}}>
           <CardHeader title='Health Screening' subheader='Oakland University' />
           <CardMedia
             className={classes.media}

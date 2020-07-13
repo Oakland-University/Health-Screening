@@ -16,6 +16,7 @@ import {
   Button,
 } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
+import {get_certificate_email} from '../api/api'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mainText: {
     marginTop: 10,
-    fontSize: '1.2rem'
+    fontSize: '1rem'
   }
 }))
 
@@ -95,7 +96,7 @@ const BannerCard = (props) => {
 
 const Certificate = (props) => {
   const classes = useStyles()
-  const {name, email} = useSelector(state => state)
+  const {name, email, phone} = useSelector(state => state)
   const display_name = name || email
   return (
     <>
@@ -122,7 +123,7 @@ const Certificate = (props) => {
         <Button
           color='secondary'
           variant='outlined'
-          onClick={() => console.log('send email')}
+          onClick={() => get_certificate_email(name, email, phone)}
         >
           Send Email
         </Button>
