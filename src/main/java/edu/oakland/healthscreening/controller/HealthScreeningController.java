@@ -108,6 +108,7 @@ public class HealthScreeningController {
     Claim pidm = personInfo.get("pidm");
 
     if (pidm == null) {
+      log.error("Requesting GUEST cert");
       mailService.sendGuestCertificate(name, phone, email);
     } else {
       mailService.sendAuthenticatedCertificate(pidm.asString());

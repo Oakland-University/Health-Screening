@@ -56,6 +56,9 @@ public class Postgres {
   }
 
   public Optional<HealthInfo> getGuestSubmission(String name, String email, String phone) {
+    log.error("Querying for guest");
+    log.error("name" + name + " email" + email + "phone" + phone);
+    log.error("Query:\n" + GET_GUEST_INFO);
     try {
       return Optional.of(
           postgresTemplate.queryForObject(GET_GUEST_INFO, HealthInfo.mapper, name, email, phone));
