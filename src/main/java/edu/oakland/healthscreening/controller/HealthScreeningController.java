@@ -88,7 +88,7 @@ public class HealthScreeningController {
 
   @GetMapping("health-info")
   public List<HealthInfo> getHealthInfo() throws SoffitAuthException {
-    String groups  = authorizer.getClaimFromJWE(request, "groups").asString();
+    String groups = authorizer.getClaimFromJWE(request, "groups").asString();
 
     if (groups.contains("GHC")) {
       return postgres.getHealthInfo();
@@ -107,10 +107,10 @@ public class HealthScreeningController {
   @GetMapping("health-info/analytics/{interval}")
   public AnalyticInfo getAnalyticInfo(@PathVariable("interval") String interval)
       throws SoffitAuthException {
-    String groups  = authorizer.getClaimFromJWE(request, "groups").asString();
+    String groups = authorizer.getClaimFromJWE(request, "groups").asString();
 
     if (groups.contains("GHC")) {
-      return postgres.getHealthInfo();
+      return postgres.getAnalyticInfo(interval);
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
