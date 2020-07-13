@@ -1,5 +1,6 @@
-/*global PICTURE_URL*/
 /*global PHONE*/
+/*global EMAIL*/
+/*global NAME*/
 /*global ACCOUNT_TYPE*/
 
 // modal page can be either:
@@ -11,14 +12,14 @@ const initial_state = {
   account_type: ACCOUNT_TYPE,
   cough: null,
   coming_to_campus: true,
-  email: '',
+  email: EMAIL,
   email_error: false,
   exposure: null,
   fever: null,
   modal_page: 'user-info',
-  name: '',
+  name: NAME,
   name_error: false,
-  phone: '',
+  phone: PHONE,
   phone_error: false,
   submission_time: '',
   user_status: 'not-completed',
@@ -27,13 +28,13 @@ const initial_state = {
 export default function reducer(state = initial_state, action) {
   switch (action.type) {
     case 'UPDATE_NAME': {
-      return { ...state, name: action.payload }
+      return { ...state, name: action.payload, name_error: false}
     }
     case 'UPDATE_EMAIL': {
-      return { ...state, email: action.payload }
+      return { ...state, email: action.payload, email_error: false}
     }
     case 'UPDATE_PHONE': {
-      return { ...state, phone: action.payload }
+      return { ...state, phone: action.payload, phone_error: false }
     }
     case 'UPDATE_ACCOUNT': {
       return { ...state, account: action.payload }
@@ -71,7 +72,12 @@ export default function reducer(state = initial_state, action) {
 
         return { ...state, name_error, email_error, phone_error, modal_page }
       } else if (action.payload === 'submitted') {
-        const { cough, fever, exposure } = state
+        const { cough, fever, exposure, phone } = state
+
+        if (!phone) {
+          return {...state, phone_error: true}
+        }
+
         const user_status =
           cough || fever || exposure ? 'disallowed' : 'allowed'
 

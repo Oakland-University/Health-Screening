@@ -15,9 +15,8 @@ import {
   Typography,
   Button,
 } from '@material-ui/core'
+import { useSelector, useDispatch } from 'react-redux'
 
-/*global EMAIL*/
-/*global NAME*/
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -44,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     backgroundImage: 'linear-gradient(#d32f2f, #d32f2f)',
   },
+  mainText: {
+    marginTop: 10,
+    fontSize: '1.2rem'
+  }
 }))
 
 const determine_color = (type) => {
@@ -92,7 +95,8 @@ const BannerCard = (props) => {
 
 const Certificate = (props) => {
   const classes = useStyles()
-  const name = NAME ? NAME.replace('[', '').replace(']', '') : EMAIL
+  const {name, email} = useSelector(state => state)
+  const display_name = name || email
   return (
     <>
       <CardMedia className={classes.certificateMedia} />
@@ -101,7 +105,7 @@ const Certificate = (props) => {
           <Box textAlign='center'>
             Thank you for doing your part to keep the campus healthy!
             <br />
-            This is a certificate for {name} to be on campus for the duration of
+            This is a certificate for {display_name} to be on campus for the duration of
           </Box>
         </Typography>
         <Typography variant='body1' style={{ fontSize: 34, padding: 16 }}>
@@ -109,7 +113,7 @@ const Certificate = (props) => {
         </Typography>
         <Typography variant='body1'>
           <Box textAlign='center'>
-            Email <a href={`mailto:${EMAIL}`}>{EMAIL}</a> a copy of this
+            Email <a href={`mailto:${email}`}>{email}</a> a copy of this
             certificate
           </Box>
         </Typography>
@@ -137,10 +141,15 @@ const Prompt = (props) => {
         title='Coronavirus'
       />
       <CardContent>
-        <Typography variant='body1' gutterBottom>
+        <Typography variant='body1' gutterBottom className={classes.mainText}>
           <Box textAlign='center'>
-            Anyone intending on visiting campus is required to fill out the OU
-            Health Screening Form beforehand.
+            Do Your Part to help maintain a safe and healthy campus
+          </Box>
+        </Typography>
+        <Typography variant='body1' gutterBottom className={classes.mainText}>
+          <Box textAlign='center'>
+            If you are planning on coming onto campus, please
+            fill out this health-screening form beforehand.
           </Box>
         </Typography>
       </CardContent>
@@ -165,8 +174,11 @@ const Warning = (props) => {
       <CardContent>
         <Typography variant='body1' gutterBottom>
           <Box textAlign='center'>
-            Based on your answers to the health screening form, we ask that you
-            stay off campus
+            Please do not come to the Oakland University Campus.
+            <br/>
+            If you have any questions, contact the Graham Health Center at (248) 370-2341.
+            <br/>
+            Do Your Part to help maintain a safe and health campus: stay home.
           </Box>
         </Typography>
       </CardContent>

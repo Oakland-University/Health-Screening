@@ -56,3 +56,29 @@ export const get_user_submission = async () => {
     return err
   }
 }
+
+export const get_certificate_email = async (name, email, phone) => {
+  if (IS_DEMO) {
+    return
+  }
+
+  const query_params = `?name=${name}&email=${email}&phone=${phone}`
+
+  try {
+    const response = await fetch(
+      '/health-screening/api/v1/health-info/current-user' + query_params,
+      {
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+        method: 'GET',
+      }
+    )
+    return await response.json()
+  } catch (err) {
+    return err
+  }
+}
