@@ -50,20 +50,15 @@ public class Postgres {
     try {
       return Optional.of(postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
     } catch (EmptyResultDataAccessException e) {
-      log.error("Recent submission error {}", e);
       return Optional.empty();
     }
   }
 
   public Optional<HealthInfo> getGuestSubmission(String name, String email, String phone) {
-    log.error("Querying for guest");
-    log.error("name" + name + " email" + email + "phone" + phone);
-    log.error("Query:\n" + GET_GUEST_INFO);
     try {
       return Optional.of(
           postgresTemplate.queryForObject(GET_GUEST_INFO, HealthInfo.mapper, name, email, phone));
     } catch (EmptyResultDataAccessException e) {
-      log.error("guest submission error {}", e);
       return Optional.empty();
     }
   }

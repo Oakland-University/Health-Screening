@@ -39,9 +39,7 @@ public class MailService {
   }
 
   public void sendGuestCertificate(String name, String email, String phone) throws MailException {
-    log.error("Guest info");
     Optional<HealthInfo> optionalInfo = postgres.getGuestSubmission(name, email, phone);
-    log.error(optionalInfo.toString());
 
     if (optionalInfo.isPresent()) {
       sendCertificate(optionalInfo.get());
