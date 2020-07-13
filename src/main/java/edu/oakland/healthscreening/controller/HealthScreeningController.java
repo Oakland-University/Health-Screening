@@ -88,8 +88,13 @@ public class HealthScreeningController {
 
   @GetMapping("health-info")
   public List<HealthInfo> getHealthInfo() throws SoffitAuthException {
-    return postgres.getHealthInfo();
-    // throw new SoffitAuthException("User not allowed access to this resource", null);
+    String groups  = authorizer.getClaimFromJWE(request, "groups").asString();
+
+    if (groups.contains("GHC")) {
+      return postgres.getHealthInfo();
+    } else {
+      throw new SoffitAuthException("User not allowed access to this resource", null);
+    }
   }
 
   @GetMapping("health-info/current-user")
@@ -102,7 +107,12 @@ public class HealthScreeningController {
   @GetMapping("health-info/analytics/{interval}")
   public AnalyticInfo getAnalyticInfo(@PathVariable("interval") String interval)
       throws SoffitAuthException {
-    return analytics.getAnalyticInfo(interval);
-    // throw new SoffitAuthException("User not allowed access to this resource", null);
+    String groups  = authorizer.getClaimFromJWE(request, "groups").asString();
+
+    if (groups.contains("GHC")) {
+      return postgres.getHealthInfo();
+    } else {
+      throw new SoffitAuthException("User not allowed access to this resource", null);
+    }
   }
 }
