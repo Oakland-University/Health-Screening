@@ -87,7 +87,7 @@ public class HealthScreeningController {
   }
 
   @GetMapping("health-info")
-  public List<HealthInfo> getHealthInfo() throws SoffitAuthException {
+  public List<HealthInfo> getHealthInfo(HttpServletRequest request) throws SoffitAuthException {
     String groups = authorizer.getClaimFromJWE(request, "groups").asString();
 
     if (groups.contains("GHC")) {
@@ -105,7 +105,8 @@ public class HealthScreeningController {
   }
 
   @GetMapping("health-info/analytics/{interval}")
-  public AnalyticInfo getAnalyticInfo(@PathVariable("interval") String interval)
+  public AnalyticInfo getAnalyticInfo(
+      @PathVariable("interval") String interval, HttpServletRequest request)
       throws SoffitAuthException {
     String groups = authorizer.getClaimFromJWE(request, "groups").asString();
 
