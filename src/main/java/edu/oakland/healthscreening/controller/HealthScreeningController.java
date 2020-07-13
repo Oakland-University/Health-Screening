@@ -109,7 +109,6 @@ public class HealthScreeningController {
 
     if (pidm == null) {
       mailService.sendGuestCertificate(name, phone, email);
-
     } else {
       mailService.sendAuthenticatedCertificate(pidm.asString());
     }

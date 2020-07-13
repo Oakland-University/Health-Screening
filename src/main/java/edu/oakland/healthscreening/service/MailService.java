@@ -6,6 +6,8 @@ import edu.oakland.healthscreening.model.HealthInfo;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -24,6 +26,8 @@ public class MailService {
 
   @Value("${health-screening.email-from}")
   String mailFrom;
+
+  private final Logger log = LoggerFactory.getLogger("health-screening");
 
   public void notifyHealthCenter(HealthInfo info) throws MailException {
     SimpleMailMessage msg = new SimpleMailMessage();
@@ -88,5 +92,7 @@ public class MailService {
               + "This person is allowed on campus for the duration of: "
               + dateString);
     }
+
+    mailSender.send(msg);
   }
 }

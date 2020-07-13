@@ -24,7 +24,7 @@ public class Constants {
               + " FROM                                       "
               + "   screening.health_screening               "
               + " WHERE                                      "
-              + "   age(submission_time) <= INTERVAL '1 day'  "
+              + "   age(submission_time) <= INTERVAL '1 day' "
               + "   AND pidm = ?                             "
               + " ORDER BY                                   "
               + "   submission_time DESC                     "
