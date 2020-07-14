@@ -111,7 +111,7 @@ public class HealthScreeningController {
     String groups = authorizer.getClaimFromJWE(request, "groups").asString();
 
     if (groups.contains("GHC")) {
-      return postgres.getAnalyticInfo(interval);
+      return analytics.getAnalyticInfo(interval);
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
