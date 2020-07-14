@@ -54,6 +54,7 @@ public class HealthInfo {
 
         info.setAccountType(AccountType.from(rs.getString("account_type")));
         info.setPidm(rs.getString("pidm"));
+        info.setName(rs.getString("name"));
         info.setEmail(rs.getString("email"));
         info.setPhone(rs.getString("phone"));
         info.setCoughing(rs.getBoolean("is_coughing"));

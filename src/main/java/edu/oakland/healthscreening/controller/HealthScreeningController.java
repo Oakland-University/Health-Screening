@@ -5,7 +5,9 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AccountType;
+import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
+import edu.oakland.healthscreening.service.AnalyticsService;
 import edu.oakland.healthscreening.service.MailService;
 import edu.oakland.soffit.auth.AuthService;
 import edu.oakland.soffit.auth.SoffitAuthException;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class HealthScreeningController {
   @Autowired private Postgres postgres;
+  @Autowired private AnalyticsService analytics;
   @Autowired private MailService mailService;
   @Autowired private AuthService authorizer;
   private final Logger log = LoggerFactory.getLogger("health-screening");
@@ -83,8 +87,14 @@ public class HealthScreeningController {
   }
 
   @GetMapping("health-info")
-  public List<HealthInfo> getHealthInfo() throws SoffitAuthException {
-    throw new SoffitAuthException("User not allowed access to this resource", null);
+  public List<HealthInfo> getHealthInfo(HttpServletRequest request) throws SoffitAuthException {
+    String groups = authorizer.getClaimFromJWE(request, "groups").asString();
+
+    if (groups.contains("GHC")) {
+      return postgres.getHealthInfo();
+    } else {
+      throw new SoffitAuthException("User not allowed access to this resource", null);
+    }
   }
 
   @GetMapping("health-info/current-user")
@@ -92,5 +102,18 @@ public class HealthScreeningController {
     String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
 
     return postgres.getRecentSubmission(pidm);
+  }
+
+  @GetMapping("health-info/analytics/{interval}")
+  public AnalyticInfo getAnalyticInfo(
+      @PathVariable("interval") String interval, HttpServletRequest request)
+      throws SoffitAuthException {
+    String groups = authorizer.getClaimFromJWE(request, "groups").asString();
+
+    if (groups.contains("GHC")) {
+      return postgres.getAnalyticInfo(interval);
+    } else {
+      throw new SoffitAuthException("User not allowed access to this resource", null);
+    }
   }
 }
