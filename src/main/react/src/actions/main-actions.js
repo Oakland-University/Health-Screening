@@ -85,7 +85,6 @@ export const press_modal_button = () => (dispatch, getState) => {
     } = getState()
 
     if (cough !== null && fever !== null && exposure !== null) {
-      console.log(fever, cough, exposure, email)
       submit_form(
         { name, email, phone, account_type },
         { fever, cough, exposure }
