@@ -22,7 +22,7 @@ const initial_state = {
   phone: PHONE,
   phone_error: false,
   submission_time: '',
-  user_status: 'not-completed',
+  user_status: 'loading',
 }
 
 export default function reducer(state = initial_state, action) {
