@@ -126,8 +126,7 @@ const Certificate = (props) => {
         </Typography>
         <Typography variant='body1'>
           <Box textAlign='center'>
-            Email <a href={`mailto:${email}`}>{email}</a> a copy of this
-            certificate
+            Email {email} a copy of this certificate
           </Box>
         </Typography>
       </CardContent>
