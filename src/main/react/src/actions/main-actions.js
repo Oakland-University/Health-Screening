@@ -10,6 +10,15 @@ export const fetch_past_submission = () => (dispatch) => {
   get_user_submission().then((data) => {
     // User has not filled out the form. Defaults are fine
     if (data === null || data === undefined) {
+      const payload = {
+        cough: null,
+        fever: null,
+        exposure: null,
+        submission_time: null,
+        user_status: 'not-completed'
+      }
+
+      dispatch({type: 'GET_PREVIOUS_HEALTH_INFO', payload})
       return
     }
 
