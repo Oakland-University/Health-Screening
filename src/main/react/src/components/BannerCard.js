@@ -56,6 +56,7 @@ const determine_color = (type) => {
 
   switch (type.toLowerCase()) {
     case 'not-completed':
+    case 'loading':
       return <WarningIcon style={{ color, fontSize }} />
     case 'allowed':
       color = '#388E3C'
@@ -85,7 +86,7 @@ const BannerCard = (props) => {
           `Submitted at ${submission_time.toLocaleTimeString()}`
         }
       />
-      {type === 'not-completed' && (
+      {(type === 'not-completed' || type === 'loading') && (
         <Prompt set_modal_open={props.set_modal_open} />
       )}
       {type === 'allowed' && <Certificate action={banner_action} />}
@@ -98,6 +99,17 @@ const Certificate = (props) => {
   const classes = useStyles()
   const {name, email, phone} = useSelector(state => state)
   const display_name = name || email
+
+  const handle_click = () => {
+    send_certificate_email(name, email, phone).then(response => {
+      if (response) {
+        alert('Email sent')
+      } else {
+        alert('Email was not sent. Please contact uts@oakland.edu if this problem persists')
+      }
+    })
+  }
+
   return (
     <>
       <CardMedia className={classes.certificateMedia} />
@@ -123,7 +135,7 @@ const Certificate = (props) => {
         <Button
           color='secondary'
           variant='outlined'
-          onClick={() => send_certificate_email(name, email, phone)}
+          onClick={handle_click}
         >
           Send Email
         </Button>

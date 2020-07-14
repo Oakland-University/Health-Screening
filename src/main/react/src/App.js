@@ -45,6 +45,9 @@ export default function App() {
 
   const [modal_open, set_modal_open] = useState(false)
 
+  const overflow_style = full_screen ? {overflowY: 'scroll'} : {}
+
+
   useEffect(() => {
     set_modal_open(
       user_status === 'not-completed' || modal_page === 'submitted'
@@ -58,7 +61,7 @@ export default function App() {
         open={modal_open}
         onClose={() => set_modal_open(false)}
       >
-        <Card className={classes.root} style={{overflowY: 'scroll'}}>
+        <Card className={classes.root} style={overflow_style}>
           <CardHeader title='Health Screening' subheader='Oakland University' />
           <CardMedia
             className={classes.media}
@@ -81,6 +84,13 @@ export default function App() {
             {modal_page === 'submitted' && <FinalPage />}
           </CardContent>
           <CardActions className={classes.cardActionStyle}>
+              <Button
+                color='secondary'
+                variant='outlined'
+                onClick={() => set_modal_open(false)}
+              >
+                Close
+              </Button>
             {modal_page !== 'submitted' && (
               <Button
                 color='secondary'
