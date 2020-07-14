@@ -16,6 +16,25 @@ public class Constants {
               + "   (CAST(? as screening.account_type), ?, ?, ?)                                    ")
           .replaceAll("\\s+", " ");
 
+  public static final String GET_ANALYTIC_INFO =
+      (" SELECT                                                                           "
+              + "     COUNT(*) AS total,                                                  "
+              + "     SUM                                                                 "
+              + "     (CASE                                                               "
+              + "         WHEN is_feverish = TRUE                                         "
+              + "         OR is_coughing = TRUE                                           "
+              + "         OR is_exposed = TRUE THEN 1                                     "
+              + "         ELSE 0                                                          "
+              + "     END) AS sick,                                                       "
+              + "     SUM(CASE WHEN is_coughing = TRUE THEN 1 ELSE 0 END) AS coughing,    "
+              + "     SUM(CASE WHEN is_feverish = TRUE THEN 1 ELSE 0 END) AS feverish,    "
+              + "     SUM(CASE WHEN is_exposed = TRUE THEN 1 ELSE 0 END) AS exposed       "
+              + " FROM                                                                    "
+              + "     screening.health_screening                                          "
+              + " WHERE                                                                   "
+              + "     AGE(submission_time) <= ?::INTERVAL                                 ")
+          .replaceAll("\\s+", " ");
+
   public static final String GET_ALL_RESPONSES = ("select * from screening.health_screening ");
 
   public static final String GET_RECENT_INFO =

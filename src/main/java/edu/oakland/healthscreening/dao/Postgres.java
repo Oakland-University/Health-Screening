@@ -2,6 +2,7 @@ package edu.oakland.healthscreening.dao;
 
 import static edu.oakland.healthscreening.dao.Constants.*;
 
+import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
 
 import java.util.List;
@@ -40,6 +41,10 @@ public class Postgres {
         info.isCoughing(),
         info.isFeverish(),
         info.isExposed());
+  }
+
+  public AnalyticInfo getAnalyticInfo(String interval) {
+    return postgresTemplate.queryForObject(GET_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
   }
 
   public List<HealthInfo> getHealthInfo() {
