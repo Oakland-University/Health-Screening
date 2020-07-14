@@ -121,6 +121,8 @@ public class HealthScreeningController {
       mailService.sendGuestCertificate(name, email, phone);
     } else {
       mailService.sendAuthenticatedCertificate(pidm.asString());
+    }
+  }
 
   @GetMapping("health-info/analytics/{interval}")
   public AnalyticInfo getAnalyticInfo(
