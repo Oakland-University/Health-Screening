@@ -38,7 +38,7 @@ export default function App() {
   }, [dispatch])
 
   const theme = useTheme()
-  const full_screen = useMediaQuery(theme.breakpoints.down('sm'))
+  const full_screen = useMediaQuery(theme.breakpoints.down('xs'))
 
   const modal_page = useSelector((state) => state.modal_page)
   const user_status = useSelector((state) => state.user_status)
