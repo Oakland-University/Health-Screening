@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -10,112 +10,100 @@ import Typography from '@material-ui/core/Typography'
 import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
 import FinalPage from './components/FinalPage'
-import { submit_form } from './api/api'
+import BannerCard from './components/BannerCard'
+import { useMediaQuery, useTheme, Dialog } from '@material-ui/core'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  fetch_past_submission,
+  press_modal_button,
+} from './actions/main-actions'
 
-/*global PICTURE_URL*/
-/*global PHONE*/
-/*global ACCOUNT_TYPE*/
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   media: {
     paddingTop: '25%', // 16:9
-    height: 0
+    height: 0,
   },
   cardActionStyle: {
     display: 'flex',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 }))
 
 export default function App() {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
-  const [view, set_view] = React.useState(!ACCOUNT_TYPE ? 'guest' : 'screening-form')
+  useEffect(() => {
+    dispatch(fetch_past_submission())
+  }, [dispatch])
 
-  const [user_info, set_user_info] = React.useState({
-    name: '',
-    name_error: false,
-    email: '',
-    email_error: false,
-    phone: '',
-    phone_error: false
-  })
+  const theme = useTheme()
+  const full_screen = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const [questions, set_questions] = React.useState({
-    cough: null,
-    fever: null,
-    exposure: null
-  })
+  const modal_page = useSelector((state) => state.modal_page)
+  const user_status = useSelector((state) => state.user_status)
 
-  const handle_click = () => {
-    if (view === 'guest') {
-      if (user_info.name && user_info.email && user_info.phone) {
-        set_view('screening-form')
-      } else {
-        set_user_info({
-          ...user_info,
-          name_error: !user_info.name,
-          email_error: !user_info.email,
-          phone_error: !user_info.phone
-        })
-      }
-    } else if (view === 'screening-form') {
-      const { cough, fever, exposure } = questions
+  const [modal_open, set_modal_open] = useState(false)
 
-      if (cough === null || fever === null || exposure === null || ((!PHONE || PHONE === '[]') && !user_info.phone)) {
-        if (!user_info.phone) {
-          set_user_info({...user_info, phone_error: true})
-        }
-        return
-      }
-      submit_form(user_info, questions)
-      set_view('submitted')
-    } else {
-      console.error('Unkown view selected')
-    }
-  }
+  const overflow_style = full_screen ? {overflowY: 'scroll'} : {}
+
+
+  useEffect(() => {
+    set_modal_open(
+      user_status === 'not-completed' || modal_page === 'submitted'
+    )
+  }, [user_status, modal_page])
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        title='Health Screening'
-        subheader='Oakland University'
-      />
-      <CardMedia
-        className={classes.media}
-        image={'/health-screening/static/covid.jpg'}
-        title='Coronavirus'
-      />
-      <CardContent>
-        {view !== 'submitted' && (
-          <Typography variant='body2' color='textSecondary' component='p'>
-            Anyone intending on visiting campus is required to fill out this
-            health screening form beforehand.
-            <br/>
-            Please be aware that GHC will be notified of your response.
-          </Typography>
-        )}
-        {view === 'guest' && (
-          <UserInfo user_info={user_info} set_user_info={set_user_info} />
-        )}
-        {view === 'screening-form' && (
-          <HealthQuestions
-            questions={questions}
-            set_questions={set_questions}
-            user_info={user_info}
-            set_user_info={set_user_info}
-            view={view}
+    <>
+      <Dialog
+        fullScreen={full_screen}
+        open={modal_open}
+        onClose={() => set_modal_open(false)}
+      >
+        <Card className={classes.root} style={overflow_style}>
+          <CardHeader title='Health Screening' subheader='Oakland University' />
+          <CardMedia
+            className={classes.media}
+            image={'/health-screening/static/multiple-covid.jpg'}
+            title='Coronavirus'
           />
-        )}
-        {view === 'submitted' && <FinalPage questions={questions}/>}
-      </CardContent>
-      <CardActions className={classes.cardActionStyle}>
-        {view !== 'submitted' && (
-          <Button color='secondary' variant='outlined' onClick={handle_click}>
-            {view === 'guest' ? 'Next' : 'Submit'}
-          </Button>
-        )}
-      </CardActions>
-    </Card>
+          <CardContent>
+            {modal_page !== 'submitted' && (
+              <Typography variant='body2' color='textSecondary' component='p'>
+                Anyone intending on visiting campus is required to fill out this
+                health screening form beforehand.
+                <br />
+                Please be aware that GHC will be notified of your response.
+              </Typography>
+            )}
+            {modal_page === 'user-info' && <UserInfo />}
+            {modal_page === 'health-screening' && (
+              <HealthQuestions view={modal_page} />
+            )}
+            {modal_page === 'submitted' && <FinalPage />}
+          </CardContent>
+          <CardActions className={classes.cardActionStyle}>
+              <Button
+                color='secondary'
+                variant='outlined'
+                onClick={() => set_modal_open(false)}
+              >
+                Close
+              </Button>
+            {modal_page !== 'submitted' && (
+              <Button
+                color='secondary'
+                variant='outlined'
+                onClick={() => dispatch(press_modal_button())}
+              >
+                {modal_page === 'user-info' ? 'Next' : 'Submit'}
+              </Button>
+            )}
+          </CardActions>
+        </Card>
+      </Dialog>
+      <BannerCard type={user_status} set_modal_open={set_modal_open} />
+    </>
   )
 }

@@ -8,38 +8,36 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
-import Divider from '@material-ui/core/Divider';
+import Divider from '@material-ui/core/Divider'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  update_cough,
+  update_exposure,
+  update_fever,
+  update_phone,
+} from '../actions/main-actions'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   radioGroup: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   formLabel: {
     marginBottom: '0px !important',
-    border: 'none'
+    border: 'none',
   },
   phoneDivider: {
-    marginTop: 20
+    marginTop: 20,
   },
   phoneLabel: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 }))
-
-
-/*global PHONE*/
-/*global ACCOUNT_TYPE*/
 
 export default function HealthQuestions(props) {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
-  const has_phone = (!ACCOUNT_TYPE || (!!PHONE && PHONE !== '[]'))
-
-  const {
-    cough,
-    fever,
-    exposure,
-  } = props.questions
+  const { cough, fever, exposure, phone, phone_error } = useSelector((state) => state)
 
   return (
     <>
@@ -57,11 +55,8 @@ export default function HealthQuestions(props) {
             aria-label='cough'
             name='cough'
             value={cough}
-            onChange={event =>
-              props.set_questions({
-                ...props.questions,
-                cough: event.target.value === 'true'
-              })
+            onChange={(event) =>
+              dispatch(update_cough(event.target.value === 'true'))
             }
             className={classes.radioGroup}
           >
@@ -75,11 +70,8 @@ export default function HealthQuestions(props) {
             aria-label='fever'
             name='fever'
             value={fever}
-            onChange={event =>
-              props.set_questions({
-                ...props.questions,
-                fever: event.target.value === 'true'
-              })
+            onChange={(event) =>
+              dispatch(update_fever(event.target.value === 'true'))
             }
             className={classes.radioGroup}
           >
@@ -94,39 +86,28 @@ export default function HealthQuestions(props) {
             aria-label='exposure'
             name='exposure'
             value={exposure}
-            onChange={event =>
-              props.set_questions({
-                ...props.questions,
-                exposure: event.target.value === 'true'
-              })
+            onChange={(event) =>
+              dispatch(update_exposure(event.target.value === 'true'))
             }
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
-          {!has_phone &&
-           <>
-             <Divider className={classes.phoneDivider}/>
-             <Typography paragraph className={classes.phoneLabel}>
-               It looks like we don't have your phone number on file. Please fill it out below.
-            </Typography>
-            <TextField
-              required
-              error={props.user_info.phone_error}
-              id='outlined-required'
-              label='Phone Number'
-              variant='outlined'
-              value={props.user_info.phone}
-              onChange={event =>
-                props.set_user_info({
-                  ...props.user_info,
-                  phone: event.target.value
-                })
-              }
-            />
-           </>
-          }
+          <Divider className={classes.phoneDivider} />
+          <Typography paragraph className={classes.phoneLabel}>
+            The Graham Health Center might want to get in contact with you.
+            Please fill out a good phone number to reach you.
+          </Typography>
+          <TextField
+            required
+            error={phone_error}
+            id='outlined-required'
+            label='Phone Number'
+            variant='outlined'
+            value={phone}
+            onChange={(event) => dispatch(update_phone(event.target.value))}
+          />
         </FormControl>
       </CardContent>
     </>

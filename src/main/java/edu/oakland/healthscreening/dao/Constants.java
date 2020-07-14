@@ -43,8 +43,23 @@ public class Constants {
               + " FROM                                       "
               + "   screening.health_screening               "
               + " WHERE                                      "
-              + "   age(submission_time) < INTERVAL '1 day'  "
+              + "   submission_time >= now()::date           "
               + "   AND pidm = ?                             "
+              + " ORDER BY                                   "
+              + "   submission_time DESC                     "
+              + " LIMIT 1                                    ")
+          .replaceAll("\\s+", " ");
+
+  public static final String GET_GUEST_INFO =
+      (" SELECT                                     "
+              + "   *                                        "
+              + " FROM                                       "
+              + "   screening.health_screening               "
+              + " WHERE                                      "
+              + "   submission_time >= now()::date           "
+              + "   AND name = ?                             "
+              + "   AND email = ?                            "
+              + "   AND phone = ?                            "
               + " ORDER BY                                   "
               + "   submission_time DESC                     "
               + " LIMIT 1                                    ")
