@@ -28,10 +28,6 @@ export default function ComingToCampus(props) {
   return (
     <>
       <CardContent>
-        {/* <Typography paragraph>
-          Answer all of the following questions to the best of your knowledge:
-        </Typography> */}
-
         <FormControl component='fieldset'>
           <FormLabel className={classes.formLabel} component='legend'>
             Are you coming to campus or a clinical site today?
