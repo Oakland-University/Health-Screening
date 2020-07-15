@@ -86,7 +86,7 @@ const BannerCard = (props) => {
           `Submitted at ${submission_time.toLocaleTimeString()}`
         }
       />
-      {(type === 'not-completed' || type === 'loading') && (
+      {(type === 'not-completed' || type === 'loading' || type === 'not-coming') && (
         <Prompt set_modal_open={props.set_modal_open} />
       )}
       {type === 'allowed' && <Certificate action={banner_action} />}
