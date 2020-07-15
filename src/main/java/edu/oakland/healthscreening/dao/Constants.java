@@ -35,7 +35,14 @@ public class Constants {
               + "     AGE(submission_time) <= ?::INTERVAL                                 ")
           .replaceAll("\\s+", " ");
 
-  public static final String GET_ALL_RESPONSES = ("select * from screening.health_screening ");
+  public static final String GET_ALL_RESPONSES =
+      (" SELECT                                     "
+              + "     *                             "
+              + " FROM                              "
+              + "     screening.health_screening    "
+              + " ORDER BY                          "
+              + "     submission_time DESC          ")
+          .replaceAll("\\s+", " ");
 
   public static final String GET_RECENT_INFO =
       (" SELECT                                     "
