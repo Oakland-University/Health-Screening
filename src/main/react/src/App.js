@@ -45,7 +45,7 @@ export default function App() {
 
   const [modal_open, set_modal_open] = useState(false)
 
-  const overflow_style = full_screen ? {overflowY: 'scroll'} : {}
+  const overflow_style = (full_screen || modal_page === 'health-screning') ? {overflowY: 'scroll'} : {}
 
 
   useEffect(() => {
