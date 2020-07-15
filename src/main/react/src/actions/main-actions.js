@@ -11,6 +11,7 @@ export const fetch_past_submission = () => (dispatch) => {
     // User has not filled out the form. Defaults are fine
     if (data === null || data === undefined) {
       const payload = {
+        coming_to_campus: null,
         cough: null,
         fever: null,
         exposure: null,
@@ -41,6 +42,10 @@ export const fetch_past_submission = () => (dispatch) => {
   })
 }
 
+export const update_coming_to_campus = (new_coming_to_campus) => (dispatch) => {
+  dispatch({ type: 'UPDATE_COMING_TO_CAMPUS', payload: new_coming_to_campus })
+}
+
 export const update_name = (new_name) => (dispatch) => {
   dispatch({ type: 'UPDATE_NAME', payload: new_name })
 }
@@ -67,9 +72,12 @@ export const update_fever = (new_fever) => (dispatch) => {
 
 export const press_modal_button = () => (dispatch, getState) => {
   const current_page = getState().modal_page
+  const account_type = getState().account_type
   let payload = ''
 
-  if (current_page === 'user-info') {
+  if (current_page === 'coming-to-campus') {
+    payload = account_type === '' ? 'user-info' : 'health-screening'
+  } else if (current_page === 'user-info') {
     payload = 'health-screening'
   } else if (current_page === 'health-screening') {
     payload = 'submitted'
