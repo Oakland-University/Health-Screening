@@ -8,15 +8,21 @@
 // 'health-screening'
 // 'submitted'
 
+// user status can be either:
+// 'allowed'
+// 'disallowed'
+// 'not-coming'
+// 'not-completed'
+
 const initial_state = {
   account_type: ACCOUNT_TYPE,
   cough: null,
-  coming_to_campus: true,
+  coming_to_campus: null,
   email: EMAIL.includes('guest') ? '' : EMAIL,
   email_error: false,
   exposure: null,
   fever: null,
-  modal_page: ACCOUNT_TYPE === '' ? 'user-info' : 'health-screening',
+  modal_page: 'coming-to-campus',
   name: NAME.includes('Guest') ? '' : NAME,
   name_error: false,
   phone: PHONE,
@@ -27,6 +33,9 @@ const initial_state = {
 
 export default function reducer(state = initial_state, action) {
   switch (action.type) {
+    case 'UPDATE_COMING_TO_CAMPUS': {
+      return { ...state, coming_to_campus: action.payload }
+    }
     case 'UPDATE_NAME': {
       return { ...state, name: action.payload, name_error: false}
     }
@@ -60,6 +69,14 @@ export default function reducer(state = initial_state, action) {
       return { ...state, cough, fever, exposure, submission_time, user_status }
     }
     case 'UPDATE_MODAL_PAGE': {
+      if (action.payload === 'user-info') {
+        const coming_to_campus = state.coming_to_campus
+        if (coming_to_campus) {
+          return { ...state, modal_page: action.payload }
+        } else {
+          return { ...state, user_status: 'not-coming' }
+        }
+      }
       if (action.payload === 'health-screening') {
         const name_error = state.name ? false : true
         const email_error = state.email ? false : true
