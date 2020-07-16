@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   formLabel: {
     marginBottom: '0px !important',
     border: 'none',
+    paddingTop: '30px',
   },
 }))
 
