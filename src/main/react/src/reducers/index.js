@@ -4,6 +4,7 @@
 /*global ACCOUNT_TYPE*/
 
 // modal page can be either:
+// 'coming-to-campus
 // 'user-info'
 // 'health-screening'
 // 'submitted'
@@ -37,10 +38,10 @@ export default function reducer(state = initial_state, action) {
       return { ...state, coming_to_campus: action.payload }
     }
     case 'UPDATE_NAME': {
-      return { ...state, name: action.payload, name_error: false}
+      return { ...state, name: action.payload, name_error: false }
     }
     case 'UPDATE_EMAIL': {
-      return { ...state, email: action.payload, email_error: false}
+      return { ...state, email: action.payload, email_error: false }
     }
     case 'UPDATE_PHONE': {
       return { ...state, phone: action.payload, phone_error: false }
@@ -69,15 +70,24 @@ export default function reducer(state = initial_state, action) {
       return { ...state, cough, fever, exposure, submission_time, user_status }
     }
     case 'UPDATE_MODAL_PAGE': {
-      if (action.payload === 'user-info') {
+      if (action.payload === 'not-coming-to-campus') {
         const coming_to_campus = state.coming_to_campus
-        if (coming_to_campus) {
-          return { ...state, modal_page: action.payload }
-        } else {
+
+        if (coming_to_campus === null) {
+          return { ...state }
+        } else if (!coming_to_campus) {
           return { ...state, user_status: 'not-coming' }
         }
-      }
-      if (action.payload === 'health-screening') {
+      } else if (action.payload === 'user-info') {
+        const coming_to_campus = state.coming_to_campus
+
+        if (coming_to_campus) {
+          return { ...state, user_status: 'not-completed', modal_page: action.payload }
+        } else {
+          return { ...state }
+        }
+      } else if (action.payload === 'health-screening') {
+        const coming_to_campus = state.coming_to_campus
         const name_error = state.name ? false : true
         const email_error = state.email ? false : true
         const phone_error = state.phone ? false : true
@@ -92,7 +102,7 @@ export default function reducer(state = initial_state, action) {
         const { cough, fever, exposure, phone } = state
 
         if (!phone) {
-          return {...state, phone_error: true}
+          return { ...state, phone_error: true }
         }
 
         const user_status =
