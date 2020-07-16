@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import ComingToCampus from './components/ComingToCampus';
+import ComingToCampus from './components/ComingToCampus'
 import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
 import FinalPage from './components/FinalPage'
