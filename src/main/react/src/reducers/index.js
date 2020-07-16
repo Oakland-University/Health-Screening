@@ -88,6 +88,7 @@ export default function reducer(state = initial_state, action) {
         }
       } else if (action.payload === 'health-screening') {
         const coming_to_campus = state.coming_to_campus
+        const user_status = coming_to_campus ? 'not-completed' : 'not-coming'
         const name_error = state.name ? false : true
         const email_error = state.email ? false : true
         const phone_error = state.phone ? false : true
@@ -97,7 +98,7 @@ export default function reducer(state = initial_state, action) {
             ? state.modal_page
             : action.payload
 
-        return { ...state, name_error, email_error, phone_error, modal_page }
+        return { ...state, name_error, email_error, phone_error, user_status, modal_page }
       } else if (action.payload === 'submitted') {
         const { cough, fever, exposure, phone } = state
 
