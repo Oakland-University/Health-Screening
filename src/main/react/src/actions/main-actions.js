@@ -73,10 +73,15 @@ export const update_fever = (new_fever) => (dispatch) => {
 export const press_modal_button = () => (dispatch, getState) => {
   const current_page = getState().modal_page
   const account_type = getState().account_type
+  const coming_to_campus = getState().coming_to_campus
   let payload = ''
 
   if (current_page === 'coming-to-campus') {
-    payload = account_type === '' ? 'user-info' : 'health-screening'
+    if (coming_to_campus) {
+      payload = account_type === '' ? 'user-info' : 'health-screening'
+    } else {
+      payload = 'not-coming-to-campus'
+    }   
   } else if (current_page === 'user-info') {
     payload = 'health-screening'
   } else if (current_page === 'health-screening') {
