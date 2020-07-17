@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import ComingToCampus from './components/ComingToCampus'
 import HealthQuestions from './components/HealthQuestions'
 import UserInfo from './components/UserInfo'
 import FinalPage from './components/FinalPage'
@@ -77,6 +78,7 @@ export default function App() {
                 Please be aware that GHC will be notified of your response.
               </Typography>
             )}
+            {modal_page === 'coming-to-campus' && <ComingToCampus />}
             {modal_page === 'user-info' && <UserInfo />}
             {modal_page === 'health-screening' && (
               <HealthQuestions view={modal_page} />
@@ -97,7 +99,7 @@ export default function App() {
                 variant='outlined'
                 onClick={() => dispatch(press_modal_button())}
               >
-                {modal_page === 'user-info' ? 'Next' : 'Submit'}
+                {modal_page === 'health-screening' ? 'Submit' : 'Next'}
               </Button>
             )}
           </CardActions>
