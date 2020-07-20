@@ -16,10 +16,10 @@ export const fetch_past_submission = () => (dispatch) => {
         fever: null,
         exposure: null,
         submission_time: null,
-        user_status: 'not-completed'
+        user_status: 'not-completed',
       }
 
-      dispatch({type: 'GET_PREVIOUS_HEALTH_INFO', payload})
+      dispatch({ type: 'GET_PREVIOUS_HEALTH_INFO', payload })
       return
     }
 
@@ -28,7 +28,7 @@ export const fetch_past_submission = () => (dispatch) => {
     const exposure = data.exposed
     const submission_time = data.submissionTime
 
-    const user_status = (cough || fever || exposure) ? 'disallowed' : 'allowed'
+    const user_status = cough || fever || exposure ? 'disallowed' : 'allowed'
 
     const payload = {
       cough,
@@ -70,21 +70,28 @@ export const update_fever = (new_fever) => (dispatch) => {
   dispatch({ type: 'UPDATE_FEVER', payload: new_fever })
 }
 
+export const update_face_covering = (new_face_covering) => (dispatch) => {
+  dispatch({ type: 'UPDATE_FACE_COVERING', payload: new_face_covering })
+}
+
+export const update_good_hygiene = (new_good_hygiene) => (dispatch) => {
+  dispatch({ type: 'UPDATE_GOOD_HYGIENE', payload: new_good_hygiene })
+}
+
+export const update_distancing = (new_distancing) => (dispatch) => {
+  dispatch({ type: 'UPDATE_DISTANCING', payload: new_distancing })
+}
+
+export const update_pledge = (new_pledge) => (dispatch) => {
+  dispatch({ type: 'UPDATE_PLEDGE', payload: new_pledge })
+}
+
 export const press_modal_button = () => (dispatch, getState) => {
   const current_page = getState().modal_page
-  const account_type = getState().account_type
-  const coming_to_campus = getState().coming_to_campus
+
   let payload = ''
 
-  if (current_page === 'coming-to-campus') {
-    if (coming_to_campus) {
-      payload = account_type === '' ? 'user-info' : 'health-screening'
-    } else {
-      payload = 'not-coming-to-campus'
-    }   
-  } else if (current_page === 'user-info') {
-    payload = 'health-screening'
-  } else if (current_page === 'health-screening') {
+  if (current_page === 'health-screening') {
     payload = 'submitted'
 
     const {
@@ -103,10 +110,7 @@ export const press_modal_button = () => (dispatch, getState) => {
         { fever, cough, exposure }
       )
     }
-  } else {
-    console.error('Trying to switch from page', current_page)
-    return
   }
 
-  dispatch({ type: 'UPDATE_MODAL_PAGE', payload })
+  dispatch({ type: 'NEXT_MODAL_PAGE', payload })
 }

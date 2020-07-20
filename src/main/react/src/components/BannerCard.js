@@ -16,8 +16,7 @@ import {
   Button,
 } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
-import {send_certificate_email} from '../api/api'
-
+import { send_certificate_email } from '../api/api'
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -46,8 +45,8 @@ const useStyles = makeStyles((theme) => ({
   },
   mainText: {
     marginTop: 10,
-    fontSize: '1rem'
-  }
+    fontSize: '1rem',
+  },
 }))
 
 const determine_color = (type) => {
@@ -56,6 +55,7 @@ const determine_color = (type) => {
 
   switch (type.toLowerCase()) {
     case 'not-completed':
+    case 'not-coming':
     case 'loading':
       return <WarningIcon style={{ color, fontSize }} />
     case 'allowed':
@@ -86,7 +86,9 @@ const BannerCard = (props) => {
           `Submitted at ${submission_time.toLocaleTimeString()}`
         }
       />
-      {(type === 'not-completed' || type === 'loading' || type === 'not-coming') && (
+      {(type === 'not-completed' ||
+        type === 'loading' ||
+        type === 'not-coming') && (
         <Prompt set_modal_open={props.set_modal_open} />
       )}
       {type === 'allowed' && <Certificate action={banner_action} />}
@@ -97,15 +99,17 @@ const BannerCard = (props) => {
 
 const Certificate = (props) => {
   const classes = useStyles()
-  const {name, email, phone} = useSelector(state => state)
+  const { name, email, phone } = useSelector((state) => state)
   const display_name = name || email
 
   const handle_click = () => {
-    send_certificate_email(name, email, phone).then(response => {
+    send_certificate_email(name, email, phone).then((response) => {
       if (response) {
         alert('Email sent')
       } else {
-        alert('Email was not sent. Please contact uts@oakland.edu if this problem persists')
+        alert(
+          'Email was not sent. Please contact uts@oakland.edu if this problem persists'
+        )
       }
     })
   }
@@ -118,24 +122,19 @@ const Certificate = (props) => {
           <Box textAlign='center'>
             Thank you for doing your part to keep the campus healthy!
             <br />
-            This is a certificate for {display_name} to be on campus for the duration of
+            This is a certificate for {display_name} to be on campus for the
+            duration of
           </Box>
         </Typography>
         <Typography variant='body1' style={{ fontSize: 34, padding: 16 }}>
           <Box textAlign='center'>{new Date().toDateString()}</Box>
         </Typography>
         <Typography variant='body1'>
-          <Box textAlign='center'>
-            Email {email} a copy of this certificate
-          </Box>
+          <Box textAlign='center'>Email {email} a copy of this certificate</Box>
         </Typography>
       </CardContent>
       <CardActions style={{ justifyContent: 'right' }}>
-        <Button
-          color='secondary'
-          variant='outlined'
-          onClick={handle_click}
-        >
+        <Button color='secondary' variant='outlined' onClick={handle_click}>
           Send Email
         </Button>
       </CardActions>
@@ -160,8 +159,8 @@ const Prompt = (props) => {
         </Typography>
         <Typography variant='body1' gutterBottom className={classes.mainText}>
           <Box textAlign='center'>
-            If you are planning on coming onto campus, please
-            fill out this health-screening form beforehand.
+            If you are planning on coming onto campus, please fill out this
+            health-screening form beforehand.
           </Box>
         </Typography>
       </CardContent>
@@ -187,9 +186,10 @@ const Warning = (props) => {
         <Typography variant='body1' gutterBottom>
           <Box textAlign='center'>
             Please do not come to the Oakland University Campus.
-            <br/>
-            If you have any questions, contact the Graham Health Center at (248) 370-2341.
-            <br/>
+            <br />
+            If you have any questions, contact the Graham Health Center at (248)
+            370-2341.
+            <br />
             Do Your Part to help maintain a safe and health campus: stay home.
           </Box>
         </Typography>
