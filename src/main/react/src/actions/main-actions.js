@@ -82,10 +82,6 @@ export const update_distancing = (new_distancing) => (dispatch) => {
   dispatch({ type: 'UPDATE_DISTANCING', payload: new_distancing })
 }
 
-export const update_pledge = (new_pledge) => (dispatch) => {
-  dispatch({ type: 'UPDATE_PLEDGE', payload: new_pledge })
-}
-
 export const press_modal_button = () => (dispatch, getState) => {
   const current_page = getState().modal_page
 
@@ -102,10 +98,14 @@ export const press_modal_button = () => (dispatch, getState) => {
       email,
       phone,
       account_type,
+      face_covering,
+      good_hygiene,
+      distancing,
     } = getState()
 
     if (cough !== null && fever !== null && exposure !== null) {
       submit_form(
+        { face_covering, good_hygiene, distancing },
         { name, email, phone, account_type },
         { fever, cough, exposure }
       )

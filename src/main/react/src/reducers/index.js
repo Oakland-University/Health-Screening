@@ -30,7 +30,6 @@ const initial_state = {
   phone_error: false,
   submission_time: '',
   user_status: 'loading',
-  pledge_agreement: null,
   face_covering: null,
   good_hygiene: null,
   distancing: null,
@@ -71,9 +70,6 @@ export default function reducer(state = initial_state, action) {
     case 'UPDATE_DISTANCING': {
       return { ...state, distancing: action.payload }
     }
-    case 'UPDATE_PLEDGE': {
-      return { ...state, pledge_agreement: action.payload }
-    }
     case 'GET_PREVIOUS_HEALTH_INFO': {
       const {
         cough,
@@ -95,18 +91,12 @@ export default function reducer(state = initial_state, action) {
           return { ...state, user_status: 'not-coming' }
         }
       } else if (modal_page === 'pledge') {
-        const {
-          face_covering,
-          good_hygiene,
-          distancing,
-          pledge_agreement,
-        } = state
+        const { face_covering, good_hygiene, distancing } = state
 
         if (
           face_covering !== null &&
           good_hygiene !== null &&
-          distancing !== null &&
-          pledge_agreement !== null
+          distancing !== null
         ) {
           const next_page =
             state.account_type === '' ? 'user-info' : 'health-screening'

@@ -1,7 +1,7 @@
 /*global IS_DEMO*/
 /* global token */
 
-export const submit_form = async (user_info, questions) => {
+export const submit_form = async (pledge_info, user_info, questions) => {
   if (IS_DEMO) {
     return
   }
@@ -14,6 +14,11 @@ export const submit_form = async (user_info, questions) => {
     coughing: questions.cough,
     feverish: questions.fever,
     exposed: questions.exposure,
+    pledge: {
+      hasFaceCovering: pledge_info.face_covering,
+      hasGoodHygiene: pledge_info.good_hygiene,
+      isDistancing: pledge_info.distancing,
+    },
   }
 
   try {
