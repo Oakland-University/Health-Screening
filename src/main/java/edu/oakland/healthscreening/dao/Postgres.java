@@ -4,6 +4,7 @@ import static edu.oakland.healthscreening.dao.Constants.*;
 
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
+import edu.oakland.healthscreening.model.Pledge;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,15 @@ public class Postgres {
         info.isCoughing(),
         info.isFeverish(),
         info.isExposed());
+  }
+
+  public void savePledge(Pledge pledge) {
+    postgresTemplate.update(
+        INSERT_PLEDGE,
+        pledge.getEmail(),
+        pledge.isHasFaceCovering(),
+        pledge.isHasGoodHygiene(),
+        pledge.isDistancing());
   }
 
   public AnalyticInfo getAnalyticInfo(String interval) {

@@ -1,5 +1,6 @@
 package edu.oakland.healthscreening.controller;
 
+import static edu.oakland.healthscreening.model.AccountType.*;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -7,6 +8,7 @@ import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
+import edu.oakland.healthscreening.model.Pledge;
 import edu.oakland.healthscreening.service.AnalyticsService;
 import edu.oakland.healthscreening.service.MailService;
 import edu.oakland.soffit.auth.AuthService;
@@ -53,6 +55,31 @@ public class HealthScreeningController {
     log.error("Unspecified exception", e);
   }
 
+  private AccountType getAccountFromRequest(Claim pidm) {
+    return pidm == null ? GUEST : STUDENT;
+  }
+
+  @PostMapping("pledge")
+  public void saveHealthInfo(@Valid @RequestBody Pledge pledge, HttpServletRequest request)
+      throws SoffitAuthException {
+
+    Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
+
+    AccountType accountType = getAccountFromRequest(personInfo.get("pidm"));
+
+    if (accountType != GUEST) {
+
+      pledge.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
+      pledge.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
+
+      if (!pledge.fullAgreement()) {
+        mailService.sendPledgeDisagreement(pledge, accountType);
+      }
+
+      postgres.savePledge(pledge);
+    }
+  }
+
   @PostMapping("health-info")
   public void saveHealthInfo(@Valid @RequestBody HealthInfo info, HttpServletRequest request)
       throws SoffitAuthException {
@@ -69,7 +96,9 @@ public class HealthScreeningController {
       info.setAccountType(AccountType.STUDENT);
       info.setPidm(pidm.asString());
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
-      info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
+      String email = personInfo.get("mail") == null ? null : personInfo.get("mail").asString();
+      info.setEmail(email);
+      info.getPledge().setEmail(email);
 
       //  Only replace the provided phone if it's null or empty
       if (info.getPhone() == null || info.getPhone().isEmpty()) {
@@ -78,6 +107,8 @@ public class HealthScreeningController {
                 ? null
                 : personInfo.get("telephoneNumber").asString());
       }
+
+      postgres.savePledge(info.getPledge());
     }
 
     if (info.shouldStayHome()) {

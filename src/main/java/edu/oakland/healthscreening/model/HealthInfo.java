@@ -28,6 +28,7 @@ public class HealthInfo {
   private boolean exposed;
   private Timestamp submissionTime;
   private Supervisor supervisor;
+  private Pledge pledge;
 
   public boolean shouldStayHome() {
     return (coughing || feverish || exposed);

@@ -1,7 +1,11 @@
 package edu.oakland.healthscreening.service;
 
+import static edu.oakland.healthscreening.model.AccountType.*;
+
 import edu.oakland.healthscreening.dao.Postgres;
+import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.HealthInfo;
+import edu.oakland.healthscreening.model.Pledge;
 
 import java.text.SimpleDateFormat;
 import java.util.Optional;
@@ -28,6 +32,15 @@ public class MailService {
   String mailFrom;
 
   private final Logger log = LoggerFactory.getLogger("health-screening");
+
+  public void sendPledgeDisagreement(Pledge pledge, AccountType accountType) {
+    SimpleMailMessage msg = new SimpleMailMessage();
+    msg.setTo(accountType == STUDENT ? "dean" : "supervisor");
+    msg.setFrom(mailFrom);
+    msg.setSubject("Coronavirus Honor Pledge Disagreement");
+    msg.setText(pledge.summarize());
+    mailSender.send(msg);
+  }
 
   public void notifyHealthCenter(HealthInfo info) throws MailException {
     SimpleMailMessage msg = new SimpleMailMessage();

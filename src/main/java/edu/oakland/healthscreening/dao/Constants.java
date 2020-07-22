@@ -16,6 +16,13 @@ public class Constants {
               + "   (CAST(? as screening.account_type), ?, ?, ?)                                    ")
           .replaceAll("\\s+", " ");
 
+  public static final String INSERT_PLEDGE =
+      (" INSERT INTO screening.pledge                                                               "
+              + "   (email, face_covering, good_hygiene, distancing)                                 "
+              + " VALUES                                                                            "
+              + "   (?, ?, ?, ?)                                                                    ")
+          .replaceAll("\\s+", " ");
+
   public static final String GET_ANALYTIC_INFO =
       (" SELECT                                                                           "
               + "     COUNT(*) AS total,                                                  "
