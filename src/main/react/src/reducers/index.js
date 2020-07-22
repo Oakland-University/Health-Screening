@@ -5,6 +5,7 @@
 
 // modal page can be either:
 // 'campus-check'
+// 'campus-check'
 // 'user-info'
 // 'health-screening'
 // 'submitted'
@@ -81,6 +82,27 @@ export default function reducer(state = initial_state, action) {
 
       return { ...state, cough, fever, exposure, submission_time, user_status }
     }
+
+    case 'CLEAR_MDOAL': {
+      return {
+        ...state,
+        cough: null,
+        coming_to_campus: null,
+        email_error: false,
+        exposure: null,
+        fever: null,
+        modal_page: 'campus-check',
+        name_error: false,
+        phone: PHONE,
+        phone_error: false,
+        submission_time: '',
+        user_status: 'loading',
+        face_covering: null,
+        good_hygiene: null,
+        distancing: null,
+      }
+    }
+
     case 'NEXT_MODAL_PAGE': {
       const modal_page = state.modal_page
 

@@ -93,6 +93,15 @@ export default function Pledge(props) {
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
         </FormControl>
+        <Divider className={classes.phoneDivider} />
+        {(face_covering === false ||
+          good_hygiene === false ||
+          distancing === false) && (
+          <DialogContentText>
+            NOTE: If you answer 'no' to any of the above questions, you won't be
+            allowed on campus
+          </DialogContentText>
+        )}
       </DialogContent>
     </>
   )

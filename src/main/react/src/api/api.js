@@ -87,3 +87,35 @@ export const send_certificate_email = async (name, email, phone) => {
     return err
   }
 }
+
+export const send_pledge_info = async (pledge_info) => {
+  if (IS_DEMO) {
+    return
+  }
+
+  let request_body = {
+    hasFaceCovering: pledge_info.face_covering,
+    hasGoodHygiene: pledge_info.good_hygiene,
+    isDistancing: pledge_info.distancing,
+  }
+
+  try {
+    const response = await fetch(
+      '/health-screening/api/v1/health-info/pledge',
+      {
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+        method: 'POST',
+        body: JSON.stringify(request_body),
+      }
+    )
+    return await response.ok()
+  } catch (err) {
+    console.error(err)
+    return err
+  }
+}

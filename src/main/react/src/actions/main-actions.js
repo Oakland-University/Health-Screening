@@ -1,4 +1,4 @@
-import { get_user_submission, submit_form } from '../api/api'
+import { get_user_submission, submit_form, send_pledge_info } from '../api/api'
 
 export function update_lookup_id(new_id) {
   return function (dispatch) {
@@ -82,10 +82,26 @@ export const update_distancing = (new_distancing) => (dispatch) => {
   dispatch({ type: 'UPDATE_DISTANCING', payload: new_distancing })
 }
 
+export const close_modal = () => (dispatch) => {
+  dispatch({ type: 'CLEAR_MODAL' })
+}
+
 export const press_modal_button = () => (dispatch, getState) => {
   const current_page = getState().modal_page
 
   let payload = ''
+
+  if (current_page === 'pledge') {
+    const { face_covering, good_hygiene, distancing } = getState()
+
+    if (
+      face_covering === false ||
+      good_hygiene === false ||
+      distancing === false
+    ) {
+      send_pledge_info({ face_covering, good_hygiene, distancing })
+    }
+  }
 
   if (current_page === 'health-screening') {
     payload = 'submitted'

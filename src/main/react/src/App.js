@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   fetch_past_submission,
   press_modal_button,
+  close_modal,
 } from './actions/main-actions'
 
 const useStyles = makeStyles((theme) => ({
@@ -58,13 +59,18 @@ export default function App() {
   const title =
     modal_page === 'pledge' ? 'Coronavirus Honor Pledge' : 'OU Health Screening'
 
+  const handle_close = () => {
+    set_modal_open(false)
+    dispatch(close_modal())
+  }
+
   return (
     <>
       <Dialog
         fullScreen={full_screen}
         open={modal_open}
         scroll='paper'
-        onClose={() => set_modal_open(false)}
+        onClose={handle_close}
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
