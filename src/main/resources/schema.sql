@@ -29,6 +29,14 @@ CREATE TABLE IF NOT EXISTS screening.analytics (
     notes text
 );
 
+CREATE TABLE IF NOT EXISTS screening.pledge (
+    id serial primary key,
+    email text,
+    face_covering boolean,
+    good_hygiene boolean,
+    distancing boolean
+);
+
 
 /* For converting from the original schema to the current one */
 
