@@ -15,9 +15,9 @@ export const submit_form = async (pledge_info, user_info, questions) => {
     feverish: questions.fever,
     exposed: questions.exposure,
     pledge: {
-      hasFaceCovering: pledge_info.face_covering,
-      hasGoodHygiene: pledge_info.good_hygiene,
-      isDistancing: pledge_info.distancing,
+      faceCovering: pledge_info.face_covering,
+      goodHygiene: pledge_info.good_hygiene,
+      distancing: pledge_info.distancing,
     },
   }
 
@@ -94,9 +94,9 @@ export const send_pledge_info = async (pledge_info) => {
   }
 
   let request_body = {
-    hasFaceCovering: pledge_info.face_covering,
-    hasGoodHygiene: pledge_info.good_hygiene,
-    isDistancing: pledge_info.distancing,
+      faceCovering: pledge_info.face_covering,
+      goodHygiene: pledge_info.good_hygiene,
+      distancing: pledge_info.distancing,
   }
 
   try {
@@ -113,7 +113,7 @@ export const send_pledge_info = async (pledge_info) => {
         body: JSON.stringify(request_body),
       }
     )
-    return await response.ok()
+    return await response.ok
   } catch (err) {
     console.error(err)
     return err
