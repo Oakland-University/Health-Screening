@@ -48,8 +48,8 @@ public class Postgres {
     postgresTemplate.update(
         INSERT_PLEDGE,
         pledge.getEmail(),
-        pledge.isHasFaceCovering(),
-        pledge.isHasGoodHygiene(),
+        pledge.isFaceCovering(),
+        pledge.isGoodHygiene(),
         pledge.isDistancing());
   }
 

@@ -23,18 +23,16 @@ export const fetch_past_submission = () => (dispatch) => {
       return
     }
 
-    const cough = data.coughing
-    const fever = data.feverish
-    const exposure = data.exposed
-    const submission_time = data.submissionTime
+    const {cough, fever, exposure, pledge, submissionTime} = data
+    const {faceCovering, goodHygiene, distancing} = pledge
 
-    const user_status = cough || fever || exposure ? 'disallowed' : 'allowed'
+    const user_status = ((cough || fever || exposure) && (faceCovering && goodHygiene && distancing)) ? 'disallowed' : 'allowed'
 
     const payload = {
       cough,
       fever,
       exposure,
-      submission_time,
+      submission_time: submissionTime,
       user_status,
     }
 

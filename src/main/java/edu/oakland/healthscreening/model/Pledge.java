@@ -8,14 +8,14 @@ import org.springframework.jdbc.core.RowMapper;
 
 @Data
 public class Pledge {
-  private boolean hasFaceCovering;
-  private boolean hasGoodHygiene;
-  private boolean isDistancing;
+  private boolean faceCovering;
+  private boolean goodHygiene;
+  private boolean distancing;
   private String name;
   private String email;
 
   public boolean fullAgreement() {
-    return (hasFaceCovering && hasGoodHygiene && isDistancing);
+    return (faceCovering && goodHygiene && distancing);
   }
 
   public String summarize() {
@@ -30,15 +30,15 @@ public class Pledge {
   public String responseSummary() {
     List<String> summaryList = new LinkedList<>();
 
-    if (hasFaceCovering) {
+    if (faceCovering) {
       summaryList.add("Do not have a face covering");
     }
 
-    if (hasGoodHygiene) {
+    if (goodHygiene) {
       summaryList.add("Are not practicing good hygiene");
     }
 
-    if (isDistancing) {
+    if (distancing) {
       summaryList.add("Are not willing to practice physical distancing");
     }
 
@@ -49,9 +49,9 @@ public class Pledge {
       (rs, rowNum) -> {
         Pledge pledge = new Pledge();
 
-        pledge.setHasFaceCovering(rs.getBoolean("face_covering"));
-        pledge.setHasGoodHygiene(rs.getBoolean("good_hygiene"));
-        pledge.setHasFaceCovering(rs.getBoolean("distancing"));
+        pledge.setFaceCovering(rs.getBoolean("face_covering"));
+        pledge.setGoodHygiene(rs.getBoolean("good_hygiene"));
+        pledge.setDistancing(rs.getBoolean("distancing"));
         pledge.setEmail(rs.getString("email"));
 
         return pledge;
