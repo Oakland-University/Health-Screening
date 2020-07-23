@@ -101,7 +101,7 @@ export const send_pledge_info = async (pledge_info) => {
 
   try {
     const response = await fetch(
-      '/health-screening/api/v1/health-info/pledge',
+      '/health-screening/api/v1/pledge',
       {
         credentials: 'include',
         headers: {

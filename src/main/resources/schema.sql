@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS screening.pledge (
     email text,
     face_covering boolean,
     good_hygiene boolean,
-    distancing boolean
+    distancing boolean,
+    submission_time timestamp not null default now()
 );
 
 
