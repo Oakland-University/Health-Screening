@@ -78,6 +78,15 @@ public class Postgres {
     }
   }
 
+  public Optional<HealthInfo> getRecentSubmission(String pidm) {
+    try {
+      return Optional.of(
+              postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
+  }
+
   public Optional<HealthInfo> getGuestSubmission(String name, String email, String phone) {
     try {
       return Optional.of(

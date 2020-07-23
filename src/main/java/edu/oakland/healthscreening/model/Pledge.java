@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import lombok.Data;
+import org.springframework.jdbc.core.RowMapper;
 
 @Data
 public class Pledge {
@@ -46,14 +47,14 @@ public class Pledge {
 
   public static RowMapper<Pledge> mapper =
       (rs, rowNum) -> {
-        Pledge pledge = new pledge();
+        Pledge pledge = new Pledge();
 
         pledge.setHasFaceCovering(rs.getBoolean("face_covering"));
         pledge.setHasGoodHygiene(rs.getBoolean("good_hygiene"));
         pledge.setHasFaceCovering(rs.getBoolean("distancing"));
-        pledge.setEmail(rs.getBoolean("email"));
+        pledge.setEmail(rs.getString("email"));
 
-        return info;
+        return pledge;
       };
 
 }
