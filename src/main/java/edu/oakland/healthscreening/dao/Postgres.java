@@ -61,9 +61,18 @@ public class Postgres {
     return postgresTemplate.query(GET_ALL_RESPONSES, HealthInfo.mapper);
   }
 
-  public Optional<HealthInfo> getRecentSubmission(String pidm) {
+  public Optional<HealthInfo> getRecentSubmission(String pidm, String email) {
     try {
-      return Optional.of(postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
+      Pledge pledge = postgresTemplate.queryForObject(GET_RECENT_PLEDGE, Pledge.mapper, email);
+      HealthInfo info = new HealthInfo();
+
+      if (pledge.fullAgreement()) {
+        info = postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm);
+      }
+
+      info.setPledge(pledge);
+
+      return Optional.of(info);
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }

@@ -64,6 +64,19 @@ public class Constants {
               + " LIMIT 1                                    ")
           .replaceAll("\\s+", " ");
 
+  public static final String GET_RECENT_PLEDGE =
+      (" SELECT                                     "
+              + "   *                                        "
+              + " FROM                                       "
+              + "   screening.pledge                         "
+              + " WHERE                                      "
+              + "   submission_time >= now()::date           "
+              + "   AND email = ?                            "
+              + " ORDER BY                                   "
+              + "   submission_time DESC                     "
+              + " LIMIT 1                                    ")
+          .replaceAll("\\s+", " ");
+
   public static final String GET_GUEST_INFO =
       (" SELECT                                     "
               + "   *                                        "

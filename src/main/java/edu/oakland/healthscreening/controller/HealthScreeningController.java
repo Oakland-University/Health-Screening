@@ -137,6 +137,13 @@ public class HealthScreeningController {
     return postgres.getRecentSubmission(pidm);
   }
 
+  @GetMapping("campus-status")
+  public Optional<HealthInfo> getUserInfo(HttpServletRequest request) throws SoffitAuthException {
+    String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
+
+    return postgres.getRecentSubmission(pidm);
+  }
+
   @GetMapping("health-info/certificate-email")
   public void getCertificateEmail(
       HttpServletRequest request,

@@ -18,11 +18,11 @@ public class Pledge {
   }
 
   public String summarize() {
-    return "The person "
+    return "The person: "
         + name
-        + "with email: "
+        + "\nWith email: "
         + email
-        + "has indicated that they:\n\n"
+        + "\nHas indicated that they:\n\t-"
         + this.responseSummary();
   }
 
@@ -43,4 +43,17 @@ public class Pledge {
 
     return String.join("\n\t- ", summaryList);
   }
+
+  public static RowMapper<Pledge> mapper =
+      (rs, rowNum) -> {
+        Pledge pledge = new pledge();
+
+        pledge.setHasFaceCovering(rs.getBoolean("face_covering"));
+        pledge.setHasGoodHygiene(rs.getBoolean("good_hygiene"));
+        pledge.setHasFaceCovering(rs.getBoolean("distancing"));
+        pledge.setEmail(rs.getBoolean("email"));
+
+        return info;
+      };
+
 }

@@ -28,6 +28,9 @@ public class MailService {
   @Value("${health-screening.health-center-address}")
   String healthCenterAddress;
 
+  @Value("${health-screening.dean-of-students-address}")
+  String deanAddress;
+
   @Value("${health-screening.email-from}")
   String mailFrom;
 
@@ -35,7 +38,7 @@ public class MailService {
 
   public void sendPledgeDisagreement(Pledge pledge, AccountType accountType) {
     SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setTo(accountType == STUDENT ? "dean" : "supervisor");
+    msg.setTo(accountType == STUDENT ? deanAddress : "supervisor");
     msg.setFrom(mailFrom);
     msg.setSubject("Coronavirus Honor Pledge Disagreement");
     msg.setText(pledge.summarize());
