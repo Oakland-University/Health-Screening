@@ -139,7 +139,8 @@ public class HealthScreeningController {
   }
 
   @GetMapping("campus-status")
-  public Optional<HealthInfo> getCampusStatus(HttpServletRequest request) throws SoffitAuthException {
+  public Optional<HealthInfo> getCampusStatus(HttpServletRequest request)
+      throws SoffitAuthException {
     String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
     String email = authorizer.getClaimFromJWE(request, "mail").asString();
 

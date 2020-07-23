@@ -80,8 +80,7 @@ public class Postgres {
 
   public Optional<HealthInfo> getRecentSubmission(String pidm) {
     try {
-      return Optional.of(
-              postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
+      return Optional.of(postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
