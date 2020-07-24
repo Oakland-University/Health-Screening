@@ -115,15 +115,14 @@ export default function reducer(state = initial_state, action) {
       } else if (modal_page === 'pledge') {
         const { face_covering, good_hygiene, distancing } = state
 
-        if (
-          face_covering !== null &&
-          good_hygiene !== null &&
-          distancing !== null
-        ) {
+        if (face_covering === false || good_hygiene === false || distancing === false) {
+          return {...state, modal_page: 'submitted', user_status: 'disallowed'}
+        } else if (face_covering && good_hygiene && distancing) {
           const next_page =
             state.account_type === '' ? 'user-info' : 'health-screening'
           return { ...state, modal_page: next_page }
         }
+
         return state
       } else if (modal_page === 'user-info') {
         const name_error = state.name ? false : true
