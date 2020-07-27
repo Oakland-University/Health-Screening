@@ -190,7 +190,7 @@ const Warning = (props) => {
             If you have any questions, contact the Graham Health Center at (248)
             370-2341.
             <br />
-            Do Your Part to help maintain a safe and health campus: stay home.
+            Do Your Part to help maintain a safe and healthy campus: stay home.
           </Box>
         </Typography>
       </CardContent>
