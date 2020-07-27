@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import DialogActions from '@material-ui/core/DialogActions'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import ComingToCampus from './components/ComingToCampus'
-import HealthQuestions from './components/HealthQuestions'
-import UserInfo from './components/UserInfo'
-import FinalPage from './components/FinalPage'
-import Pledge from './components/Pledge'
 import BannerCard from './components/BannerCard'
-import {
-  useMediaQuery,
-  useTheme,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import ComingToCampus from './components/ComingToCampus'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import FinalPage from './components/FinalPage'
+import HealthQuestions from './components/HealthQuestions'
+import Pledge from './components/Pledge'
+import Typography from '@material-ui/core/Typography'
+import UserInfo from './components/UserInfo'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import useTheme from '@material-ui/core/useTheme'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   fetch_past_submission,

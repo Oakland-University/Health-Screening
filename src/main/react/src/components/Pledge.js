@@ -1,13 +1,13 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Divider from '@material-ui/core/Divider'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormControl from '@material-ui/core/FormControl'
-import FormLabel from '@material-ui/core/FormLabel'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
+import Divider from '@material-ui/core/Divider'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormLabel from '@material-ui/core/FormLabel'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import { makeStyles } from '@material-ui/core/styles'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   update_face_covering,
@@ -41,7 +41,7 @@ export default function Pledge(props) {
         <DialogContentText>
           As a member of the OU community, it is my responsibility to enhance
           the health and safety of our campus. I therefore pledge to abide by
-          the OU guidelines to reduce the spread of the coronavirus and to take
+          the OU guidelines to reduce the spread of the Coronavirus and to take
           measures to protect myself; to protect others; and to protect my
           community.
         </DialogContentText>
@@ -99,7 +99,7 @@ export default function Pledge(props) {
           distancing === false) && (
           <DialogContentText>
             NOTE: If you answer 'no' to any of the above questions, you won't be
-            allowed on campus
+            allowed on campus for the day
           </DialogContentText>
         )}
       </DialogContent>
