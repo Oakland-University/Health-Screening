@@ -89,7 +89,7 @@ export default function App() {
           {modal_page === 'submitted' && <FinalPage />}
         </DialogContent>
         <DialogActions className={classes.cardActionStyle}>
-          <Button color='secondary' onClick={() => handle_close}>
+          <Button color='secondary' onClick={handle_close}>
             Close
           </Button>
           {modal_page !== 'submitted' && (
