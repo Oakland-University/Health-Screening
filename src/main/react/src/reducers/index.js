@@ -92,9 +92,9 @@ export default function reducer(state = initial_state, action) {
 
       if (modal_page === 'campus-check') {
         if (state.coming_to_campus) {
-          return { ...state, modal_page: 'pledge' }
+          return { ...state, modal_page: 'pledge', user_status: 'not-completed' }
         } else {
-          return { ...state, user_status: 'not-coming', user_status: 'not-completed' }
+          return { ...state, user_status: 'not-coming' }
         }
       } else if (modal_page === 'pledge') {
         const { face_covering, good_hygiene, distancing } = state
