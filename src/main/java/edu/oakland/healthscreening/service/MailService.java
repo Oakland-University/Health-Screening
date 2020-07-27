@@ -37,8 +37,12 @@ public class MailService {
   private final Logger log = LoggerFactory.getLogger("health-screening");
 
   public void sendPledgeDisagreement(Pledge pledge, AccountType accountType) {
+    // TODO: Add support for facutly / staff
+    if (accountType != STUDENT) {
+      return;
+    }
     SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setTo(accountType == STUDENT ? deanAddress : "supervisor");
+    msg.setTo(deanAddress);
     msg.setFrom(mailFrom);
     msg.setSubject("Coronavirus Honor Pledge Disagreement");
     msg.setText(pledge.summarize());

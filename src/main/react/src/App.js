@@ -13,7 +13,7 @@ import Pledge from './components/Pledge'
 import Typography from '@material-ui/core/Typography'
 import UserInfo from './components/UserInfo'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import useTheme from '@material-ui/core/useTheme'
+import { useTheme } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   fetch_past_submission,

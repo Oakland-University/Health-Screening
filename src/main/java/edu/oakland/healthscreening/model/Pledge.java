@@ -24,7 +24,7 @@ public class Pledge {
         + "\nWith email: "
         + email
         + "\nHas indicated that they:\n\t-"
-        + this.responseSummary();
+        + responseSummary();
   }
 
   public String responseSummary() {

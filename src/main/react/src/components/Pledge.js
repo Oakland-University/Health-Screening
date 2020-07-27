@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
   phoneDivider: {
     marginBottom: 20,
   },
+  formLabel: {
+    marginBottom: '0px !important',
+    border: 'none',
+  },
   phoneLabel: {
     marginTop: 20,
   },

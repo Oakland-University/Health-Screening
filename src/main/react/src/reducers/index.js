@@ -83,24 +83,8 @@ export default function reducer(state = initial_state, action) {
       return { ...state, cough, fever, exposure, submission_time, user_status }
     }
 
-    case 'CLEAR_MDOAL': {
-      return {
-        ...state,
-        cough: null,
-        coming_to_campus: null,
-        email_error: false,
-        exposure: null,
-        fever: null,
-        modal_page: 'campus-check',
-        name_error: false,
-        phone: PHONE,
-        phone_error: false,
-        submission_time: '',
-        user_status: 'loading',
-        face_covering: null,
-        good_hygiene: null,
-        distancing: null,
-      }
+    case 'CLEAR_MODAL': {
+      return initial_state
     }
 
     case 'NEXT_MODAL_PAGE': {
@@ -110,7 +94,7 @@ export default function reducer(state = initial_state, action) {
         if (state.coming_to_campus) {
           return { ...state, modal_page: 'pledge' }
         } else {
-          return { ...state, user_status: 'not-coming' }
+          return { ...state, user_status: 'not-coming', user_status: 'not-completed' }
         }
       } else if (modal_page === 'pledge') {
         const { face_covering, good_hygiene, distancing } = state

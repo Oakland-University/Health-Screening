@@ -1,6 +1,7 @@
 package edu.oakland.healthscreening.controller;
 
-import static edu.oakland.healthscreening.model.AccountType.*;
+import static edu.oakland.healthscreening.model.AccountType.GUEST;
+import static edu.oakland.healthscreening.model.AccountType.STUDENT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
