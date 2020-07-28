@@ -24,21 +24,21 @@ public class Pledge {
         + "\nWith email: "
         + email
         + "\nHas indicated that they:\n\t-"
-        + responseSummary();
+        + this.responseSummary();
   }
 
   public String responseSummary() {
     List<String> summaryList = new LinkedList<>();
 
-    if (faceCovering) {
+    if (!faceCovering) {
       summaryList.add("Do not have a face covering");
     }
 
-    if (goodHygiene) {
+    if (!goodHygiene) {
       summaryList.add("Are not practicing good hygiene");
     }
 
-    if (distancing) {
+    if (!distancing) {
       summaryList.add("Are not willing to practice physical distancing");
     }
 

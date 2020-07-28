@@ -84,7 +84,7 @@ export default function reducer(state = initial_state, action) {
     }
 
     case 'CLEAR_MODAL': {
-      return initial_state
+      return {...initial_state, user_status: state.user_status}
     }
 
     case 'NEXT_MODAL_PAGE': {
