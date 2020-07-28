@@ -4,12 +4,14 @@
 /*global ACCOUNT_TYPE*/
 
 // modal page can be either:
-// 'coming-to-campus
+// 'campus-check'
+// 'campus-check'
 // 'user-info'
 // 'health-screening'
 // 'submitted'
 
 // user status can be either:
+// 'loading'
 // 'allowed'
 // 'disallowed'
 // 'not-coming'
@@ -23,13 +25,16 @@ const initial_state = {
   email_error: false,
   exposure: null,
   fever: null,
-  modal_page: 'coming-to-campus',
+  modal_page: 'campus-check',
   name: NAME.includes('Guest') ? '' : NAME,
   name_error: false,
   phone: PHONE,
   phone_error: false,
   submission_time: '',
   user_status: 'loading',
+  face_covering: null,
+  good_hygiene: null,
+  distancing: null,
 }
 
 export default function reducer(state = initial_state, action) {
@@ -58,6 +63,18 @@ export default function reducer(state = initial_state, action) {
     case 'UPDATE_EXPOSURE': {
       return { ...state, exposure: action.payload }
     }
+    case 'UPDATE_FACE_COVERING': {
+      return { ...state, face_covering: action.payload }
+    }
+    case 'UPDATE_GOOD_HYGIENE': {
+      return { ...state, good_hygiene: action.payload }
+    }
+    case 'UPDATE_DISTANCING': {
+      return { ...state, distancing: action.payload }
+    }
+    case 'UPDATE_USER_STATUS': {
+      return { ...state, user_status: action.payload }
+    }
     case 'GET_PREVIOUS_HEALTH_INFO': {
       const {
         cough,
@@ -69,26 +86,41 @@ export default function reducer(state = initial_state, action) {
 
       return { ...state, cough, fever, exposure, submission_time, user_status }
     }
-    case 'UPDATE_MODAL_PAGE': {
-      if (action.payload === 'not-coming-to-campus') {
-        const coming_to_campus = state.coming_to_campus
 
-        if (coming_to_campus === null) {
-          return { ...state }
-        } else if (!coming_to_campus) {
+    case 'CLEAR_MODAL': {
+      return {...initial_state, user_status: 'not-coming'}
+    }
+
+    case 'NEXT_MODAL_PAGE': {
+      const modal_page = state.modal_page
+
+      if (modal_page === 'campus-check') {
+        if (state.coming_to_campus) {
+          return { ...state, modal_page: 'pledge', user_status: 'not-completed' }
+        } else {
           return { ...state, user_status: 'not-coming' }
         }
-      } else if (action.payload === 'user-info') {
-        const coming_to_campus = state.coming_to_campus
+      } else if (modal_page === 'pledge') {
+        const { face_covering, good_hygiene, distancing } = state
 
-        if (coming_to_campus) {
-          return { ...state, user_status: 'not-completed', modal_page: action.payload }
-        } else {
-          return { ...state }
+        if (
+          face_covering === false ||
+          good_hygiene === false ||
+          distancing === false
+        ) {
+          return {
+            ...state,
+            modal_page: 'submitted',
+            user_status: 'disallowed',
+          }
+        } else if (face_covering && good_hygiene && distancing) {
+          const next_page =
+            state.account_type === '' ? 'user-info' : 'health-screening'
+          return { ...state, modal_page: next_page }
         }
-      } else if (action.payload === 'health-screening') {
-        const coming_to_campus = state.coming_to_campus
-        const user_status = coming_to_campus ? 'not-completed' : 'not-coming'
+
+        return state
+      } else if (modal_page === 'user-info') {
         const name_error = state.name ? false : true
         const email_error = state.email ? false : true
         const phone_error = state.phone ? false : true
@@ -96,10 +128,10 @@ export default function reducer(state = initial_state, action) {
         const modal_page =
           name_error || email_error || phone_error
             ? state.modal_page
-            : action.payload
+            : 'health-screening'
 
-        return { ...state, name_error, email_error, phone_error, user_status, modal_page }
-      } else if (action.payload === 'submitted') {
+        return { ...state, name_error, email_error, phone_error, modal_page }
+      } else if (modal_page === 'health-screening') {
         const { cough, fever, exposure, phone } = state
 
         if (!phone) {
@@ -113,6 +145,7 @@ export default function reducer(state = initial_state, action) {
           return { ...state, modal_page: action.payload, user_status }
         }
       }
+      console.error('ESCAPING')
       return { ...state }
     }
 

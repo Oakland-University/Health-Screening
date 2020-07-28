@@ -16,6 +16,13 @@ public class Constants {
               + "   (CAST(? as screening.account_type), ?, ?, ?)                                    ")
           .replaceAll("\\s+", " ");
 
+  public static final String INSERT_PLEDGE =
+      (" INSERT INTO screening.pledge                                                               "
+              + "   (email, face_covering, good_hygiene, distancing)                                 "
+              + " VALUES                                                                            "
+              + "   (?, ?, ?, ?)                                                                    ")
+          .replaceAll("\\s+", " ");
+
   public static final String GET_ANALYTIC_INFO =
       (" SELECT                                                                           "
               + "     COUNT(*) AS total,                                                  "
@@ -52,6 +59,19 @@ public class Constants {
               + " WHERE                                      "
               + "   submission_time >= now()::date           "
               + "   AND pidm = ?                             "
+              + " ORDER BY                                   "
+              + "   submission_time DESC                     "
+              + " LIMIT 1                                    ")
+          .replaceAll("\\s+", " ");
+
+  public static final String GET_RECENT_PLEDGE =
+      (" SELECT                                     "
+              + "   *                                        "
+              + " FROM                                       "
+              + "   screening.pledge                         "
+              + " WHERE                                      "
+              + "   submission_time >= now()::date           "
+              + "   AND email = ?                            "
               + " ORDER BY                                   "
               + "   submission_time DESC                     "
               + " LIMIT 1                                    ")

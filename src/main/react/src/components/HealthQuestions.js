@@ -37,7 +37,9 @@ export default function HealthQuestions(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const { cough, fever, exposure, phone, phone_error } = useSelector((state) => state)
+  const { cough, fever, exposure, phone, phone_error } = useSelector(
+    (state) => state
+  )
 
   return (
     <>

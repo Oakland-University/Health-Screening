@@ -1,23 +1,20 @@
 import React from 'react'
 
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardMedia from '@material-ui/core/CardMedia'
 import CheckCircle from '@material-ui/icons/CheckCircle'
 import ErrorIcon from '@material-ui/icons/Error'
-import InfoIcon from '@material-ui/icons/Info'
+import Typography from '@material-ui/core/Typography'
 import WarningIcon from '@material-ui/icons/Warning'
 import { makeStyles } from '@material-ui/styles'
-import {
-  Box,
-  CardHeader,
-  CardMedia,
-  CardContent,
-  CardActions,
-  Typography,
-  Button,
-} from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
-import {send_certificate_email} from '../api/api'
-
+import { send_certificate_email } from '../api/api'
+import { update_user_status } from '../actions/main-actions'
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -46,8 +43,11 @@ const useStyles = makeStyles((theme) => ({
   },
   mainText: {
     marginTop: 10,
-    fontSize: '1rem'
-  }
+    fontSize: '1rem',
+  },
+  bannerCardActions: {
+    justifyContent: 'right',
+  },
 }))
 
 const determine_color = (type) => {
@@ -56,6 +56,7 @@ const determine_color = (type) => {
 
   switch (type.toLowerCase()) {
     case 'not-completed':
+    case 'not-coming':
     case 'loading':
       return <WarningIcon style={{ color, fontSize }} />
     case 'allowed':
@@ -86,7 +87,9 @@ const BannerCard = (props) => {
           `Submitted at ${submission_time.toLocaleTimeString()}`
         }
       />
-      {(type === 'not-completed' || type === 'loading' || type === 'not-coming') && (
+      {(type === 'not-completed' ||
+        type === 'loading' ||
+        type === 'not-coming') && (
         <Prompt set_modal_open={props.set_modal_open} />
       )}
       {type === 'allowed' && <Certificate action={banner_action} />}
@@ -97,15 +100,17 @@ const BannerCard = (props) => {
 
 const Certificate = (props) => {
   const classes = useStyles()
-  const {name, email, phone} = useSelector(state => state)
+  const { name, email, phone } = useSelector((state) => state)
   const display_name = name || email
 
   const handle_click = () => {
-    send_certificate_email(name, email, phone).then(response => {
+    send_certificate_email(name, email, phone).then((response) => {
       if (response) {
         alert('Email sent')
       } else {
-        alert('Email was not sent. Please contact uts@oakland.edu if this problem persists')
+        alert(
+          'Email was not sent. Please contact uts@oakland.edu if this problem persists'
+        )
       }
     })
   }
@@ -118,24 +123,19 @@ const Certificate = (props) => {
           <Box textAlign='center'>
             Thank you for doing your part to keep the campus healthy!
             <br />
-            This is a certificate for {display_name} to be on campus for the duration of
+            This is a certificate for {display_name} to be on campus for the
+            duration of
           </Box>
         </Typography>
         <Typography variant='body1' style={{ fontSize: 34, padding: 16 }}>
           <Box textAlign='center'>{new Date().toDateString()}</Box>
         </Typography>
         <Typography variant='body1'>
-          <Box textAlign='center'>
-            Email {email} a copy of this certificate
-          </Box>
+          <Box textAlign='center'>Email {email} a copy of this certificate</Box>
         </Typography>
       </CardContent>
-      <CardActions style={{ justifyContent: 'right' }}>
-        <Button
-          color='secondary'
-          variant='outlined'
-          onClick={handle_click}
-        >
+      <CardActions className={classes.bannerCardActions}>
+        <Button color='secondary' variant='outlined' onClick={handle_click}>
           Send Email
         </Button>
       </CardActions>
@@ -145,6 +145,13 @@ const Certificate = (props) => {
 
 const Prompt = (props) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+  const handle_close = () => {
+    props.set_modal_open(true)
+    dispatch(update_user_status('not-completed'))
+  }
+
   return (
     <>
       <CardMedia
@@ -160,16 +167,16 @@ const Prompt = (props) => {
         </Typography>
         <Typography variant='body1' gutterBottom className={classes.mainText}>
           <Box textAlign='center'>
-            If you are planning on coming onto campus, please
-            fill out this health-screening form beforehand.
+            If you are planning on coming onto campus, please fill out this
+            health-screening form beforehand.
           </Box>
         </Typography>
       </CardContent>
-      <CardActions style={{ justifyContent: 'right' }}>
+      <CardActions className={classes.bannerCardActions}>
         <Button
           color='secondary'
           variant='outlined'
-          onClick={() => props.set_modal_open(true)}
+          onClick={handle_close}
         >
           Fill Out Form
         </Button>
@@ -187,10 +194,11 @@ const Warning = (props) => {
         <Typography variant='body1' gutterBottom>
           <Box textAlign='center'>
             Please do not come to the Oakland University Campus.
-            <br/>
-            If you have any questions, contact the Graham Health Center at (248) 370-2341.
-            <br/>
-            Do Your Part to help maintain a safe and health campus: stay home.
+            <br />
+            If you have any questions, contact the Graham Health Center at (248)
+            370-2341.
+            <br />
+            Do Your Part to help maintain a safe and healthy campus: stay home.
           </Box>
         </Typography>
       </CardContent>

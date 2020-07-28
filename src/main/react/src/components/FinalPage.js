@@ -1,6 +1,6 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const FinalPage = (props) => {
   const user_status = useSelector((state) => state.user_status)

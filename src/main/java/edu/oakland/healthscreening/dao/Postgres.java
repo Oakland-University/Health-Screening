@@ -4,6 +4,7 @@ import static edu.oakland.healthscreening.dao.Constants.*;
 
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
+import edu.oakland.healthscreening.model.Pledge;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,12 +44,38 @@ public class Postgres {
         info.isExposed());
   }
 
+  public void savePledge(Pledge pledge) {
+    postgresTemplate.update(
+        INSERT_PLEDGE,
+        pledge.getEmail(),
+        pledge.isFaceCovering(),
+        pledge.isGoodHygiene(),
+        pledge.isDistancing());
+  }
+
   public AnalyticInfo getAnalyticInfo(String interval) {
     return postgresTemplate.queryForObject(GET_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
   }
 
   public List<HealthInfo> getHealthInfo() {
     return postgresTemplate.query(GET_ALL_RESPONSES, HealthInfo.mapper);
+  }
+
+  public Optional<HealthInfo> getRecentSubmission(String pidm, String email) {
+    try {
+      Pledge pledge = postgresTemplate.queryForObject(GET_RECENT_PLEDGE, Pledge.mapper, email);
+      HealthInfo info = new HealthInfo();
+
+      if (pledge.fullAgreement()) {
+        info = postgresTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm);
+      }
+
+      info.setPledge(pledge);
+
+      return Optional.of(info);
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
   }
 
   public Optional<HealthInfo> getRecentSubmission(String pidm) {

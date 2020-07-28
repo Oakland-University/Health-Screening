@@ -1,4 +1,4 @@
-import { get_user_submission, submit_form } from '../api/api'
+import { get_user_submission, submit_form, send_pledge_info } from '../api/api'
 
 export function update_lookup_id(new_id) {
   return function (dispatch) {
@@ -16,10 +16,10 @@ export const fetch_past_submission = () => (dispatch) => {
         fever: null,
         exposure: null,
         submission_time: null,
-        user_status: 'not-completed'
+        user_status: 'not-completed',
       }
 
-      dispatch({type: 'GET_PREVIOUS_HEALTH_INFO', payload})
+      dispatch({ type: 'GET_PREVIOUS_HEALTH_INFO', payload })
       return
     }
 
@@ -28,7 +28,14 @@ export const fetch_past_submission = () => (dispatch) => {
     const exposure = data.exposed
     const submission_time = data.submissionTime
 
-    const user_status = (cough || fever || exposure) ? 'disallowed' : 'allowed'
+    const { faceCovering, goodHygiene, distancing } = data.pledge
+
+    const agreed_to_pledge = faceCovering && goodHygiene && distancing
+
+    const has_symptoms = cough || fever || exposure
+
+    const user_status =
+      agreed_to_pledge && !has_symptoms ? 'allowed' : 'disallowed'
 
     const payload = {
       cough,
@@ -70,21 +77,44 @@ export const update_fever = (new_fever) => (dispatch) => {
   dispatch({ type: 'UPDATE_FEVER', payload: new_fever })
 }
 
+export const update_face_covering = (new_face_covering) => (dispatch) => {
+  dispatch({ type: 'UPDATE_FACE_COVERING', payload: new_face_covering })
+}
+
+export const update_good_hygiene = (new_good_hygiene) => (dispatch) => {
+  dispatch({ type: 'UPDATE_GOOD_HYGIENE', payload: new_good_hygiene })
+}
+
+export const update_distancing = (new_distancing) => (dispatch) => {
+  dispatch({ type: 'UPDATE_DISTANCING', payload: new_distancing })
+}
+
+export const update_user_status = (new_user_status) => (dispatch) => {
+  dispatch({ type: 'UPDATE_USER_STATUS', payload: new_user_status })
+}
+
+export const close_modal = () => (dispatch) => {
+  dispatch({ type: 'CLEAR_MODAL' })
+}
+
 export const press_modal_button = () => (dispatch, getState) => {
   const current_page = getState().modal_page
-  const account_type = getState().account_type
-  const coming_to_campus = getState().coming_to_campus
+
   let payload = ''
 
-  if (current_page === 'coming-to-campus') {
-    if (coming_to_campus) {
-      payload = account_type === '' ? 'user-info' : 'health-screening'
-    } else {
-      payload = 'not-coming-to-campus'
-    }   
-  } else if (current_page === 'user-info') {
-    payload = 'health-screening'
-  } else if (current_page === 'health-screening') {
+  if (current_page === 'pledge') {
+    const { face_covering, good_hygiene, distancing } = getState()
+
+    if (
+      face_covering === false ||
+      good_hygiene === false ||
+      distancing === false
+    ) {
+      send_pledge_info({ face_covering, good_hygiene, distancing })
+    }
+  }
+
+  if (current_page === 'health-screening') {
     payload = 'submitted'
 
     const {
@@ -95,18 +125,19 @@ export const press_modal_button = () => (dispatch, getState) => {
       email,
       phone,
       account_type,
+      face_covering,
+      good_hygiene,
+      distancing,
     } = getState()
 
     if (cough !== null && fever !== null && exposure !== null) {
       submit_form(
+        { face_covering, good_hygiene, distancing },
         { name, email, phone, account_type },
         { fever, cough, exposure }
       )
     }
-  } else {
-    console.error('Trying to switch from page', current_page)
-    return
   }
 
-  dispatch({ type: 'UPDATE_MODAL_PAGE', payload })
+  dispatch({ type: 'NEXT_MODAL_PAGE', payload })
 }
