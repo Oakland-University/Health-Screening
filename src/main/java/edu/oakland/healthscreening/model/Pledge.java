@@ -23,7 +23,7 @@ public class Pledge {
         + name
         + "\nWith email: "
         + email
-        + "\nHas indicated that they:\n\t-"
+        + "\nHas indicated that they:\n\t- "
         + this.responseSummary();
   }
 

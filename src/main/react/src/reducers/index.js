@@ -11,6 +11,7 @@
 // 'submitted'
 
 // user status can be either:
+// 'loading'
 // 'allowed'
 // 'disallowed'
 // 'not-coming'
@@ -84,7 +85,7 @@ export default function reducer(state = initial_state, action) {
     }
 
     case 'CLEAR_MODAL': {
-      return {...initial_state, user_status: state.user_status}
+      return {...initial_state, user_status: 'not-coming'}
     }
 
     case 'NEXT_MODAL_PAGE': {
