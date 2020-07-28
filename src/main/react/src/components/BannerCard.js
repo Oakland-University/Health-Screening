@@ -12,8 +12,9 @@ import ErrorIcon from '@material-ui/icons/Error'
 import Typography from '@material-ui/core/Typography'
 import WarningIcon from '@material-ui/icons/Warning'
 import { makeStyles } from '@material-ui/styles'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { send_certificate_email } from '../api/api'
+import { update_user_status } from '../actions/main-actions'
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -144,6 +145,13 @@ const Certificate = (props) => {
 
 const Prompt = (props) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+  const handle_close = () => {
+    props.set_modal_open(true)
+    dispatch(update_user_status('not-completed'))
+  }
+
   return (
     <>
       <CardMedia
@@ -168,7 +176,7 @@ const Prompt = (props) => {
         <Button
           color='secondary'
           variant='outlined'
-          onClick={() => props.set_modal_open(true)}
+          onClick={handle_close}
         >
           Fill Out Form
         </Button>

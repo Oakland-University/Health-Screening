@@ -89,6 +89,10 @@ export const update_distancing = (new_distancing) => (dispatch) => {
   dispatch({ type: 'UPDATE_DISTANCING', payload: new_distancing })
 }
 
+export const update_user_status = (new_user_status) => (dispatch) => {
+  dispatch({ type: 'UPDATE_USER_STATUS', payload: new_user_status })
+}
+
 export const close_modal = () => (dispatch) => {
   dispatch({ type: 'CLEAR_MODAL' })
 }

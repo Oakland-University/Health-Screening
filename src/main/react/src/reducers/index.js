@@ -72,6 +72,9 @@ export default function reducer(state = initial_state, action) {
     case 'UPDATE_DISTANCING': {
       return { ...state, distancing: action.payload }
     }
+    case 'UPDATE_USER_STATUS': {
+      return { ...state, user_status: action.payload }
+    }
     case 'GET_PREVIOUS_HEALTH_INFO': {
       const {
         cough,
