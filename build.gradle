@@ -12,7 +12,7 @@ plugins {
 }
 
 group = 'edu.oakland'
-version = '1.0.0'
+version = '1.1.0'
 sourceCompatibility = '1.8'
 
 bootWar {
@@ -94,7 +94,7 @@ repositories {
 publishing {
   publications {
     mavenWeb(MavenPublication) {
-      version = '1.0.0'
+      version = '1.1.0'
       from components.web
     }
   }
