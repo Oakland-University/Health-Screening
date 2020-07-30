@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -153,11 +153,9 @@ const Certificate = (props) => {
             : 'Email sent'
         }
         action={
-          <React.Fragment>
-            <IconButton size="small" aria-label="close" color="inherit" onClick={() => set_open(false)}>
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </React.Fragment>
+          <IconButton size="small" aria-label="close" color="inherit" onClick={() => set_open(false)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
         }
       />
     </>
@@ -167,6 +165,14 @@ const Certificate = (props) => {
 const Prompt = (props) => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const { user_status } = useSelector((state) => state)
+  const [open, set_open] = useState(false)
+
+  useEffect(() => {
+    if(user_status === 'not-coming') {
+      set_open(true)
+    }
+  }, [user_status])
 
   const handle_close = () => {
     props.set_modal_open(true)
@@ -202,6 +208,21 @@ const Prompt = (props) => {
           Fill Out Form
         </Button>
       </CardActions>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => set_open(false)}
+        message="You don't need to fill out this form if you're not coming to campus"
+        action={
+          <IconButton size="small" aria-label="close" color="inherit" onClick={() => set_open(false)}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      />
     </>
   )
 }
