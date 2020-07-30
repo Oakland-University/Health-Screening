@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -8,7 +8,10 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
 import CheckCircle from '@material-ui/icons/CheckCircle'
+import CloseIcon from '@material-ui/icons/Close'
 import ErrorIcon from '@material-ui/icons/Error'
+import IconButton from '@material-ui/core/IconButton'
+import Snackbar from '@material-ui/core/Snackbar'
 import Typography from '@material-ui/core/Typography'
 import WarningIcon from '@material-ui/icons/Warning'
 import { makeStyles } from '@material-ui/styles'
@@ -102,16 +105,13 @@ const Certificate = (props) => {
   const classes = useStyles()
   const { name, email, phone } = useSelector((state) => state)
   const display_name = name || email
+  const [open, set_open] = useState(false)
+  const [email_error, set_email_error] = useState(false)
 
   const handle_click = () => {
     send_certificate_email(name, email, phone).then((response) => {
-      if (response) {
-        alert('Email sent')
-      } else {
-        alert(
-          'Email was not sent. Please contact uts@oakland.edu if this problem persists'
-        )
-      }
+      set_email_error(!response)
+      set_open(true)
     })
   }
 
@@ -139,6 +139,27 @@ const Certificate = (props) => {
           Send Email
         </Button>
       </CardActions>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => set_open(false)}
+        message={
+          email_error 
+            ? 'Email was not sent. Please contact uts@oakland.edu if this problem persists'
+            : 'Email sent'
+        }
+        action={
+          <React.Fragment>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={() => set_open(false)}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
     </>
   )
 }
