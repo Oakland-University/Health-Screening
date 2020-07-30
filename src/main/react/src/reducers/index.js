@@ -98,7 +98,6 @@ export default function reducer(state = initial_state, action) {
         if (state.coming_to_campus) {
           return { ...state, modal_page: 'pledge', user_status: 'not-completed' }
         } else {
-          // alert("You don't need to fill out this form if you're not coming to campus")
           return { ...state, user_status: 'not-coming' }
         }
       } else if (modal_page === 'pledge') {
