@@ -52,7 +52,7 @@ export default function Pledge(props) {
         <Divider className={classes.phoneDivider} />
         <FormControl component='fieldset'>
           <FormLabel className={classes.formLabel} component='legend'>
-            Do you have a face-covering?
+            I will wear my face-covering as per OU guidelines?
           </FormLabel>
           <RadioGroup
             aria-label='face-covering'
@@ -67,7 +67,7 @@ export default function Pledge(props) {
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
           <FormLabel className={classes.formLabel} component='legend'>
-            Are you practicing good hygiene?
+            I will practice good hygiene as per OU guidelines?
           </FormLabel>
           <RadioGroup
             aria-label='good hygiene'
@@ -82,7 +82,7 @@ export default function Pledge(props) {
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
           <FormLabel className={classes.formLabel} component='legend'>
-            Are you willing to practice physical distancing?
+            I will practice safe physical distancing as per OU guidelines?
           </FormLabel>
           <RadioGroup
             aria-label='physical distancing'
