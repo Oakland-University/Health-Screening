@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const determine_color = (type) => {
+  console.log(type)
   const fontSize = 32
   let color = '#FFCA28'
 
