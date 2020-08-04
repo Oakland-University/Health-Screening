@@ -97,7 +97,6 @@ export default function reducer(state = initial_state, action) {
           new_modal_page = modal_pages.PLEDGE
           new_user_status = user_statuses.NOT_COMPLETED
         } else {
-          alert("You don't need to fill out this form if you're not coming to campus")
           new_user_status = user_statuses.NOT_COMING
         }
       } else if (current_modal_page === modal_pages.PLEDGE) {
