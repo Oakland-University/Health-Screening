@@ -108,5 +108,5 @@ export const press_modal_button = () => (dispatch, getState) => {
     }
   }
 
-  dispatch({ type: 'NEXT_MODAL_PAGE', payload })
+  dispatch({ type: actions.NEXT_MODAL_PAGE, payload })
 }
