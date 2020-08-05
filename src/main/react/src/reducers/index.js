@@ -142,14 +142,13 @@ export default function reducer(state = initial_state, action) {
           return { ...state, supervisor_email_error: true }
         }
 
-        new_user_status = cough || fever || exposure ? user_statuses.DISALLOWED : user_statuses.ALLOWED
-
         const can_submit = 
           (employee && supervisor_email.length !== 0)
           || (!employee && student_employee === true && supervisor_email.length !== 0)
           || (!employee && student_employee === false)
 
         if (cough !== null && fever !== null && exposure !== null && can_submit) {
+          new_user_status = cough || fever || exposure ? user_statuses.DISALLOWED : user_statuses.ALLOWED
 
           new_modal_page = action.payload
         }
