@@ -112,8 +112,8 @@ export const press_modal_button = () => (dispatch, getState) => {
     const employee = (account_type === 'staff' || account_type === 'faculty')
     const can_submit =
       (employee && supervisor_email.length !== 0) 
-      || (!employee && student_employee && supervisor_email.length !== 0)
-      || (!employee && !student_employee)
+      || (!employee && student_employee === true && supervisor_email.length !== 0)
+      || (!employee && student_employee === false)
 
     if (cough !== null && fever !== null && exposure !== null && can_submit) {
       submit_form(
