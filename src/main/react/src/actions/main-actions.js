@@ -109,11 +109,11 @@ export const press_modal_button = () => (dispatch, getState) => {
       student_employee
     } = getState()
 
-    const staff = (account_type === 'staff' || account_type === 'faculty')
+    const employee = (account_type === 'staff' || account_type === 'faculty')
     const can_submit =
-      (staff && supervisor_email.length !== 0) 
-      || (!staff && student_employee && supervisor_email.length !== 0)
-      || (!staff && !student_employee)
+      (employee && supervisor_email.length !== 0) 
+      || (!employee && student_employee && supervisor_email.length !== 0)
+      || (!employee && !student_employee)
 
     if (cough !== null && fever !== null && exposure !== null && can_submit) {
       submit_form(

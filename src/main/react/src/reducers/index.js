@@ -132,19 +132,25 @@ export default function reducer(state = initial_state, action) {
         return { ...state, name_error, email_error, phone_error, modal_page }
       } else if (current_modal_page === modal_pages.HEALTH_SCREENING) {
         const { cough, fever, exposure, phone, supervisor_email, account_type, student_employee } = state
-        const staff = (account_type === 'staff' || account_type === 'faculty')
+        const employee = (account_type === 'staff' || account_type === 'faculty')
 
         if (!phone) {
           return { ...state, phone_error: true }
         }
 
-        if((staff || student_employee) && supervisor_email.length === 0) {
+        if((employee || student_employee) && supervisor_email.length === 0) {
           return { ...state, supervisor_email_error: true }
         }
 
         new_user_status = cough || fever || exposure ? user_statuses.DISALLOWED : user_statuses.ALLOWED
 
-        if (cough !== null && fever !== null && exposure !== null) {
+        const can_submit = 
+          (employee && supervisor_email.length !== 0)
+          || (!employee && student_employee === true && supervisor_email.length !== 0)
+          || (!employee && student_employee === false)
+
+        if (cough !== null && fever !== null && exposure !== null && can_submit) {
+
           new_modal_page = action.payload
         }
       }
