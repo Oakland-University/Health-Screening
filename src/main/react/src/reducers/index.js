@@ -125,9 +125,8 @@ export default function reducer(state = initial_state, action) {
           return { ...state, phone_error: true }
         }
 
-        new_user_status = cough || fever || exposure ? user_statuses.DISALLOWED : user_statuses.ALLOWED
-
         if (cough !== null && fever !== null && exposure !== null) {
+          new_user_status = cough || fever || exposure ? user_statuses.DISALLOWED : user_statuses.ALLOWED
           new_modal_page = action.payload
         }
       }
