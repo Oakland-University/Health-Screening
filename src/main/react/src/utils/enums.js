@@ -19,6 +19,8 @@ export const actions = {
     UPDATE_NAME: 'update-name',
     UPDATE_EMAIL: 'update-email',
     UPDATE_PHONE: 'update-phone',
+    UPDATE_STUDENT_EMPLOYEE: 'update-student-employee',
+    UPDATE_SUPERVISOR_EMAIL: 'update-supervisor-email',
     UPDATE_ACCOUNT: 'update-account',
     UPDATE_COUGH: 'update-cough',
     UPDATE_FEVER: 'update-fever',

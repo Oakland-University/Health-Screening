@@ -9,12 +9,15 @@ import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
+import Collapse from '@material-ui/core/Collapse'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   update_cough,
   update_exposure,
   update_fever,
   update_phone,
+  update_supervisor_email,
+  update_student_employee
 } from '../actions/main-actions'
 
 const useStyles = makeStyles((theme) => ({
@@ -31,15 +34,35 @@ const useStyles = makeStyles((theme) => ({
   phoneLabel: {
     marginTop: 20,
   },
+  formLabel2: {
+    marginBottom: '0px !important',
+    marginTop: 20,
+    border: 'none'
+  },
+  emailDivider: {
+    marginTop: 25
+  },
+  emailLabel: {
+    marginTop: 10,
+    marginBottom: 13
+  }
 }))
 
 export default function HealthQuestions(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const { cough, fever, exposure, phone, phone_error } = useSelector(
-    (state) => state
-  )
+  const { 
+    cough, 
+    fever, 
+    exposure, 
+    phone, 
+    phone_error, 
+    supervisor_email,
+    supervisor_email_error,
+    student_employee,
+    account_type
+  } = useSelector((state) => state)
 
   return (
     <>
@@ -110,6 +133,54 @@ export default function HealthQuestions(props) {
             value={phone}
             onChange={(event) => dispatch(update_phone(event.target.value))}
           />
+          <Divider className={classes.emailDivider} />
+          {account_type === 'staff' || account_type === 'faculty' ? (
+            <>
+              <Typography paragraph className={classes.phoneLabel}>
+                Please provide your supervisor's email in the field below.
+              </Typography>
+              <TextField
+                required
+                label='Supervisor Email'
+                variant='outlined'
+                error={supervisor_email_error}
+                value={supervisor_email}
+                onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
+              />
+            </>
+          ) : (
+            <>
+              <FormLabel className={classes.formLabel2} component='legend'>
+                Are you a student employee of Oakland University?
+              </FormLabel>
+              <RadioGroup
+                aria-label='student-employee'
+                name='student-employee'
+                value={student_employee}
+                onChange={(event) =>
+                  dispatch(update_student_employee(event.target.value === 'true'))
+                }
+                className={classes.radioGroup}
+              >
+                <FormControlLabel value={true} control={<Radio />} label='Yes' />
+                <FormControlLabel value={false} control={<Radio />} label='No' />
+              </RadioGroup>
+              <Collapse in={student_employee} unmountOnExit>
+                <Typography paragraph className={classes.emailLabel}>
+                  Please provide your supervisor's email in the field below.
+                </Typography>
+                <TextField
+                  fullWidth
+                  required={student_employee}
+                  label='Supervisor Email'
+                  variant='outlined'
+                  error={supervisor_email_error}
+                  value={supervisor_email}
+                  onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
+                />
+              </Collapse>
+            </>
+          )}
         </FormControl>
       </CardContent>
     </>
