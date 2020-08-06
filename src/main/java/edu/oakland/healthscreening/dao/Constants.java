@@ -98,4 +98,28 @@ public class Constants {
               + " WHERE                                         "
               + "   age(submission_time) >= INTERVAL '30 days'  ")
           .replaceAll("\\s+", " ");
+
+  public static final String GET_BANNER_SUPERVISOR =
+      (" SELECT                                                              "
+              + "   GOREMAL_EMAIL_ADDRESS                                    "
+              + " FROM                                                       "
+              + "   GENERAL.GOREMAL                                          "
+              + " WHERE                                                      "
+              + "   GOREMAL_EMAL_CODE = 'OAKU'                               "
+              + "   AND GOREMAL_PIDM = (                                     "
+              + "         SELECT                                             "
+              + "            n.NBRJOBS_SUPERVISOR_PIDM                       "
+              + "          FROM                                              "
+              + "            POSNCTL.NBRJOBS n                               "
+              + "          WHERE                                             "
+              + "            n.NBRJOBS_PIDM = :pidm                          "
+              + "            AND n.NBRJOBS_SUFF = '00'                       "
+              + "            AND n.NBRJOBS_EFFECTIVE_DATE = (                "
+              + "                   SELECT                                   "
+              + "                       MAX(n2.NBRJOBS_EFFECTIVE_DATE)       "
+              + "                     FROM                                   "
+              + "                       POSNCTL.NBRJOBS n2                   "
+              + "                     WHERE                                  "
+              + "                       n2.NBRJOBS_PIDM = n.NBRJOBS_PIDM ) ) ")
+          .replaceAll("\\s+", " ");
 }
