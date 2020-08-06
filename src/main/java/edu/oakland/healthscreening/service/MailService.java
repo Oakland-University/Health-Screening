@@ -38,11 +38,17 @@ public class MailService {
 
   public void sendPledgeDisagreement(Pledge pledge, AccountType accountType) {
     // TODO: Add support for facutly / staff
-    if (accountType != STUDENT) {
+    String mailTo = deanAddress;
+    if (accountType == STAFF) {
+      // get their supervisor and return their email addresss
+      return;
+    } else if (accountType == FACULTY) {
+      // get their supervisor and return their email address
       return;
     }
+
     SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setTo(deanAddress);
+    msg.setTo(mailTo);
     msg.setFrom(mailFrom);
     msg.setSubject("Coronavirus Honor Pledge Disagreement");
     msg.setText(pledge.summarize());
