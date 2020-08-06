@@ -1,7 +1,6 @@
 package edu.oakland.healthscreening.controller;
 
-import static edu.oakland.healthscreening.model.AccountType.GUEST;
-import static edu.oakland.healthscreening.model.AccountType.STUDENT;
+import static edu.oakland.healthscreening.model.AccountType.*;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -58,8 +57,24 @@ public class HealthScreeningController {
     log.error("Unspecified exception", e);
   }
 
-  private AccountType getAccountFromRequest(Claim pidm) {
-    return pidm == null ? GUEST : STUDENT;
+  private AccountType getAccountFromRequest(Claim groupsClaim) {
+    if (groupsClaim == null) {
+      return GUEST;
+    } 
+
+    List<String> groups = groupsClaim.asList(String.class);
+
+
+    if (groups.contains("OU Faculty")) {
+      return FACULTY;
+    }  else if (groups.contains("OU Staff")) {
+      return STAFF;
+    } else if (groups.contains("OU Student")) {
+      return STUDENT;
+    }
+
+    return GUEST;
+
   }
 
   @PostMapping("pledge")
@@ -68,7 +83,7 @@ public class HealthScreeningController {
 
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
-    AccountType accountType = getAccountFromRequest(personInfo.get("pidm"));
+    AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
 
     if (accountType != GUEST) {
 
@@ -91,12 +106,11 @@ public class HealthScreeningController {
 
     Claim pidm = personInfo.get("pidm");
 
-    // TODO Handle all cases and abstract to seperate method
+    AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
 
-    if (pidm == null) {
-      info.setAccountType(AccountType.GUEST);
-    } else {
-      info.setAccountType(AccountType.STUDENT);
+    info.setAccountType(accountType);
+
+    if (accountType != GUEST) {
       info.setPidm(pidm.asString());
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       String email = personInfo.get("mail") == null ? null : personInfo.get("mail").asString();
@@ -115,6 +129,8 @@ public class HealthScreeningController {
     }
 
     if (info.shouldStayHome()) {
+      // if person is not a student
+      // notify supervisor
       mailService.notifyHealthCenter(info);
     }
 
