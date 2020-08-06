@@ -10,6 +10,7 @@ build/
 src/main/webapp/js/
 src/main/webapp/media/*
 src/main/webapp/css/*
+*.log
 
 ### STS ###
 .apt_generated

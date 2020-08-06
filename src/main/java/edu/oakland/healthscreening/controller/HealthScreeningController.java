@@ -5,6 +5,7 @@ import static edu.oakland.healthscreening.model.AccountType.STUDENT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+import edu.oakland.healthscreening.dao.Banner;
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.AnalyticInfo;
@@ -39,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class HealthScreeningController {
   @Autowired private Postgres postgres;
+  @Autowired private Banner banner;
   @Autowired private AnalyticsService analytics;
   @Autowired private MailService mailService;
   @Autowired private AuthService authorizer;
@@ -177,5 +179,15 @@ public class HealthScreeningController {
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
+  }
+
+  @GetMapping("supervisor-email")
+  public Optional<String> getSupervisorEmail(HttpServletRequest request)
+      throws SoffitAuthException {
+    Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
+
+    Claim pidm = personInfo.get("pidm");
+
+    return banner.getSupervisorEmail(pidm.asString());
   }
 }
