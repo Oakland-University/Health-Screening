@@ -4,11 +4,11 @@
 
   const determine_account_type = (groups) => {
     if (groups.includes('OU Employee')) {
-      return 'EMPLOYEE'
+      return 'employee'
     } else if (groups.includes('OU Student')) {
-      return 'STUDENT'
+      return 'student'
     } else {
-      return 'GUEST'
+      return 'guest'
     }
   }
 
