@@ -31,8 +31,7 @@ public class Banner {
       return Optional.of(
           bannerJdbcTemplate.queryForObject(GET_BANNER_SUPERVISOR, String.class, pidm));
     } catch (EmptyResultDataAccessException e) {
-      log.info("Error on query: " + e.toString());
-      return Optional.of("");
+      return Optional.empty();
     }
   }
 }
