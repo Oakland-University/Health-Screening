@@ -1,6 +1,6 @@
 import { get_user_submission, submit_form, send_pledge_info } from '../api/api'
 
-import { actions, user_statuses } from '../utils/enums'
+import { actions, user_statuses, account_types } from '../utils/enums'
 
 export const fetch_past_submission = () => (dispatch) => {
   get_user_submission().then((data) => {
@@ -26,6 +26,10 @@ export const update_coming_to_campus = (new_coming_to_campus) => (dispatch) => {
   dispatch({ type: actions.UPDATE_COMING_TO_CAMPUS, payload: new_coming_to_campus })
 }
 
+export const update_student_employee = (new_student_employee) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_STUDENT_EMPLOYEE,  payload: new_student_employee })
+}
+
 export const update_name = (new_name) => (dispatch) => {
   dispatch({ type: actions.UPDATE_NAME, payload: new_name })
 }
@@ -36,6 +40,10 @@ export const update_email = (new_email) => (dispatch) => {
 
 export const update_phone = (new_phone) => (dispatch) => {
   dispatch({ type: actions.UPDATE_PHONE, payload: new_phone })
+}
+
+export const update_supervisor_email = (new_supervisor_email) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_SUPERVISOR_EMAIL,  payload: new_supervisor_email })
 }
 
 export const update_cough = (new_cough) => (dispatch) => {
@@ -97,13 +105,18 @@ export const press_modal_button = () => (dispatch, getState) => {
       face_covering,
       good_hygiene,
       distancing,
+      supervisor_email,
+      student_employee
     } = getState()
 
-    if (cough !== null && fever !== null && exposure !== null) {
+    const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
+    const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
+
+    if (cough !== null && fever !== null && exposure !== null && can_submit) {
       submit_form(
         { face_covering, good_hygiene, distancing },
         { name, email, phone, account_type },
-        { fever, cough, exposure }
+        { fever, cough, exposure, supervisor_email }
       )
     }
   }

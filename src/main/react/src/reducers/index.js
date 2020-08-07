@@ -1,4 +1,5 @@
-import { actions, user_statuses, modal_pages } from '../utils/enums'
+import { actions, user_statuses, modal_pages, account_types } from '../utils/enums'
+
 /*global PHONE*/
 /*global EMAIL*/
 /*global NAME*/
@@ -9,6 +10,8 @@ const {
   UPDATE_NAME,
   UPDATE_EMAIL,
   UPDATE_PHONE,
+  UPDATE_SUPERVISOR_EMAIL,
+  UPDATE_STUDENT_EMPLOYEE,
   UPDATE_ACCOUNT,
   UPDATE_COUGH,
   UPDATE_FEVER,
@@ -35,7 +38,10 @@ const initial_state = {
   name_error: false,
   phone: PHONE,
   phone_error: false,
+  student_employee: ACCOUNT_TYPE === 'guest' ? false : null,
   submission_time: '',
+  supervisor_email: '',
+  supervisor_email_error: false,
   user_status: user_statuses.LOADING,
   face_covering: null,
   good_hygiene: null,
@@ -55,6 +61,12 @@ export default function reducer(state = initial_state, action) {
     }
     case UPDATE_PHONE: {
       return { ...state, phone: action.payload, phone_error: false }
+    }
+    case UPDATE_SUPERVISOR_EMAIL: {
+      return { ...state, supervisor_email: action.payload, supervisor_email_error: false }
+    }
+    case UPDATE_STUDENT_EMPLOYEE: {
+      return { ...state, student_employee: action.payload }
     }
     case UPDATE_ACCOUNT: {
       return { ...state, account: action.payload }
@@ -119,14 +131,22 @@ export default function reducer(state = initial_state, action) {
 
         return { ...state, name_error, email_error, phone_error, modal_page }
       } else if (current_modal_page === modal_pages.HEALTH_SCREENING) {
-        const { cough, fever, exposure, phone } = state
+        const { cough, fever, exposure, phone, supervisor_email, account_type, student_employee } = state
+        const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
 
         if (!phone) {
           return { ...state, phone_error: true }
         }
 
-        if (cough !== null && fever !== null && exposure !== null) {
+        if (is_employee && supervisor_email.length === 0) {
+          return { ...state, supervisor_email_error: true }
+        }
+
+        const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
+
+        if (cough !== null && fever !== null && exposure !== null && can_submit) {
           new_user_status = cough || fever || exposure ? user_statuses.DISALLOWED : user_statuses.ALLOWED
+
           new_modal_page = action.payload
         }
       }

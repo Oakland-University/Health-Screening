@@ -11,6 +11,7 @@ export const submit_form = async (pledge_info, user_info, questions) => {
     name: user_info.name,
     phone: user_info.phone,
     email: user_info.email,
+    supervisor_email: questions.supervisor_email,
     coughing: questions.cough,
     feverish: questions.fever,
     exposed: questions.exposure,
