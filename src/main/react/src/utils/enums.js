@@ -1,3 +1,9 @@
+export const account_types = {
+    EMPLOYEE: 'employee',
+    STUDENT: 'student',
+    GUEST: 'guest'
+}
+
 export const modal_pages = {
     CAMPUS_CHECK: 'campus-check',
     PLEDGE: 'pledge',

@@ -1,4 +1,4 @@
-import { actions, user_statuses, modal_pages } from '../utils/enums'
+import { actions, user_statuses, modal_pages, account_types } from '../utils/enums'
 
 /*global PHONE*/
 /*global EMAIL*/
@@ -38,7 +38,7 @@ const initial_state = {
   name_error: false,
   phone: PHONE,
   phone_error: false,
-  student_employee: null,
+  student_employee: ACCOUNT_TYPE === 'guest' ? false : null,
   submission_time: '',
   supervisor_email: '',
   supervisor_email_error: false,
@@ -132,20 +132,17 @@ export default function reducer(state = initial_state, action) {
         return { ...state, name_error, email_error, phone_error, modal_page }
       } else if (current_modal_page === modal_pages.HEALTH_SCREENING) {
         const { cough, fever, exposure, phone, supervisor_email, account_type, student_employee } = state
-        const employee = (account_type === 'staff' || account_type === 'faculty')
+        const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
 
         if (!phone) {
           return { ...state, phone_error: true }
         }
 
-        if((employee || student_employee) && supervisor_email.length === 0) {
+        if (is_employee && supervisor_email.length === 0) {
           return { ...state, supervisor_email_error: true }
         }
 
-        const can_submit = 
-          (employee && supervisor_email.length !== 0)
-          || (!employee && student_employee === true && supervisor_email.length !== 0)
-          || (!employee && student_employee === false)
+        const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
 
         if (cough !== null && fever !== null && exposure !== null && can_submit) {
           new_user_status = cough || fever || exposure ? user_statuses.DISALLOWED : user_statuses.ALLOWED

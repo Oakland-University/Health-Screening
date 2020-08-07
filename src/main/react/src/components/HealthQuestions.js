@@ -19,7 +19,8 @@ import {
   update_supervisor_email,
   update_student_employee
 } from '../actions/main-actions'
-
+import {account_types} from '../utils/enums'
+  
 const useStyles = makeStyles((theme) => ({
   radioGroup: {
     flexDirection: 'row',
@@ -134,7 +135,7 @@ export default function HealthQuestions(props) {
             onChange={(event) => dispatch(update_phone(event.target.value))}
           />
           <Divider className={classes.emailDivider} />
-          {account_type === 'staff' || account_type === 'faculty' ? (
+          {account_type === account_types.EMPLOYEE ? (
             <>
               <Typography paragraph className={classes.phoneLabel}>
                 Please provide your supervisor's email in the field below.
@@ -151,7 +152,7 @@ export default function HealthQuestions(props) {
           ) : (
             <>
               <FormLabel className={classes.formLabel2} component='legend'>
-                Are you a student employee of Oakland University?
+                {`Are you a${account_type === account_types.STUDENT ? ' student' : 'n'} employee of OU who is planning on working today?`}
               </FormLabel>
               <RadioGroup
                 aria-label='student-employee'

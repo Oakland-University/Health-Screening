@@ -1,6 +1,6 @@
 import { get_user_submission, submit_form, send_pledge_info } from '../api/api'
 
-import { actions, user_statuses } from '../utils/enums'
+import { actions, user_statuses, account_types } from '../utils/enums'
 
 export const fetch_past_submission = () => (dispatch) => {
   get_user_submission().then((data) => {
@@ -109,11 +109,8 @@ export const press_modal_button = () => (dispatch, getState) => {
       student_employee
     } = getState()
 
-    const employee = (account_type === 'staff' || account_type === 'faculty')
-    const can_submit =
-      (employee && supervisor_email.length !== 0) 
-      || (!employee && student_employee === true && supervisor_email.length !== 0)
-      || (!employee && student_employee === false)
+    const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
+    const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
 
     if (cough !== null && fever !== null && exposure !== null && can_submit) {
       submit_form(
