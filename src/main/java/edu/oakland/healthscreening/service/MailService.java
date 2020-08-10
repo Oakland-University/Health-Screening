@@ -37,30 +37,36 @@ public class MailService {
   private final Logger log = LoggerFactory.getLogger("health-screening");
 
   public void sendPledgeDisagreement(Pledge pledge, AccountType accountType) {
-    // TODO: Add support for facutly / staff
-    String mailTo = deanAddress;
-    if (accountType == STAFF) {
-      // get their supervisor and return their email addresss
-      return;
-    } else if (accountType == FACULTY) {
-      // get their supervisor and return their email address
-      return;
+    SimpleMailMessage msg = new SimpleMailMessage();
+    msg.setSubject("Coronavirus Honor Pledge Disagreement");
+    msg.setFrom(mailFrom);
+
+    if (accountType == STUDENT) {
+      msg.setTo(deanAddress, pledge.getSupervisorEmail());
+    } else {
+      msg.setTo(pledge.getSupervisorEmail());
     }
 
-    SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setTo(mailTo);
-    msg.setFrom(mailFrom);
-    msg.setSubject("Coronavirus Honor Pledge Disagreement");
     msg.setText(pledge.summarize());
+
+    log.debug("Sending pledge email:\nfrom: {}\tto: {}", msg.getFrom(), msg.getTo());
     mailSender.send(msg);
   }
 
-  public void notifyHealthCenter(HealthInfo info) throws MailException {
+  public void sendNotificationEmail(HealthInfo info, AccountType accountType) {
     SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setTo(healthCenterAddress);
     msg.setFrom(mailFrom);
     msg.setSubject(getEmailSubject(info));
     msg.setText(info.summarize());
+
+    if (info.getPledge().getSupervisorEmail() != null
+        && !info.getPledge().getSupervisorEmail().isEmpty()) {
+      msg.setTo(healthCenterAddress, info.getPledge().getSupervisorEmail());
+    } else {
+      msg.setTo(healthCenterAddress);
+    }
+
+    log.debug("Sending screening email:\nfrom: {}\tto: {}", msg.getFrom(), msg.getTo());
     mailSender.send(msg);
   }
 
