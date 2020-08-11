@@ -84,10 +84,10 @@ export const press_modal_button = () => (dispatch, getState) => {
   let payload = ''
 
   if (current_page === 'pledge') {
-    const { face_covering, good_hygiene, distancing } = getState()
+    const { face_covering, good_hygiene, distancing, supervisor_email } = getState()
 
     if (face_covering === false || good_hygiene === false || distancing === false) {
-      send_pledge_info({ face_covering, good_hygiene, distancing })
+      send_pledge_info({ face_covering, good_hygiene, distancing, supervisor_email })
     }
   }
 
@@ -114,9 +114,9 @@ export const press_modal_button = () => (dispatch, getState) => {
 
     if (cough !== null && fever !== null && exposure !== null && can_submit) {
       submit_form(
-        { face_covering, good_hygiene, distancing },
+        { face_covering, good_hygiene, distancing, supervisor_email },
         { name, email, phone, account_type },
-        { fever, cough, exposure, supervisor_email }
+        { fever, cough, exposure }
       )
     }
   }

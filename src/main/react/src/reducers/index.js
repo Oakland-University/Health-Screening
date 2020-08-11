@@ -105,19 +105,28 @@ export default function reducer(state = initial_state, action) {
       let new_modal_page = state.modal_page
 
       if (current_modal_page === modal_pages.CAMPUS_CHECK) {
-        if (state.coming_to_campus) {
+        const coming_to_campus = state.coming_to_campus
+
+        if (coming_to_campus) {
           new_modal_page = modal_pages.PLEDGE
           new_user_status = user_statuses.NOT_COMPLETED
-        } else {
+        } else if (coming_to_campus === false) {
           new_user_status = user_statuses.NOT_COMING
         }
       } else if (current_modal_page === modal_pages.PLEDGE) {
-        const { face_covering, good_hygiene, distancing } = state
+        const { face_covering, good_hygiene, distancing, supervisor_email, account_type, student_employee } = state
+        const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
 
-        if (face_covering === false || good_hygiene === false || distancing === false) {
+        if (is_employee && supervisor_email.length === 0) {
+          return { ...state, supervisor_email_error: true }
+        }
+
+        const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
+
+        if ((face_covering === false || good_hygiene === false || distancing === false) && can_submit) {
           new_modal_page = modal_pages.SUBMITTED
           new_user_status = user_statuses.DISALLOWED
-        } else if (face_covering && good_hygiene && distancing) {
+        } else if ((face_covering && good_hygiene && distancing) && can_submit) {
           new_modal_page =
             state.account_type === '' ? modal_pages.USER_INFO : modal_pages.HEALTH_SCREENING
         }
@@ -136,10 +145,6 @@ export default function reducer(state = initial_state, action) {
 
         if (!phone) {
           return { ...state, phone_error: true }
-        }
-
-        if (is_employee && supervisor_email.length === 0) {
-          return { ...state, supervisor_email_error: true }
         }
 
         const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
