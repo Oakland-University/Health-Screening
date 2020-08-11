@@ -107,10 +107,11 @@ public class MailService {
     } else {
       String dateString = new SimpleDateFormat("MM/dd/yy").format(info.getSubmissionTime());
       msg.setSubject("Health Screening Certificate");
-      msg.setText(
-          "Thank you for doing your part to keep our campus healthy!\n\n"
-              + "This person is allowed on campus for the duration of: "
-              + dateString);
+      String bodyText =
+          String.format(
+              "Thank you for doing your part to keep campus healthy!\n\nThis person, %s, is allowed on campus for the duration of %s.",
+              info.getName(), dateString);
+      msg.setText(bodyText);
     }
 
     mailSender.send(msg);
