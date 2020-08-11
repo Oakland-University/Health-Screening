@@ -18,6 +18,7 @@ import { makeStyles } from '@material-ui/styles'
 import { useSelector, useDispatch } from 'react-redux'
 import { send_certificate_email } from '../api/api'
 import { update_user_status } from '../actions/main-actions'
+import { user_statuses } from '../utils/enums'
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -58,14 +59,15 @@ const determine_color = (type) => {
   let color = '#FFCA28'
 
   switch (type.toLowerCase()) {
-    case 'not-completed':
-    case 'not-coming':
-    case 'loading':
+    case user_statuses.NOT_COMPLETED:
+    case user_statuses.NOT_COMING:
+    case user_statuses.DISMISSED:
+    case user_statuses.LOADING:
       return <WarningIcon style={{ color, fontSize }} />
-    case 'allowed':
+    case user_statuses.ALLOWED:
       color = '#388E3C'
       return <CheckCircle style={{ color, fontSize }} />
-    case 'disallowed':
+    case user_statuses.DISALLOWED:
       color = '#D32F2F'
       return <ErrorIcon style={{ color, fontSize }} />
     default:
@@ -90,13 +92,14 @@ const BannerCard = (props) => {
           `Submitted at ${submission_time.toLocaleTimeString()}`
         }
       />
-      {(type === 'not-completed' ||
-        type === 'loading' ||
-        type === 'not-coming') && (
+      {(type === user_statuses.NOT_COMPLETED ||
+        type === user_statuses.NOT_COMING ||
+        type === user_statuses.DISMISSED ||
+        type === user_statuses.LOADING) && (
         <Prompt set_modal_open={props.set_modal_open} />
       )}
-      {type === 'allowed' && <Certificate action={banner_action} />}
-      {type === 'disallowed' && <Warning />}
+      {type === user_statuses.ALLOWED && <Certificate action={banner_action} />}
+      {type === user_statuses.DISALLOWED && <Warning />}
     </Card>
   )
 }
