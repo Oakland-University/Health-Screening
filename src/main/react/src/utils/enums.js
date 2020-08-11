@@ -17,6 +17,7 @@ export const user_statuses = {
     ALLOWED: 'allowed',
     DISALLOWED: 'disallowed',
     NOT_COMING: 'not-coming',
+    DISMISSED: 'dismissed',
     NOT_COMPLETED: 'not-completed'
 }
 
