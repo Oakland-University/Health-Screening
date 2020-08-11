@@ -37,24 +37,36 @@ public class MailService {
   private final Logger log = LoggerFactory.getLogger("health-screening");
 
   public void sendPledgeDisagreement(Pledge pledge, AccountType accountType) {
-    // TODO: Add support for facutly / staff
-    if (accountType != STUDENT) {
-      return;
-    }
     SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setTo(deanAddress);
-    msg.setFrom(mailFrom);
     msg.setSubject("Coronavirus Honor Pledge Disagreement");
+    msg.setFrom(mailFrom);
+
+    if (accountType == STUDENT) {
+      msg.setTo(deanAddress, pledge.getSupervisorEmail());
+    } else {
+      msg.setTo(pledge.getSupervisorEmail());
+    }
+
     msg.setText(pledge.summarize());
+
+    log.debug("Sending pledge email:\nfrom: {}\tto: {}", msg.getFrom(), msg.getTo());
     mailSender.send(msg);
   }
 
-  public void notifyHealthCenter(HealthInfo info) throws MailException {
+  public void sendNotificationEmail(HealthInfo info, AccountType accountType) {
     SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setTo(healthCenterAddress);
     msg.setFrom(mailFrom);
     msg.setSubject(getEmailSubject(info));
     msg.setText(info.summarize());
+
+    if (info.getPledge().getSupervisorEmail() != null
+        && !info.getPledge().getSupervisorEmail().isEmpty()) {
+      msg.setTo(healthCenterAddress, info.getPledge().getSupervisorEmail());
+    } else {
+      msg.setTo(healthCenterAddress);
+    }
+
+    log.debug("Sending screening email:\nfrom: {}\tto: {}", msg.getFrom(), msg.getTo());
     mailSender.send(msg);
   }
 

@@ -1,7 +1,6 @@
 package edu.oakland.healthscreening.controller;
 
-import static edu.oakland.healthscreening.model.AccountType.GUEST;
-import static edu.oakland.healthscreening.model.AccountType.STUDENT;
+import static edu.oakland.healthscreening.model.AccountType.*;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -58,8 +57,22 @@ public class HealthScreeningController {
     log.error("Unspecified exception", e);
   }
 
-  private AccountType getAccountFromRequest(Claim pidm) {
-    return pidm == null ? GUEST : STUDENT;
+  private AccountType getAccountFromRequest(Claim groupsClaim) {
+    if (groupsClaim == null) {
+      return GUEST;
+    }
+
+    List<String> groups = groupsClaim.asList(String.class);
+
+    if (groups.contains("OU Faculty")) {
+      return FACULTY;
+    } else if (groups.contains("OU Staff")) {
+      return STAFF;
+    } else if (groups.contains("OU Student")) {
+      return STUDENT;
+    }
+
+    return GUEST;
   }
 
   @PostMapping("pledge")
@@ -68,18 +81,17 @@ public class HealthScreeningController {
 
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
-    AccountType accountType = getAccountFromRequest(personInfo.get("pidm"));
+    AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
 
     if (accountType != GUEST) {
 
       pledge.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
       pledge.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
-
-      if (!pledge.fullAgreement()) {
-        mailService.sendPledgeDisagreement(pledge, accountType);
-      }
-
       postgres.savePledge(pledge);
+    }
+
+    if (!pledge.fullAgreement()) {
+      mailService.sendPledgeDisagreement(pledge, accountType);
     }
   }
 
@@ -89,19 +101,14 @@ public class HealthScreeningController {
 
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
-    Claim pidm = personInfo.get("pidm");
+    AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
+    info.setAccountType(accountType);
 
-    // TODO Handle all cases and abstract to seperate method
-
-    if (pidm == null) {
-      info.setAccountType(AccountType.GUEST);
-    } else {
-      info.setAccountType(AccountType.STUDENT);
-      info.setPidm(pidm.asString());
+    if (accountType != GUEST) {
+      info.setPidm(personInfo.get("pidm").asString());
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       String email = personInfo.get("mail") == null ? null : personInfo.get("mail").asString();
       info.setEmail(email);
-      info.getPledge().setEmail(email);
 
       //  Only replace the provided phone if it's null or empty
       if (info.getPhone() == null || info.getPhone().isEmpty()) {
@@ -114,8 +121,8 @@ public class HealthScreeningController {
       postgres.savePledge(info.getPledge());
     }
 
-    if (info.shouldStayHome()) {
-      mailService.notifyHealthCenter(info);
+    if (info.shouldStayHome() || info.getPledge().getSupervisorEmail() != null) {
+      mailService.sendNotificationEmail(info, accountType);
     }
 
     postgres.saveHealthInfo(info);

@@ -2,6 +2,8 @@ package edu.oakland.healthscreening.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,8 +13,15 @@ public class Pledge {
   private boolean faceCovering;
   private boolean goodHygiene;
   private boolean distancing;
+
+  @Size(max = 128, message = "Name field should be less than 128 characters")
   private String name;
+
+  @Email(message = "Email field should be a valid address")
   private String email;
+
+  @Email(message = "Email field should be a valid address")
+  private String supervisorEmail;
 
   public boolean fullAgreement() {
     return (faceCovering && goodHygiene && distancing);
