@@ -84,10 +84,10 @@ export const press_modal_button = () => (dispatch, getState) => {
   let payload = ''
 
   if (current_page === 'pledge') {
-    const { face_covering, good_hygiene, distancing, supervisor_email } = getState()
+    const { face_covering, good_hygiene, distancing, supervisor_email, email, name } = getState()
 
     if (face_covering === false || good_hygiene === false || distancing === false) {
-      send_pledge_info({ face_covering, good_hygiene, distancing, supervisor_email })
+      send_pledge_info({ face_covering, good_hygiene, distancing, name, email, supervisor_email })
     }
   }
 

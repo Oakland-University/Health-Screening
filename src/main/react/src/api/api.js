@@ -98,6 +98,8 @@ export const send_pledge_info = async (pledge_info) => {
     faceCovering: pledge_info.face_covering,
     goodHygiene: pledge_info.good_hygiene,
     distancing: pledge_info.distancing,
+    email: pledge_info.email,
+    name: pledge_info.name,
     supervisorEmail: pledge_info.supervisor_email
   }
 

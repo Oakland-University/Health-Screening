@@ -84,7 +84,6 @@ public class HealthScreeningController {
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
 
     if (accountType != GUEST) {
-
       pledge.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
       pledge.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       postgres.savePledge(pledge);
