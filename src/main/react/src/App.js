@@ -20,6 +20,7 @@ import {
   press_modal_button,
   close_modal,
 } from './actions/main-actions'
+import { modal_pages, user_statuses } from './utils/enums'
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -50,15 +51,15 @@ export default function App() {
 
   useEffect(() => {
     set_modal_open(
-      user_status === 'not-completed' || modal_page === 'submitted'
+      user_status === user_statuses.NOT_COMPLETED || modal_page === modal_pages.SUBMITTED
     )
   }, [user_status, modal_page])
 
   const title =
-    modal_page === 'pledge' ? 'Coronavirus Honor Pledge' : 'OU Health Screening'
+    modal_page === modal_pages.PLEDGE ? 'Coronavirus Honor Pledge' : 'OU Health Screening'
 
   const handle_close = () => {
-    if (modal_page != 'submitted') {
+    if (modal_page !== modal_pages.SUBMITTED) {
       dispatch(close_modal())
     }
     set_modal_open(false)
@@ -74,7 +75,7 @@ export default function App() {
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          {modal_page !== 'submitted' && modal_page !== 'pledge' && (
+          {modal_page !== modal_pages.SUBMITTED && modal_page !== modal_pages.PLEDGE && (
             <Typography variant='body2' color='textSecondary' component='p'>
               Anyone intending on visiting campus is required to fill out this
               health screening form beforehand.
@@ -82,24 +83,24 @@ export default function App() {
               Please be aware that GHC will be notified of your response.
             </Typography>
           )}
-          {modal_page === 'pledge' && <Pledge />}
-          {modal_page === 'campus-check' && <ComingToCampus />}
-          {modal_page === 'user-info' && <UserInfo />}
-          {modal_page === 'health-screening' && (
+          {modal_page === modal_pages.PLEDGE && <Pledge />}
+          {modal_page === modal_pages.CAMPUS_CHECK && <ComingToCampus />}
+          {modal_page === modal_pages.USER_INFO && <UserInfo />}
+          {modal_page === modal_pages.HEALTH_SCREENING && (
             <HealthQuestions view={modal_page} />
           )}
-          {modal_page === 'submitted' && <FinalPage />}
+          {modal_page === modal_pages.SUBMITTED && <FinalPage />}
         </DialogContent>
         <DialogActions className={classes.cardActionStyle}>
           <Button color='secondary' onClick={handle_close}>
             Close
           </Button>
-          {modal_page !== 'submitted' && (
+          {modal_page !== modal_pages.SUBMITTED && (
             <Button
               color='secondary'
               onClick={() => dispatch(press_modal_button())}
             >
-              {modal_page === 'health-screening' ? 'Submit' : 'Next'}
+              {modal_page === modal_pages.HEALTH_SCREENING ? 'Submit' : 'Next'}
             </Button>
           )}
         </DialogActions>
