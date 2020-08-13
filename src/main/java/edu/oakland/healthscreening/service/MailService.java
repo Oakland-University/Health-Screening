@@ -86,6 +86,23 @@ public class MailService {
     }
   }
 
+  public void sendSupervisorCertificate(HealthInfo info) {
+    SimpleMailMessage msg = new SimpleMailMessage();
+
+    msg.setTo(info.getPledge().getSupervisorEmail());
+    msg.setFrom(mailFrom);
+
+    String dateString = new SimpleDateFormat("MM/dd/yy").format(info.getSubmissionTime());
+    msg.setSubject("Health Screening Certificate");
+    String bodyText =
+        String.format(
+            "Thank you all for doing your part to keep campus healthy!\n\nThe employee, %s, is allowed on campus for the duration of %s.",
+            info.getName(), dateString);
+    msg.setText(bodyText);
+
+    mailSender.send(msg);
+  }
+
   private String getEmailSubject(HealthInfo info) {
 
     switch (info.getAccountType()) {
