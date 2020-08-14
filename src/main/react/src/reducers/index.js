@@ -130,7 +130,7 @@ export default function reducer(state = initial_state, action) {
           return { ...state, supervisor_email_error: true }
         }
 
-        const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
+        const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee === false)
 
         if ((face_covering === false || good_hygiene === false || distancing === false) && can_submit) {
           new_modal_page = modal_pages.SUBMITTED
