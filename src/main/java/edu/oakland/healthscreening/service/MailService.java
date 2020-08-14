@@ -66,17 +66,17 @@ public class MailService {
     msg.setFrom(mailFrom);
     msg.setSubject(getEmailSubject(info));
     msg.setText(info.summarize());
+    msg.setTo(healthCenterAddress);
 
     if (info.getPledge().getSupervisorEmail() != null
         && !info.getPledge().getSupervisorEmail().isEmpty()) {
-      msg.setTo(healthCenterAddress, info.getPledge().getSupervisorEmail());
-    } else {
-      msg.setTo(healthCenterAddress);
+      sendSupervisorNotification(info);
     }
 
     log.debug("Sending screening email:\nfrom: {}\tto: {}", msg.getFrom(), msg.getTo());
     mailSender.send(msg);
   }
+
 
   public void sendGuestCertificate(String name, String email, String phone) throws MailException {
     Optional<HealthInfo> optionalInfo = postgres.getGuestSubmission(name, email, phone);
@@ -152,6 +152,15 @@ public class MailService {
       msg.setText(bodyText);
     }
 
+    mailSender.send(msg);
+  }
+
+  private void sendSupervisorNotification(HealthInfo info) {
+    SimpleMailMessage msg = new SimpleMailMessage();
+    msg.setFrom(mailFrom);
+    msg.setSubject(getEmailSubject(info));
+    msg.setText(info.summarizeForSupervisor());
+    msg.setTo(info.getPledge().getSupervisorEmail());
     mailSender.send(msg);
   }
 }
