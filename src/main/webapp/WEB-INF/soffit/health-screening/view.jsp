@@ -14,7 +14,6 @@
 
   var token  = '${bearer.getEncryptedToken()}'
   var IS_DEMO = false
-  var IS_GUEST_VIEW = '${bearer.username}' === 'guest'
   var PICTURE_URL = '${pageContext.request.contextPath}/static/covid.jpg'
   var PHONE = '${bearer.attributes.telephoneNumber}'
   var ACCOUNT_TYPE = determine_account_type('${bearer.groups}')

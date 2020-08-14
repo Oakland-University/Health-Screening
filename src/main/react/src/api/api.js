@@ -11,7 +11,6 @@ export const submit_form = async (pledge_info, user_info, questions) => {
     name: user_info.name,
     phone: user_info.phone,
     email: user_info.email,
-    supervisor_email: pledge_info.supervisor_email,
     coughing: questions.cough,
     feverish: questions.fever,
     exposed: questions.exposure,
@@ -19,6 +18,7 @@ export const submit_form = async (pledge_info, user_info, questions) => {
       faceCovering: pledge_info.face_covering,
       goodHygiene: pledge_info.good_hygiene,
       distancing: pledge_info.distancing,
+      supervisorEmail: pledge_info.supervisor_email
     },
   }
 
@@ -98,6 +98,8 @@ export const send_pledge_info = async (pledge_info) => {
     faceCovering: pledge_info.face_covering,
     goodHygiene: pledge_info.good_hygiene,
     distancing: pledge_info.distancing,
+    email: pledge_info.email,
+    name: pledge_info.name,
     supervisorEmail: pledge_info.supervisor_email
   }
 

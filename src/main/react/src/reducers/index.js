@@ -108,11 +108,20 @@ export default function reducer(state = initial_state, action) {
         const coming_to_campus = state.coming_to_campus
 
         if (coming_to_campus) {
-          new_modal_page = modal_pages.PLEDGE
+          new_modal_page = state.account_type === (account_types.GUEST) ? modal_pages.USER_INFO : modal_pages.PLEDGE
           new_user_status = user_statuses.NOT_COMPLETED
         } else if (coming_to_campus === false) {
           new_user_status = user_statuses.NOT_COMING
         }
+      } else if (current_modal_page === modal_pages.USER_INFO) {
+        const name_error = !state.name
+        const email_error = !state.email
+        const phone_error = !state.phone
+
+        const modal_page =
+          name_error || email_error || phone_error ? state.modal_page : modal_pages.PLEDGE
+
+        return { ...state, name_error, email_error, phone_error, modal_page }
       } else if (current_modal_page === modal_pages.PLEDGE) {
         const { face_covering, good_hygiene, distancing, supervisor_email, account_type, student_employee } = state
         const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
@@ -130,15 +139,6 @@ export default function reducer(state = initial_state, action) {
           new_modal_page =
             state.account_type === '' ? modal_pages.USER_INFO : modal_pages.HEALTH_SCREENING
         }
-      } else if (current_modal_page === modal_pages.USER_INFO) {
-        const name_error = !state.name
-        const email_error = !state.email
-        const phone_error = !state.phone
-
-        const modal_page =
-          name_error || email_error || phone_error ? state.modal_page : modal_pages.HEALTH_SCREENING
-
-        return { ...state, name_error, email_error, phone_error, modal_page }
       } else if (current_modal_page === modal_pages.HEALTH_SCREENING) {
         const { cough, fever, exposure, phone, supervisor_email, account_type, student_employee } = state
         const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
