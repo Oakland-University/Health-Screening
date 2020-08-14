@@ -49,7 +49,7 @@ public class MailService {
       if (supervisorEmail == null || supervisorEmail.isEmpty()) {
         msg.setTo(deanAddress);
       } else {
-        msg.setTo(deanAddress, pledge.getSupervisorEmail());
+        msg.setTo(deanAddress, supervisorEmail);
       }
     } else if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
       msg.setTo(supervisorEmail);
