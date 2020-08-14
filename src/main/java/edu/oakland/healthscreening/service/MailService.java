@@ -46,12 +46,12 @@ public class MailService {
     String supervisorEmail = pledge.getSupervisorEmail();
 
     if (accountType == STUDENT) {
-      if (supervisorEmail == null) {
+      if (supervisorEmail == null || supervisorEmail.isEmpty()) {
         msg.setTo(deanAddress);
       } else {
         msg.setTo(deanAddress, pledge.getSupervisorEmail());
       }
-    } else if (supervisorEmail != null) {
+    } else if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
       msg.setTo(supervisorEmail);
     }
 
