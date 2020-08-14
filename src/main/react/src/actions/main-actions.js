@@ -86,7 +86,7 @@ export const press_modal_button = () => (dispatch, getState) => {
   if (current_page === 'pledge') {
     const { face_covering, good_hygiene, distancing, supervisor_email, account_type, student_employee, email, name } = getState()
     const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
-    const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
+    const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee === false)
 
     if ((face_covering === false || good_hygiene === false || distancing === false) && can_submit) {
       send_pledge_info({ face_covering, good_hygiene, distancing, name, email, supervisor_email })
