@@ -43,10 +43,16 @@ public class MailService {
     msg.setSubject("Coronavirus Honor Pledge Disagreement");
     msg.setFrom(mailFrom);
 
+    String supervisorEmail = pledge.getSupervisorEmail();
+
     if (accountType == STUDENT) {
-      msg.setTo(deanAddress, pledge.getSupervisorEmail());
-    } else {
-      msg.setTo(pledge.getSupervisorEmail());
+      if (supervisorEmail == null) {
+        msg.setTo(deanAddress);
+      } else {
+        msg.setTo(deanAddress, pledge.getSupervisorEmail());
+      }
+    } else if (supervisorEmail != null) {
+      msg.setTo(supervisorEmail);
     }
 
     msg.setText(pledge.summarize());
