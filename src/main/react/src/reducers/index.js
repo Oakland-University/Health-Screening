@@ -38,7 +38,7 @@ const initial_state = {
   name_error: false,
   phone: PHONE,
   phone_error: false,
-  student_employee: ACCOUNT_TYPE === 'guest' ? false : null,
+  student_employee: null,
   submission_time: '',
   supervisor_email: '',
   supervisor_email_error: false,
