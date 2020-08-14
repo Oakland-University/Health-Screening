@@ -84,7 +84,6 @@ public class HealthScreeningController {
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
 
     if (accountType != GUEST) {
-
       pledge.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
       pledge.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       postgres.savePledge(pledge);
@@ -103,12 +102,14 @@ public class HealthScreeningController {
 
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
     info.setAccountType(accountType);
+    String supervisorEmail = info.getPledge().getSupervisorEmail();
 
     if (accountType != GUEST) {
       info.setPidm(personInfo.get("pidm").asString());
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       String email = personInfo.get("mail") == null ? null : personInfo.get("mail").asString();
       info.setEmail(email);
+      info.getPledge().setEmail(email);
 
       //  Only replace the provided phone if it's null or empty
       if (info.getPhone() == null || info.getPhone().isEmpty()) {
@@ -121,8 +122,10 @@ public class HealthScreeningController {
       postgres.savePledge(info.getPledge());
     }
 
-    if (info.shouldStayHome() || info.getPledge().getSupervisorEmail() != null) {
+    if (info.shouldStayHome()) {
       mailService.sendNotificationEmail(info, accountType);
+    } else if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
+      mailService.sendSupervisorCertificate(info);
     }
 
     postgres.saveHealthInfo(info);

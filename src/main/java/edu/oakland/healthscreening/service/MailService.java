@@ -8,6 +8,8 @@ import edu.oakland.healthscreening.model.HealthInfo;
 import edu.oakland.healthscreening.model.Pledge;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -41,10 +43,16 @@ public class MailService {
     msg.setSubject("Coronavirus Honor Pledge Disagreement");
     msg.setFrom(mailFrom);
 
+    String supervisorEmail = pledge.getSupervisorEmail();
+
     if (accountType == STUDENT) {
-      msg.setTo(deanAddress, pledge.getSupervisorEmail());
-    } else {
-      msg.setTo(pledge.getSupervisorEmail());
+      if (supervisorEmail == null || supervisorEmail.isEmpty()) {
+        msg.setTo(deanAddress);
+      } else {
+        msg.setTo(deanAddress, supervisorEmail);
+      }
+    } else if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
+      msg.setTo(supervisorEmail);
     }
 
     msg.setText(pledge.summarize());
@@ -84,6 +92,24 @@ public class MailService {
     if (optionalInfo.isPresent()) {
       sendCertificate(optionalInfo.get());
     }
+  }
+
+  public void sendSupervisorCertificate(HealthInfo info) {
+    SimpleMailMessage msg = new SimpleMailMessage();
+
+    msg.setTo(info.getPledge().getSupervisorEmail());
+    msg.setFrom(mailFrom);
+
+    String dateString = LocalDateTime.now()
+       .format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+    msg.setSubject("Health Screening Certificate");
+    String bodyText =
+        String.format(
+            "Thank you all for doing your part to keep campus healthy!\n\nThe employee, %s, is allowed on campus for the duration of %s.",
+            info.getName(), dateString);
+    msg.setText(bodyText);
+
+    mailSender.send(msg);
   }
 
   private String getEmailSubject(HealthInfo info) {
