@@ -1,6 +1,6 @@
 import { get_user_submission, submit_form, send_pledge_info } from '../api/api'
 
-import { actions, user_statuses, account_types } from '../utils/enums'
+import { actions, user_statuses, account_types, modal_pages } from '../utils/enums'
 
 export const fetch_past_submission = () => (dispatch) => {
   get_user_submission().then((data) => {
@@ -83,7 +83,7 @@ export const press_modal_button = () => (dispatch, getState) => {
 
   let payload = ''
 
-  if (current_page === 'pledge') {
+  if (current_page === modal_pages.PLEDGE) {
     const { face_covering, good_hygiene, distancing, supervisor_email, account_type, student_employee, email, name } = getState()
     const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
     const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee === false)
@@ -93,8 +93,8 @@ export const press_modal_button = () => (dispatch, getState) => {
     }
   }
 
-  if (current_page === 'health-screening') {
-    payload = 'submitted'
+  if (current_page === modal_pages.HEALTH_SCREENING) {
+    payload = modal_pages.SUBMITTED
 
     const {
       fever,

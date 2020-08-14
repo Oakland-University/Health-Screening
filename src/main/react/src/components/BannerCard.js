@@ -172,14 +172,14 @@ const Prompt = (props) => {
   const [open, set_open] = useState(false)
 
   useEffect(() => {
-    if(user_status === 'not-coming') {
+    if(user_status === user_statuses.NOT_COMING) {
       set_open(true)
     }
   }, [user_status])
 
   const handle_close = () => {
     props.set_modal_open(true)
-    dispatch(update_user_status('not-completed'))
+    dispatch(update_user_status(user_statuses.NOT_COMPLETED))
   }
 
   return (
