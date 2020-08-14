@@ -107,7 +107,9 @@ public class HealthScreeningController {
     if (accountType != GUEST) {
       info.setPidm(personInfo.get("pidm").asString());
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
-      info.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
+      String email = personInfo.get("mail") == null ? null : personInfo.get("mail").asString();
+      info.setEmail(email);
+      info.getPledge().setEmail(email);
 
       //  Only replace the provided phone if it's null or empty
       if (info.getPhone() == null || info.getPhone().isEmpty()) {

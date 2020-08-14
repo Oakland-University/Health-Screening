@@ -8,6 +8,8 @@ import edu.oakland.healthscreening.model.HealthInfo;
 import edu.oakland.healthscreening.model.Pledge;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -92,7 +94,8 @@ public class MailService {
     msg.setTo(info.getPledge().getSupervisorEmail());
     msg.setFrom(mailFrom);
 
-    String dateString = new SimpleDateFormat("MM/dd/yy").format(info.getSubmissionTime());
+    String dateString = LocalDateTime.now()
+       .format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
     msg.setSubject("Health Screening Certificate");
     String bodyText =
         String.format(
