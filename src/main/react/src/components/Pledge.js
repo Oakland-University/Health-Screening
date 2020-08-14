@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
   },
   emailDivider: {
-    marginTop: 25
+    marginTop: 10
   },
   emailLabel: {
     marginTop: 10,
@@ -139,6 +139,7 @@ export default function Pledge(props) {
               Please provide your supervisor's email in the field below.
               </Typography>
             <TextField
+              fullWidth
               required
               label='Supervisor Email'
               variant='outlined'
