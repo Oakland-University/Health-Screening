@@ -77,7 +77,6 @@ public class MailService {
     mailSender.send(msg);
   }
 
-
   public void sendGuestCertificate(String name, String email, String phone) throws MailException {
     Optional<HealthInfo> optionalInfo = postgres.getGuestSubmission(name, email, phone);
 
@@ -100,8 +99,7 @@ public class MailService {
     msg.setTo(info.getPledge().getSupervisorEmail());
     msg.setFrom(mailFrom);
 
-    String dateString = LocalDateTime.now()
-       .format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+    String dateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
     msg.setSubject("Health Screening Certificate");
     String bodyText =
         String.format(
