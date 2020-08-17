@@ -50,12 +50,14 @@ public class HealthInfo {
   }
 
   public String summarizeForSupervisor() {
-    return "This is a notification to let you know that " +
-           name +
-          " will not be back at work.\n\n" +
-          "If you have any questions, contact the Oakland University Graham Health Center, 408 Meadow Brook Road, Rochester Hills MI 48309 248-370-4375 fax 248-370-2691\n" +
-          "\nSubmitter Email: " + email  +
-          "\nSubmitter Name: " + name;
+    return "This is a notification to let you know that "
+        + name
+        + " will not be back at work.\n\n"
+        + "If you have any questions, contact the Oakland University Graham Health Center, 408 Meadow Brook Road, Rochester Hills MI 48309 248-370-4375 fax 248-370-2691\n"
+        + "\nSubmitter Email: "
+        + email
+        + "\nSubmitter Name: "
+        + name;
   }
 
   public static RowMapper<HealthInfo> mapper =
