@@ -8,8 +8,7 @@ import edu.oakland.healthscreening.model.HealthInfo;
 import edu.oakland.healthscreening.model.Pledge;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -43,37 +42,39 @@ public class MailService {
     msg.setSubject("Coronavirus Honor Pledge Disagreement");
     msg.setFrom(mailFrom);
 
+    ArrayList<String> emailList = new ArrayList<>();
     String supervisorEmail = pledge.getSupervisorEmail();
 
-    if (accountType == STUDENT) {
-      if (supervisorEmail == null || supervisorEmail.isEmpty()) {
-        msg.setTo(deanAddress);
-      } else {
-        msg.setTo(deanAddress, supervisorEmail);
-      }
-    } else if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
-      msg.setTo(supervisorEmail);
+    if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
+      emailList.add(supervisorEmail);
     }
 
-    msg.setText(pledge.summarize());
+    if (accountType == STUDENT) {
+      emailList.add(deanAddress);
+    }
 
-    log.debug("Sending pledge email:\nfrom: {}\tto: {}", msg.getFrom(), msg.getTo());
+    msg.setTo(emailList.toArray(new String[emailList.size()]));
+
+    msg.setText(pledge.summarize());
     mailSender.send(msg);
   }
 
-  public void sendNotificationEmail(HealthInfo info, AccountType accountType) {
+  // this is for a health-screening potential positive
+  public void emailHealthCenter(HealthInfo info, AccountType accountType) {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setFrom(mailFrom);
     msg.setSubject(getEmailSubject(info));
     msg.setText(info.summarize());
     msg.setTo(healthCenterAddress);
+    mailSender.send(msg);
+  }
 
-    if (info.getPledge().getSupervisorEmail() != null
-        && !info.getPledge().getSupervisorEmail().isEmpty()) {
-      sendSupervisorNotification(info);
-    }
-
-    log.debug("Sending screening email:\nfrom: {}\tto: {}", msg.getFrom(), msg.getTo());
+  public void emailSupervisor(HealthInfo info) {
+    SimpleMailMessage msg = new SimpleMailMessage();
+    msg.setFrom(mailFrom);
+    msg.setSubject("Employee Health Screening");
+    msg.setTo(info.getPledge().getSupervisorEmail());
+    msg.setText(info.supervisorSummary());
     mailSender.send(msg);
   }
 
@@ -93,23 +94,6 @@ public class MailService {
     }
   }
 
-  public void sendSupervisorCertificate(HealthInfo info) {
-    SimpleMailMessage msg = new SimpleMailMessage();
-
-    msg.setTo(info.getPledge().getSupervisorEmail());
-    msg.setFrom(mailFrom);
-
-    String dateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
-    msg.setSubject("Health Screening Certificate");
-    String bodyText =
-        String.format(
-            "Thank you all for doing your part to keep campus healthy!\n\nThe employee, %s, is allowed on campus for the duration of %s.",
-            info.getName(), dateString);
-    msg.setText(bodyText);
-
-    mailSender.send(msg);
-  }
-
   private String getEmailSubject(HealthInfo info) {
 
     switch (info.getAccountType()) {
@@ -121,8 +105,6 @@ public class MailService {
         return "Staff Health Screening";
       case FACULTY:
         return "Faculty Health Screening";
-      case STUDENT_EMPLOYEE:
-        return "Student Employee Health Screening";
       default:
         return "Health Screening";
     }
@@ -150,15 +132,6 @@ public class MailService {
       msg.setText(bodyText);
     }
 
-    mailSender.send(msg);
-  }
-
-  private void sendSupervisorNotification(HealthInfo info) {
-    SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setFrom(mailFrom);
-    msg.setSubject(getEmailSubject(info));
-    msg.setText(info.summarizeForSupervisor());
-    msg.setTo(info.getPledge().getSupervisorEmail());
     mailSender.send(msg);
   }
 }
