@@ -9,7 +9,6 @@ import edu.oakland.healthscreening.model.Pledge;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,16 +55,18 @@ public class MailService {
     msg.setTo(emailList.toArray(new String[emailList.size()]));
 
     msg.setText(pledge.summarize());
+    log.debug("Sending mail to: {}\nFor {}'s pledge disagreement", msg.getTo(), pledge.getEmail());
     mailSender.send(msg);
   }
 
-  // this is for a health-screening potential positive
   public void emailHealthCenter(HealthInfo info, AccountType accountType) {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setFrom(mailFrom);
     msg.setSubject(getEmailSubject(info));
     msg.setText(info.summarize());
     msg.setTo(healthCenterAddress);
+    log.debug(
+        "Sending mail to: {}\nFor {}'s potential postive screening", msg.getTo(), info.getName());
     mailSender.send(msg);
   }
 
@@ -75,23 +76,26 @@ public class MailService {
     msg.setSubject("Employee Health Screening");
     msg.setTo(info.getPledge().getSupervisorEmail());
     msg.setText(info.supervisorSummary());
+    log.debug("Sending mail to: {}\nWho is {}'s supervisor'", msg.getTo(), info.getName());
     mailSender.send(msg);
   }
 
   public void sendGuestCertificate(String name, String email, String phone) throws MailException {
-    Optional<HealthInfo> optionalInfo = postgres.getGuestSubmission(name, email, phone);
-
-    if (optionalInfo.isPresent()) {
-      sendCertificate(optionalInfo.get());
-    }
+    postgres
+        .getGuestSubmission(name, email, phone)
+        .ifPresent(
+            info -> {
+              sendCertificate(info);
+            });
   }
 
   public void sendAuthenticatedCertificate(String pidm) throws MailException {
-    Optional<HealthInfo> optionalInfo = postgres.getRecentSubmission(pidm);
-
-    if (optionalInfo.isPresent()) {
-      sendCertificate(optionalInfo.get());
-    }
+    postgres
+        .getRecentSubmission(pidm)
+        .ifPresent(
+            info -> {
+              sendCertificate(info);
+            });
   }
 
   private String getEmailSubject(HealthInfo info) {
@@ -132,6 +136,7 @@ public class MailService {
       msg.setText(bodyText);
     }
 
+    log.debug("Sending certificate to: {}\tWith stay_home = ", msg.getTo(), info.shouldStayHome());
     mailSender.send(msg);
   }
 }
