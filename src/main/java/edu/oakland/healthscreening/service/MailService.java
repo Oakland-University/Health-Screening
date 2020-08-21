@@ -8,9 +8,7 @@ import edu.oakland.healthscreening.model.HealthInfo;
 import edu.oakland.healthscreening.model.Pledge;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,71 +41,61 @@ public class MailService {
     msg.setSubject("Coronavirus Honor Pledge Disagreement");
     msg.setFrom(mailFrom);
 
+    ArrayList<String> emailList = new ArrayList<>();
     String supervisorEmail = pledge.getSupervisorEmail();
 
-    if (accountType == STUDENT) {
-      if (supervisorEmail == null || supervisorEmail.isEmpty()) {
-        msg.setTo(deanAddress);
-      } else {
-        msg.setTo(deanAddress, supervisorEmail);
-      }
-    } else if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
-      msg.setTo(supervisorEmail);
+    if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
+      emailList.add(supervisorEmail);
     }
 
-    msg.setText(pledge.summarize());
+    if (accountType == STUDENT) {
+      emailList.add(deanAddress);
+    }
 
-    log.debug("Sending pledge email:\nfrom: {}\tto: {}", msg.getFrom(), msg.getTo());
+    msg.setTo(emailList.toArray(new String[emailList.size()]));
+
+    msg.setText(pledge.summarize());
+    log.debug("Sending mail to: {}\nFor {}'s pledge disagreement", msg.getTo(), pledge.getEmail());
     mailSender.send(msg);
   }
 
-  public void sendNotificationEmail(HealthInfo info, AccountType accountType) {
+  public void emailHealthCenter(HealthInfo info, AccountType accountType) {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setFrom(mailFrom);
     msg.setSubject(getEmailSubject(info));
     msg.setText(info.summarize());
     msg.setTo(healthCenterAddress);
+    log.debug(
+        "Sending mail to: {}\nFor {}'s potential postive screening", msg.getTo(), info.getName());
+    mailSender.send(msg);
+  }
 
-    if (info.getPledge().getSupervisorEmail() != null
-        && !info.getPledge().getSupervisorEmail().isEmpty()) {
-      sendSupervisorNotification(info);
-    }
-
-    log.debug("Sending screening email:\nfrom: {}\tto: {}", msg.getFrom(), msg.getTo());
+  public void emailSupervisor(HealthInfo info) {
+    SimpleMailMessage msg = new SimpleMailMessage();
+    msg.setFrom(mailFrom);
+    msg.setSubject("Employee Health Screening");
+    msg.setTo(info.getPledge().getSupervisorEmail());
+    msg.setText(info.supervisorSummary());
+    log.debug("Sending mail to: {}\nWho is {}'s supervisor'", msg.getTo(), info.getName());
     mailSender.send(msg);
   }
 
   public void sendGuestCertificate(String name, String email, String phone) throws MailException {
-    Optional<HealthInfo> optionalInfo = postgres.getGuestSubmission(name, email, phone);
-
-    if (optionalInfo.isPresent()) {
-      sendCertificate(optionalInfo.get());
-    }
+    postgres
+        .getGuestSubmission(name, email, phone)
+        .ifPresent(
+            info -> {
+              sendCertificate(info);
+            });
   }
 
   public void sendAuthenticatedCertificate(String pidm) throws MailException {
-    Optional<HealthInfo> optionalInfo = postgres.getRecentSubmission(pidm);
-
-    if (optionalInfo.isPresent()) {
-      sendCertificate(optionalInfo.get());
-    }
-  }
-
-  public void sendSupervisorCertificate(HealthInfo info) {
-    SimpleMailMessage msg = new SimpleMailMessage();
-
-    msg.setTo(info.getPledge().getSupervisorEmail());
-    msg.setFrom(mailFrom);
-
-    String dateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
-    msg.setSubject("Health Screening Certificate");
-    String bodyText =
-        String.format(
-            "Thank you all for doing your part to keep campus healthy!\n\nThe employee, %s, is allowed on campus for the duration of %s.",
-            info.getName(), dateString);
-    msg.setText(bodyText);
-
-    mailSender.send(msg);
+    postgres
+        .getRecentSubmission(pidm)
+        .ifPresent(
+            info -> {
+              sendCertificate(info);
+            });
   }
 
   private String getEmailSubject(HealthInfo info) {
@@ -121,8 +109,6 @@ public class MailService {
         return "Staff Health Screening";
       case FACULTY:
         return "Faculty Health Screening";
-      case STUDENT_EMPLOYEE:
-        return "Student Employee Health Screening";
       default:
         return "Health Screening";
     }
@@ -150,15 +136,7 @@ public class MailService {
       msg.setText(bodyText);
     }
 
-    mailSender.send(msg);
-  }
-
-  private void sendSupervisorNotification(HealthInfo info) {
-    SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setFrom(mailFrom);
-    msg.setSubject(getEmailSubject(info));
-    msg.setText(info.summarizeForSupervisor());
-    msg.setTo(info.getPledge().getSupervisorEmail());
+    log.debug("Sending certificate to: {}\tWith stay_home = ", msg.getTo(), info.shouldStayHome());
     mailSender.send(msg);
   }
 }

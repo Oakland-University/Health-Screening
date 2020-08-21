@@ -1,6 +1,8 @@
 package edu.oakland.healthscreening.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import javax.validation.constraints.Email;
@@ -49,20 +51,30 @@ public class HealthInfo {
         + this.responseSummary();
   }
 
-  public String summarizeForSupervisor() {
-    return "This is a notification to let you know that "
-        + name
-        + " will not be back at work.\n\n"
-        + "If you have any questions, contact the Oakland University Graham Health Center, 408 Meadow Brook Road, Rochester Hills MI 48309 248-370-4375 fax 248-370-2691\n"
-        + "\nSubmitter Email: "
-        + email
-        + "\nSubmitter Name: "
-        + name;
+  public String supervisorSummary() {
+    if (shouldStayHome()) {
+      return "This is a notification to let you know that "
+          + name
+          + " will not be back at work.\n\n"
+          + "If you have any questions, contact the Oakland University Graham Health Center, 408 Meadow Brook Road, Rochester Hills MI 48309 248-370-4375 fax 248-370-2691\n"
+          + "\nSubmitter Email: "
+          + email
+          + "\nSubmitter Name: "
+          + name;
+    } else {
+      final String dateString =
+          LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+      return "Thank you all for doing your part to keep campus healthy!\n\n"
+          + "The employee, "
+          + name
+          + "is allowed on campus for the duration of "
+          + dateString;
+    }
   }
 
   public static RowMapper<HealthInfo> mapper =
       (rs, rowNum) -> {
-        HealthInfo info = new HealthInfo();
+        final HealthInfo info = new HealthInfo();
 
         info.setAccountType(AccountType.from(rs.getString("account_type")));
         info.setPidm(rs.getString("pidm"));
@@ -78,7 +90,7 @@ public class HealthInfo {
       };
 
   private String responseSummary() {
-    List<String> summaryList = new LinkedList<>();
+    final List<String> summaryList = new LinkedList<>();
 
     if (coughing) {
       summaryList.add("has a cough or shortness of breath");

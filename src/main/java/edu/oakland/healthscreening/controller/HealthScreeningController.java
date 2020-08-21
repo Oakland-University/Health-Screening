@@ -57,24 +57,6 @@ public class HealthScreeningController {
     log.error("Unspecified exception", e);
   }
 
-  private AccountType getAccountFromRequest(Claim groupsClaim) {
-    if (groupsClaim == null) {
-      return GUEST;
-    }
-
-    List<String> groups = groupsClaim.asList(String.class);
-
-    if (groups.contains("OU Faculty")) {
-      return FACULTY;
-    } else if (groups.contains("OU Staff")) {
-      return STAFF;
-    } else if (groups.contains("OU Student")) {
-      return STUDENT;
-    }
-
-    return GUEST;
-  }
-
   @PostMapping("pledge")
   public void saveHealthInfo(@Valid @RequestBody Pledge pledge, HttpServletRequest request)
       throws SoffitAuthException {
@@ -92,6 +74,23 @@ public class HealthScreeningController {
     if (!pledge.fullAgreement()) {
       mailService.sendPledgeDisagreement(pledge, accountType);
     }
+  }
+
+  @GetMapping("campus-status")
+  public Optional<HealthInfo> getCampusStatus(HttpServletRequest request)
+      throws SoffitAuthException {
+    String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
+    String email = authorizer.getClaimFromJWE(request, "mail").asString();
+
+    return postgres.getRecentSubmission(pidm, email);
+  }
+
+  @GetMapping("supervisor-email")
+  public Optional<String> getSupervisorEmail(HttpServletRequest request)
+      throws SoffitAuthException {
+    String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
+
+    return banner.getSupervisorEmail(pidm);
   }
 
   @PostMapping("health-info")
@@ -123,9 +122,10 @@ public class HealthScreeningController {
     }
 
     if (info.shouldStayHome()) {
-      mailService.sendNotificationEmail(info, accountType);
-    } else if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
-      mailService.sendSupervisorCertificate(info);
+      mailService.emailHealthCenter(info, accountType);
+    }
+    if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
+      mailService.emailSupervisor(info);
     }
 
     postgres.saveHealthInfo(info);
@@ -145,15 +145,6 @@ public class HealthScreeningController {
 
   @GetMapping("health-info/current-user")
   public Optional<HealthInfo> getUserInfo(HttpServletRequest request) throws SoffitAuthException {
-    String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
-    String email = authorizer.getClaimFromJWE(request, "mail").asString();
-
-    return postgres.getRecentSubmission(pidm, email);
-  }
-
-  @GetMapping("campus-status")
-  public Optional<HealthInfo> getCampusStatus(HttpServletRequest request)
-      throws SoffitAuthException {
     String pidm = authorizer.getClaimFromJWE(request, "pidm").asString();
     String email = authorizer.getClaimFromJWE(request, "mail").asString();
 
@@ -191,13 +182,21 @@ public class HealthScreeningController {
     }
   }
 
-  @GetMapping("supervisor-email")
-  public Optional<String> getSupervisorEmail(HttpServletRequest request)
-      throws SoffitAuthException {
-    Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
+  private AccountType getAccountFromRequest(Claim groupsClaim) {
+    if (groupsClaim == null) {
+      return GUEST;
+    }
 
-    Claim pidm = personInfo.get("pidm");
+    List<String> groups = groupsClaim.asList(String.class);
 
-    return banner.getSupervisorEmail(pidm.asString());
+    if (groups.contains("OU Faculty")) {
+      return FACULTY;
+    } else if (groups.contains("OU Staff")) {
+      return STAFF;
+    } else if (groups.contains("OU Student")) {
+      return STUDENT;
+    }
+
+    return GUEST;
   }
 }
