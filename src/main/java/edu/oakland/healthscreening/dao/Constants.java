@@ -98,28 +98,4 @@ public class Constants {
               + " WHERE                                         "
               + "   age(submission_time) >= INTERVAL '30 days'  ")
           .replaceAll("\\s+", " ");
-
-  public static final String GET_BANNER_SUPERVISOR =
-      (" SELECT                                                                             "
-              + "   GOREMAL_EMAIL_ADDRESS                                                   "
-              + " FROM                                                                      "
-              + "   GENERAL.GOREMAL                                                         "
-              + " WHERE                                                                     "
-              + "   GOREMAL_EMAL_CODE = 'OAKU'                                              "
-              + "   AND GOREMAL_PIDM = (                                                    "
-              + "         SELECT                                                            "
-              + "            nbrjobs_a.NBRJOBS_SUPERVISOR_PIDM                              "
-              + "          FROM                                                             "
-              + "            POSNCTL.NBRJOBS nbrjobs_a                                      "
-              + "          WHERE                                                            "
-              + "            nbrjobs_a.NBRJOBS_PIDM = :pidm                                 "
-              + "            AND nbrjobs_a.NBRJOBS_SUFF = '00'                              "
-              + "            AND nbrjobs_a.NBRJOBS_EFFECTIVE_DATE = (                       "
-              + "                   SELECT                                                  "
-              + "                       MAX(nbrjobs_b.NBRJOBS_EFFECTIVE_DATE)               "
-              + "                     FROM                                                  "
-              + "                       POSNCTL.NBRJOBS nbrjobs_b                           "
-              + "                     WHERE                                                 "
-              + "                       nbrjobs_b.NBRJOBS_PIDM = nbrjobs_a.NBRJOBS_PIDM ) ) ")
-          .replaceAll("\\s+", " ");
 }

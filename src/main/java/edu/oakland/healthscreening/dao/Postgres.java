@@ -8,12 +8,10 @@ import edu.oakland.healthscreening.model.Pledge;
 
 import java.util.List;
 import java.util.Optional;
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,18 +19,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class Postgres {
 
-  @Autowired JdbcTemplate postgresJdbcTemplate;
+  @Autowired JdbcTemplate jdbcTemplate;
 
   private final Logger log = LoggerFactory.getLogger("health-screening");
 
-  @Autowired
-  @Qualifier("postgresDataSource")
-  public void Postgres(DataSource dataSource) {
-    this.postgresJdbcTemplate = new JdbcTemplate(dataSource);
-  }
-
-  public void saveHealthInfo(HealthInfo info) {
-    postgresJdbcTemplate.update(
+  public void saveHealthInfo(final HealthInfo info) {
+    jdbcTemplate.update(
         INSERT_HEALTH_INFO,
         info.getAccountType().toString(),
         info.getPidm(),
@@ -44,8 +36,8 @@ public class Postgres {
         info.isExposed());
   }
 
-  public void saveAnalyticInfo(HealthInfo info) {
-    postgresJdbcTemplate.update(
+  public void saveAnalyticInfo(final HealthInfo info) {
+    jdbcTemplate.update(
         INSERT_ANALYTICS,
         info.getAccountType().toString(),
         info.isCoughing(),
@@ -53,8 +45,8 @@ public class Postgres {
         info.isExposed());
   }
 
-  public void savePledge(Pledge pledge) {
-    postgresJdbcTemplate.update(
+  public void savePledge(final Pledge pledge) {
+    jdbcTemplate.update(
         INSERT_PLEDGE,
         pledge.getEmail(),
         pledge.isFaceCovering(),
@@ -62,51 +54,50 @@ public class Postgres {
         pledge.isDistancing());
   }
 
-  public AnalyticInfo getAnalyticInfo(String interval) {
-    return postgresJdbcTemplate.queryForObject(GET_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
+  public AnalyticInfo getAnalyticInfo(final String interval) {
+    return jdbcTemplate.queryForObject(GET_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
   }
 
   public List<HealthInfo> getHealthInfo() {
-    return postgresJdbcTemplate.query(GET_ALL_RESPONSES, HealthInfo.mapper);
+    return jdbcTemplate.query(GET_ALL_RESPONSES, HealthInfo.mapper);
   }
 
-  public Optional<HealthInfo> getRecentSubmission(String pidm, String email) {
+  public Optional<HealthInfo> getRecentSubmission(final String pidm, final String email) {
     try {
-      Pledge pledge = postgresJdbcTemplate.queryForObject(GET_RECENT_PLEDGE, Pledge.mapper, email);
+      final Pledge pledge = jdbcTemplate.queryForObject(GET_RECENT_PLEDGE, Pledge.mapper, email);
       HealthInfo info = new HealthInfo();
 
       if (pledge.fullAgreement()) {
-        info = postgresJdbcTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm);
+        info = jdbcTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm);
       }
 
       info.setPledge(pledge);
 
       return Optional.of(info);
-    } catch (EmptyResultDataAccessException e) {
+    } catch (final EmptyResultDataAccessException e) {
       return Optional.empty();
     }
   }
 
-  public Optional<HealthInfo> getRecentSubmission(String pidm) {
+  public Optional<HealthInfo> getRecentSubmission(final String pidm) {
     try {
-      return Optional.of(
-          postgresJdbcTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
-    } catch (EmptyResultDataAccessException e) {
+      return Optional.of(jdbcTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
+    } catch (final EmptyResultDataAccessException e) {
       return Optional.empty();
     }
   }
 
-  public Optional<HealthInfo> getGuestSubmission(String name, String email, String phone) {
+  public Optional<HealthInfo> getGuestSubmission(
+      final String name, final String email, final String phone) {
     try {
       return Optional.of(
-          postgresJdbcTemplate.queryForObject(
-              GET_GUEST_INFO, HealthInfo.mapper, name, email, phone));
-    } catch (EmptyResultDataAccessException e) {
+          jdbcTemplate.queryForObject(GET_GUEST_INFO, HealthInfo.mapper, name, email, phone));
+    } catch (final EmptyResultDataAccessException e) {
       return Optional.empty();
     }
   }
 
   public void deleteOldRecords() {
-    postgresJdbcTemplate.update(DELETE_OLD_RECORDS);
+    jdbcTemplate.update(DELETE_OLD_RECORDS);
   }
 }
