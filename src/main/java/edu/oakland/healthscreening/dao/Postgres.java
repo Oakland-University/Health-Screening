@@ -41,17 +41,20 @@ public class Postgres {
         new SimpleJdbcCall(jdbcTemplate)
             .withSchemaName("screening")
             .withFunctionName("save_health_info")
-            .withoutProcedureColumnMetaDataAccess();
-      call.addDeclaredParameter(new SqlParameter("p_account_type", Types.VARCHAR));
-      call.addDeclaredParameter(new SqlParameter("p_account_type", Types.VARCHAR));
-      call.addDeclaredParameter(new SqlParameter("p_pidm", Types.VARCHAR));
-      call.addDeclaredParameter(new SqlParameter("p_email", Types.VARCHAR));
-      call.addDeclaredParameter(new SqlParameter("p_phone", Types.VARCHAR));
-      call.addDeclaredParameter(new SqlParameter("p_name", Types.VARCHAR));
-      call.addDeclaredParameter(new SqlParameter("p_is_coughing", Types.BOOLEAN));
-      call.addDeclaredParameter(new SqlParameter("p_is_feverish", Types.BOOLEAN));
-      call.addDeclaredParameter(new SqlParameter("p_is_exposed",  Types.BOOLEAN));
-      call.addDeclaredParameter(new SqlParameter("p_supervisor_email", Types.VARCHAR));
+            .withoutProcedureColumnMetaDataAccess()
+            .declareParameters(
+
+      new SqlParameter("p_account_type", Types.VARCHAR),
+      new SqlParameter("p_account_type", Types.VARCHAR),
+      new SqlParameter("p_pidm", Types.VARCHAR),
+      new SqlParameter("p_email", Types.VARCHAR),
+      new SqlParameter("p_phone", Types.VARCHAR),
+      new SqlParameter("p_name", Types.VARCHAR),
+      new SqlParameter("p_is_coughing", Types.BOOLEAN),
+      new SqlParameter("p_is_feverish", Types.BOOLEAN),
+      new SqlParameter("p_is_exposed",  Types.BOOLEAN),
+      new SqlParameter("p_supervisor_email", Types.VARCHAR)
+            );
 
     final SqlParameterSource parameterSource = new MapSqlParameterSource()
       .addValue("p_account_type", info.getAccountType().toString())
