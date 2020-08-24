@@ -63,6 +63,30 @@ export const get_user_submission = async () => {
   }
 }
 
+export const get_supervisor_email = async () => {
+  if (IS_DEMO) {
+    return 'demo-supervisor'
+  }
+
+  try {
+    const response = await fetch(
+      '/health-screening/api/v1/supervisor-email',
+      {
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+        method: 'GET',
+      }
+    )
+    return await response.json()
+  } catch (err) {
+    return err
+  }
+}
+
 export const send_certificate_email = async (name, email, phone) => {
   if (IS_DEMO) {
     return

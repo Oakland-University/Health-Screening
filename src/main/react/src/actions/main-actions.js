@@ -1,4 +1,4 @@
-import { get_user_submission, submit_form, send_pledge_info } from '../api/api'
+import { get_user_submission, submit_form, send_pledge_info, get_supervisor_email } from '../api/api'
 
 import { actions, user_statuses, account_types, modal_pages } from '../utils/enums'
 
@@ -19,6 +19,14 @@ export const fetch_past_submission = () => (dispatch) => {
       }
     }
       dispatch({ type: actions.GET_PREVIOUS_HEALTH_INFO, payload: user_status })
+  })
+}
+
+export const fetch_supervisor_email = () => (dispatch) => {
+  get_supervisor_email().then(data => {
+    if (data !== null && data !== undefined) {
+      dispatch({type: actions.UPDATE_SUPERVISOR_EMAIL, payload: data})
+    }
   })
 }
 
