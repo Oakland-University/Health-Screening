@@ -63,7 +63,7 @@ begin
     values
         (cast(in_account_type as screening.account_type), in_is_coughing, in_is_feverish, in_is_exposed);
 
-    -- Update supervisor email if it doesn't match the current record
+-- Update supervisor email if it doesn't match the current record
 
     select
         supervisor_email
@@ -74,12 +74,12 @@ begin
     where
         employee_supervisor.email = in_email;
 
-    if old_supervisor_email ISNULL then
+    if old_supervisor_email ISNULL and in_supervisor_email IS NOT NULL then
       insert into screening.employee_supervisor
         (email, supervisor_email)
       values
         (in_email, in_supervisor_email);
-    elseif in_supervisor_email <> old_supervisor_email then
+    elseif in_supervisor_email <> old_supervisor_email and in_supervisor_email IS NOT NULL then
         update
             screening.employee_supervisor
         set

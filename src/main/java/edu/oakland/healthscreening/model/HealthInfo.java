@@ -3,10 +3,8 @@ package edu.oakland.healthscreening.model;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
@@ -32,7 +30,6 @@ public class HealthInfo {
   private boolean exposed;
   private Timestamp submissionTime;
   private String supervisorEmail;
-  private Supervisor supervisor;
   private Pledge pledge;
 
   public boolean shouldStayHome() {
@@ -91,20 +88,6 @@ public class HealthInfo {
 
         return info;
       };
-
-  public Map<String, Object> toMap() {
-    final HashMap<String, Object> map = new HashMap<>(16);
-    map.put("account_type", accountType.toString());
-    map.put("pidm", pidm);
-    map.put("name", name);
-    map.put("phone", phone);
-    map.put("email", email);
-    map.put("is_coughing", coughing);
-    map.put("is_feverish", feverish);
-    map.put("is_exposed", exposed);
-    map.put("supervisor_email", "test email");
-    return map;
-  }
 
   private String responseSummary() {
     final List<String> summaryList = new LinkedList<>();
