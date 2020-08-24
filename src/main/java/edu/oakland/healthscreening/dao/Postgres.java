@@ -56,7 +56,7 @@ public class Postgres {
             .addValue("p_is_coughing", info.isCoughing())
             .addValue("p_is_feverish", info.isFeverish())
             .addValue("p_is_exposed", info.isExposed())
-            .addValue("p_supervisor_email", "test_email_value");
+            .addValue("p_supervisor_email", info.getSupervisorEmail());
 
     saveHealthInfoCall.executeFunction(null, parameterSource);
   }

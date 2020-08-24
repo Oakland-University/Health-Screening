@@ -98,6 +98,7 @@ public class HealthScreeningController {
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
     info.setAccountType(accountType);
     String supervisorEmail = info.getPledge().getSupervisorEmail();
+    info.setSupervisorEmail(supervisorEmail);
 
     if (accountType != GUEST) {
       info.setPidm(personInfo.get("pidm").asString());
