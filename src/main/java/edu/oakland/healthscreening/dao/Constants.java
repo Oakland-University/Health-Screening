@@ -2,20 +2,6 @@ package edu.oakland.healthscreening.dao;
 
 public class Constants {
 
-  public static final String INSERT_HEALTH_INFO =
-      (" INSERT INTO screening.health_screening                                                     "
-              + "   (account_type, pidm, email, name, phone, is_coughing, is_feverish, is_exposed)  "
-              + " VALUES                                                                            "
-              + "   (CAST(? as screening.account_type), ?, ?, ?, ?, ?, ?, ?)                        ")
-          .replaceAll("\\s+", " ");
-
-  public static final String INSERT_ANALYTICS =
-      (" INSERT INTO screening.analytics                                                            "
-              + "   (account_type, is_coughing, is_feverish, is_exposed)                            "
-              + " VALUES                                                                            "
-              + "   (CAST(? as screening.account_type), ?, ?, ?)                                    ")
-          .replaceAll("\\s+", " ");
-
   public static final String INSERT_PLEDGE =
       (" INSERT INTO screening.pledge                                                               "
               + "   (email, face_covering, good_hygiene, distancing)                                 "

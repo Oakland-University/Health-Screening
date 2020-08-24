@@ -125,7 +125,6 @@ public class HealthScreeningController {
     }
 
     postgres.saveHealthInfo(info);
-    postgres.saveAnalyticInfo(info);
   }
 
   @GetMapping("health-info")

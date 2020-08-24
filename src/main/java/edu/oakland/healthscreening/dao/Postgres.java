@@ -6,7 +6,9 @@ import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
 import edu.oakland.healthscreening.model.Pledge;
 
+import java.sql.Types;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -14,6 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.SqlTypeValue;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,25 +31,40 @@ public class Postgres {
   private final Logger log = LoggerFactory.getLogger("health-screening");
 
   public void saveHealthInfo(final HealthInfo info) {
-    jdbcTemplate.update(
-        INSERT_HEALTH_INFO,
-        info.getAccountType().toString(),
-        info.getPidm(),
-        info.getEmail(),
-        info.getName(),
-        info.getPhone(),
-        info.isCoughing(),
-        info.isFeverish(),
-        info.isExposed());
-  }
+    final Map<String, Object> paramMap = info.toMap();
 
-  public void saveAnalyticInfo(final HealthInfo info) {
-    jdbcTemplate.update(
-        INSERT_ANALYTICS,
-        info.getAccountType().toString(),
-        info.isCoughing(),
-        info.isFeverish(),
-        info.isExposed());
+    System.out.println("Saving health info");
+    System.out.println(paramMap);
+    log.debug("Saving health info: {}", paramMap);
+
+    final SimpleJdbcCall call =
+        new SimpleJdbcCall(jdbcTemplate)
+            .withSchemaName("screening")
+            .withFunctionName("save_health_info")
+            .withoutProcedureColumnMetaDataAccess();
+      call.addDeclaredParameter(new SqlParameter("p_account_type", Types.VARCHAR));
+      call.addDeclaredParameter(new SqlParameter("p_account_type", Types.VARCHAR));
+      call.addDeclaredParameter(new SqlParameter("p_pidm", Types.VARCHAR));
+      call.addDeclaredParameter(new SqlParameter("p_email", Types.VARCHAR));
+      call.addDeclaredParameter(new SqlParameter("p_phone", Types.VARCHAR));
+      call.addDeclaredParameter(new SqlParameter("p_name", Types.VARCHAR));
+      call.addDeclaredParameter(new SqlParameter("p_is_coughing", Types.BOOLEAN));
+      call.addDeclaredParameter(new SqlParameter("p_is_feverish", Types.BOOLEAN));
+      call.addDeclaredParameter(new SqlParameter("p_is_exposed",  Types.BOOLEAN));
+      call.addDeclaredParameter(new SqlParameter("p_supervisor_email", Types.VARCHAR));
+
+    final SqlParameterSource parameterSource = new MapSqlParameterSource()
+      .addValue("p_account_type", info.getAccountType().toString())
+      .addValue("p_pidm", info.getPidm())
+      .addValue("p_email", info.getEmail())
+      .addValue("p_phone", info.getPhone())
+      .addValue("p_name", info.getName())
+      .addValue("p_is_coughing", info.isCoughing())
+      .addValue("p_is_feverish", info.isFeverish())
+      .addValue("p_is_exposed", info.isExposed())
+      .addValue("p_supervisor_email", "test_email_value");
+
+    call.execute(parameterSource);
   }
 
   public void savePledge(final Pledge pledge) {
