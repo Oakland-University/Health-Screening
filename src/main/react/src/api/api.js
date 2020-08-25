@@ -92,7 +92,7 @@ export const send_certificate_email = async (name, email, phone) => {
     return
   }
 
-  const query_params = `?name=${name}&email=${email}&phone=${phone}`
+  const query_params = `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`
 
   try {
     const response = await fetch(
