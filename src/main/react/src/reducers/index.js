@@ -96,7 +96,7 @@ export default function reducer(state = initial_state, action) {
       return { ...state, user_status: action.payload }
     }
     case CLEAR_MODAL: {
-      return { ...initial_state, user_status: user_statuses.DISMISSED }
+      return { ...initial_state, user_status: user_statuses.DISMISSED, supervisor_email: state.supervisor_email }
     }
     case NEXT_MODAL_PAGE: {
       const current_modal_page = state.modal_page

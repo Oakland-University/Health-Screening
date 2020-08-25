@@ -67,7 +67,7 @@ public class HealthInfo {
       return "Thank you all for doing your part to keep campus healthy!\n\n"
           + "The employee, "
           + name
-          + "is allowed on campus for the duration of "
+          + " is allowed on campus for the duration of "
           + dateString;
     }
   }
