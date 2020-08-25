@@ -86,7 +86,7 @@ public class HealthScreeningController {
   @GetMapping("supervisor-email")
   public Optional<String> getSupervisorEmail(HttpServletRequest request)
       throws SoffitAuthException {
-    return Optional.of("test@oakland.edu");
+    return postgres.getSupervisorEmail(authorizer.getClaimFromJWE(request, "mail").asString());
   }
 
   @PostMapping("health-info")

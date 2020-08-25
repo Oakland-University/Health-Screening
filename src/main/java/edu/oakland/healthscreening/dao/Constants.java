@@ -37,6 +37,15 @@ public class Constants {
               + "     submission_time DESC          ")
           .replaceAll("\\s+", " ");
 
+  public static final String GET_SUPERVISOR_EMAIL =
+      (" SELECT                                     "
+              + "     supervisor_email              "
+              + " FROM                              "
+              + "     screening.employee_supervisor "
+              + " WHERE                             "
+              + "     email = ?                     ")
+          .replaceAll("\\s+", " ");
+
   public static final String GET_RECENT_INFO =
       (" SELECT                                     "
               + "   *                                        "

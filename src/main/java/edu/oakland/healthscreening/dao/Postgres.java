@@ -113,6 +113,15 @@ public class Postgres {
     }
   }
 
+  public Optional<String> getSupervisorEmail(String email) {
+    try {
+      return Optional.of(
+          jdbcTemplate.queryForObject(GET_SUPERVISOR_EMAIL, String.class, email));
+    } catch (final EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
+  }
+
   public void deleteOldRecords() {
     jdbcTemplate.update(DELETE_OLD_RECORDS);
   }
