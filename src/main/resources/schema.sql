@@ -39,6 +39,58 @@ CREATE TABLE IF NOT EXISTS screening.pledge (
 );
 
 
+CREATE TABLE IF NOT EXISTS screening.employee_supervisor (
+    email text primary key,
+    supervisor_email text not null
+);
+
+create function screening.save_health_info(in_account_type text, in_pidm text, in_email text, in_phone text, in_name text, in_is_coughing boolean, in_is_feverish boolean, in_is_exposed boolean, in_supervisor_email text) returns void as $$
+declare
+    old_supervisor_email text;
+begin
+
+    -- Insert into the health-screening table
+
+    insert into screening.health_screening
+        (account_type, pidm, email, name, phone, is_coughing, is_feverish, is_exposed)
+    values
+        (cast(in_account_type as screening.account_type), in_pidm, in_email, in_name, in_phone, in_is_coughing, in_is_feverish, in_is_exposed);
+
+    -- Insert into the analytics table
+
+    insert into screening.analytics
+        (account_type, is_coughing, is_feverish, is_exposed)
+    values
+        (cast(in_account_type as screening.account_type), in_is_coughing, in_is_feverish, in_is_exposed);
+
+-- Update supervisor email if it doesn't match the current record
+
+    select
+        supervisor_email
+    into
+        old_supervisor_email
+    from
+        screening.employee_supervisor
+    where
+        employee_supervisor.email = in_email;
+
+    if old_supervisor_email ISNULL and in_supervisor_email IS NOT NULL then
+      insert into screening.employee_supervisor
+        (email, supervisor_email)
+      values
+        (in_email, in_supervisor_email);
+    elseif in_supervisor_email <> old_supervisor_email and in_supervisor_email IS NOT NULL then
+        update
+            screening.employee_supervisor
+        set
+            supervisor_email = in_supervisor_email
+        where
+            employee_supervisor.email = in_email;
+    end if;
+end;
+$$ language plpgsql;
+
+
 /* For converting from the original schema to the current one */
 
 alter type screening.account_type add value 'faculty' after 'student';

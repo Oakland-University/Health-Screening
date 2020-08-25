@@ -2,20 +2,6 @@ package edu.oakland.healthscreening.dao;
 
 public class Constants {
 
-  public static final String INSERT_HEALTH_INFO =
-      (" INSERT INTO screening.health_screening                                                     "
-              + "   (account_type, pidm, email, name, phone, is_coughing, is_feverish, is_exposed)  "
-              + " VALUES                                                                            "
-              + "   (CAST(? as screening.account_type), ?, ?, ?, ?, ?, ?, ?)                        ")
-          .replaceAll("\\s+", " ");
-
-  public static final String INSERT_ANALYTICS =
-      (" INSERT INTO screening.analytics                                                            "
-              + "   (account_type, is_coughing, is_feverish, is_exposed)                            "
-              + " VALUES                                                                            "
-              + "   (CAST(? as screening.account_type), ?, ?, ?)                                    ")
-          .replaceAll("\\s+", " ");
-
   public static final String INSERT_PLEDGE =
       (" INSERT INTO screening.pledge                                                               "
               + "   (email, face_covering, good_hygiene, distancing)                                 "
@@ -49,6 +35,15 @@ public class Constants {
               + "     screening.health_screening    "
               + " ORDER BY                          "
               + "     submission_time DESC          ")
+          .replaceAll("\\s+", " ");
+
+  public static final String GET_SUPERVISOR_EMAIL =
+      (" SELECT                                     "
+              + "     supervisor_email              "
+              + " FROM                              "
+              + "     screening.employee_supervisor "
+              + " WHERE                             "
+              + "     email = ?                     ")
           .replaceAll("\\s+", " ");
 
   public static final String GET_RECENT_INFO =
@@ -97,29 +92,5 @@ public class Constants {
               + "   screening.health_screening                  "
               + " WHERE                                         "
               + "   age(submission_time) >= INTERVAL '30 days'  ")
-          .replaceAll("\\s+", " ");
-
-  public static final String GET_BANNER_SUPERVISOR =
-      (" SELECT                                                                             "
-              + "   GOREMAL_EMAIL_ADDRESS                                                   "
-              + " FROM                                                                      "
-              + "   GENERAL.GOREMAL                                                         "
-              + " WHERE                                                                     "
-              + "   GOREMAL_EMAL_CODE = 'OAKU'                                              "
-              + "   AND GOREMAL_PIDM = (                                                    "
-              + "         SELECT                                                            "
-              + "            nbrjobs_a.NBRJOBS_SUPERVISOR_PIDM                              "
-              + "          FROM                                                             "
-              + "            POSNCTL.NBRJOBS nbrjobs_a                                      "
-              + "          WHERE                                                            "
-              + "            nbrjobs_a.NBRJOBS_PIDM = :pidm                                 "
-              + "            AND nbrjobs_a.NBRJOBS_SUFF = '00'                              "
-              + "            AND nbrjobs_a.NBRJOBS_EFFECTIVE_DATE = (                       "
-              + "                   SELECT                                                  "
-              + "                       MAX(nbrjobs_b.NBRJOBS_EFFECTIVE_DATE)               "
-              + "                     FROM                                                  "
-              + "                       POSNCTL.NBRJOBS nbrjobs_b                           "
-              + "                     WHERE                                                 "
-              + "                       nbrjobs_b.NBRJOBS_PIDM = nbrjobs_a.NBRJOBS_PIDM ) ) ")
           .replaceAll("\\s+", " ");
 }

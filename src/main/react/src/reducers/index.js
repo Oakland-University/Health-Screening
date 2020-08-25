@@ -96,7 +96,7 @@ export default function reducer(state = initial_state, action) {
       return { ...state, user_status: action.payload }
     }
     case CLEAR_MODAL: {
-      return { ...initial_state, user_status: user_statuses.DISMISSED }
+      return { ...initial_state, user_status: user_statuses.DISMISSED, supervisor_email: state.supervisor_email }
     }
     case NEXT_MODAL_PAGE: {
       const current_modal_page = state.modal_page
@@ -105,12 +105,10 @@ export default function reducer(state = initial_state, action) {
       let new_modal_page = state.modal_page
 
       if (current_modal_page === modal_pages.CAMPUS_CHECK) {
-        const coming_to_campus = state.coming_to_campus
-
-        if (coming_to_campus) {
+        if (state.coming_to_campus) {
           new_modal_page = state.account_type === (account_types.GUEST) ? modal_pages.USER_INFO : modal_pages.PLEDGE
           new_user_status = user_statuses.NOT_COMPLETED
-        } else if (coming_to_campus === false) {
+        } else if (state.coming_to_campus === false) {
           new_user_status = user_statuses.NOT_COMING
         }
       } else if (current_modal_page === modal_pages.USER_INFO) {
