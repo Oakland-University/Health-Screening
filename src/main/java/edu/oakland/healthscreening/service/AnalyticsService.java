@@ -12,20 +12,29 @@ public class AnalyticsService {
 
   @Autowired private Postgres postgres;
 
-  public AnalyticInfo getAnalyticInfo(String interval) {
+  public AnalyticInfo getAnalyticInfo(final String interval) {
+    return postgres.getAnalyticInfo(intervalToDays(interval));
+  }
+
+  public AnalyticInfo getAnonymousAnalyticInfo(final String interval) {
+    return postgres.getAnonymousAnalyticInfo(intervalToDays(interval));
+  }
+
+  public String getAnalyticCSV(final String interval) {
+    return CSV_HEADER + postgres.getAnalyticInfo(interval).toCSVString();
+  }
+
+  private String intervalToDays(final String interval) {
     switch (interval) {
       case "day":
-        return postgres.getAnalyticInfo("1 day");
+        return "1 day";
       case "week":
-        return postgres.getAnalyticInfo("7 days");
+        return "7 days";
       case "month":
-        return postgres.getAnalyticInfo("30 days");
+        return "1 month";
       default:
-        return postgres.getAnalyticInfo("999 years");
+        return "999 years";
     }
   }
 
-  public String getAnalyticCSV() {
-    return CSV_HEADER + postgres.getAnalyticInfo("1 day").toCSVString();
-  }
 }

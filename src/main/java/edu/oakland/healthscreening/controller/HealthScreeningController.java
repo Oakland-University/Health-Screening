@@ -174,14 +174,17 @@ public class HealthScreeningController {
 
     if (groups != null && groups.contains("GHC")) {
       return analytics.getAnalyticInfo(interval);
+    } else if (groups != null && groups.contains("PORTAL ADMINS")){
+      return analytics.getAnonymousAnalyticInfo(interval);
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
   }
 
-  @GetMapping(value = "health-info/analytics/daily-summary", produces = "text/csv")
-  public String getAnalyticsCsv(HttpServletRequest request) {
-    return analytics.getAnalyticCSV();
+  @GetMapping(value = "health-info/analytics/csv/{interval}", produces = "text/csv")
+  public String getAnalyticsCsv(@PathVariable("interval") String interval, HttpServletRequest request) {
+    interval = interval == null ? "day" : interval;
+    return analytics.getAnalyticCSV(interval);
   }
 
   private AccountType getAccountFromRequest(Claim groupsClaim) {

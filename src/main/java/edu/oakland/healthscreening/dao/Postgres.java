@@ -74,6 +74,10 @@ public class Postgres {
     return jdbcTemplate.queryForObject(GET_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
   }
 
+  public AnalyticInfo getAnonymousAnalyticInfo(final String interval) {
+    return jdbcTemplate.queryForObject(GET_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
+  }
+
   public List<HealthInfo> getHealthInfo() {
     return jdbcTemplate.query(GET_ALL_RESPONSES, HealthInfo.mapper);
   }
