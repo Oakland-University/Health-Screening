@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.auth0.jwt.interfaces.Claim;
@@ -176,6 +177,11 @@ public class HealthScreeningController {
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
+  }
+
+  @GetMapping(value = "health-info/analytics/daily-summary", produces = "text/csv")
+  public String getAnalyticsCsv(HttpServletRequest request) {
+    return analytics.getAnalyticCSV();
   }
 
   private AccountType getAccountFromRequest(Claim groupsClaim) {

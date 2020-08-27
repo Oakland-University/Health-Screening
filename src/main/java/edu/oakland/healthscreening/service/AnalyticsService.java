@@ -2,6 +2,7 @@ package edu.oakland.healthscreening.service;
 
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AnalyticInfo;
+import static edu.oakland.healthscreening.dao.Constants.CSV_HEADER;;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,9 @@ public class AnalyticsService {
       default:
         return postgres.getAnalyticInfo("999 years");
     }
+  }
+
+  public String getAnalyticCSV() {
+    return CSV_HEADER + postgres.getAnalyticInfo("1 day").toCSVString();
   }
 }

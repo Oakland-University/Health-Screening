@@ -93,4 +93,10 @@ public class Constants {
               + " WHERE                                         "
               + "   age(submission_time) >= INTERVAL '30 days'  ")
           .replaceAll("\\s+", " ");
+
+  public static final String CSV_HEADER =
+    "id,Date,State,County,Zip Code,Address,# of Screenings,workplace_exclusion_for_symptoms," +
+    "fever,sore_throat,chills,headache,muscle_aches,abdominal_aches,runny_nose,nausea_vomiting," +
+    "shortness_breath,loss_taste_smell,cough,temp,workplace_exclusion_for_contact," +
+    "workplace_exclusion_for_travel\n";
 }
