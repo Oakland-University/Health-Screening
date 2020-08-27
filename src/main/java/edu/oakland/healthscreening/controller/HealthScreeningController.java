@@ -181,8 +181,8 @@ public class HealthScreeningController {
     }
   }
 
-  @GetMapping(value = "health-info/analytics/csv/{interval}", produces = "text/csv")
-  public String getAnalyticsCsv(@PathVariable("interval") String interval, HttpServletRequest request) {
+  @GetMapping(value = "health-info/analytics/{interval}/csv", produces = "text/csv")
+  public String getAnalyticsCsv(@PathVariable(value = "interval", required = true) String interval, HttpServletRequest request) {
     interval = interval == null ? "day" : interval;
     return analytics.getAnalyticCSV(interval);
   }
