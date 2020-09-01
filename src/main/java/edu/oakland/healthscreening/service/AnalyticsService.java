@@ -1,8 +1,9 @@
 package edu.oakland.healthscreening.service;
 
+import static edu.oakland.healthscreening.dao.Constants.CSV_HEADER;
+
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AnalyticInfo;
-import static edu.oakland.healthscreening.dao.Constants.CSV_HEADER;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,29 +13,44 @@ public class AnalyticsService {
 
   @Autowired private Postgres postgres;
 
-  public AnalyticInfo getAnalyticInfo(final String interval) {
-    return postgres.getAnalyticInfo(intervalToDays(interval));
+  public AnalyticInfo getAnalyticInfo(final int amount, final String interval) {
+    final String cleanedInterval = amountToString(amount) + " " + sanitziedInterval(interval);
+    return postgres.getAnalyticInfo(cleanedInterval);
   }
 
-  public AnalyticInfo getAnonymousAnalyticInfo(final String interval) {
-    return postgres.getAnonymousAnalyticInfo(intervalToDays(interval));
+  public AnalyticInfo getAnonymousAnalyticInfo(final int amount, final String interval) {
+    final String cleanedInterval = amountToString(amount) + " " + sanitziedInterval(interval);
+    return postgres.getAnonymousAnalyticInfo(cleanedInterval);
   }
 
-  public String getAnalyticCSV(final String interval) {
-    return CSV_HEADER + postgres.getAnonymousAnalyticInfo(intervalToDays(interval)).toCSVString();
+  public String getAnalyticCSV(final int amount, final String interval) {
+    final String cleanedInterval = amountToString(amount) + " " + sanitziedInterval(interval);
+    return CSV_HEADER + postgres.getAnonymousAnalyticInfo(cleanedInterval).toCSVString();
   }
 
-  private String intervalToDays(final String interval) {
-    switch (interval) {
-      case "day":
-        return "1 day";
-      case "week":
-        return "7 days";
-      case "month":
-        return "1 month";
-      default:
-        return "999 years";
+  private String amountToString(final int amount) {
+    if (amount <= 0) {
+      return "999";
+    } else {
+      return String.valueOf(amount);
     }
   }
 
+  private String sanitziedInterval(final String interval) {
+    if (interval == null) {
+      return "years";
+    }
+
+    if (interval.contains("hour")) {
+      return "hours";
+    } else if (interval.contains("day")) {
+      return "days";
+    } else if (interval.contains("week")) {
+      return "weeks";
+    } else if (interval.contains("month")) {
+      return "months";
+    } else {
+      return "years";
+    }
+  }
 }
