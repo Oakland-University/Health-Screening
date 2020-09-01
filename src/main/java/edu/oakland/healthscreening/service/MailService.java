@@ -1,6 +1,9 @@
 package edu.oakland.healthscreening.service;
 
-import static edu.oakland.healthscreening.model.AccountType.*;
+import static edu.oakland.healthscreening.model.AccountType.FACULTY;
+import static edu.oakland.healthscreening.model.AccountType.GUEST;
+import static edu.oakland.healthscreening.model.AccountType.STAFF;
+import static edu.oakland.healthscreening.model.AccountType.STUDENT;
 
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AccountType;

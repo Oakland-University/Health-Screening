@@ -1,6 +1,14 @@
 package edu.oakland.healthscreening.dao;
 
-import static edu.oakland.healthscreening.dao.Constants.*;
+import static edu.oakland.healthscreening.dao.Constants.DELETE_OLD_RECORDS;
+import static edu.oakland.healthscreening.dao.Constants.GET_ALL_RESPONSES;
+import static edu.oakland.healthscreening.dao.Constants.GET_ANALYTIC_INFO;
+import static edu.oakland.healthscreening.dao.Constants.GET_ANONYMOUS_ANALYTIC_INFO;
+import static edu.oakland.healthscreening.dao.Constants.GET_GUEST_INFO;
+import static edu.oakland.healthscreening.dao.Constants.GET_RECENT_INFO;
+import static edu.oakland.healthscreening.dao.Constants.GET_RECENT_PLEDGE;
+import static edu.oakland.healthscreening.dao.Constants.GET_SUPERVISOR_EMAIL;
+import static edu.oakland.healthscreening.dao.Constants.INSERT_PLEDGE;
 
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
@@ -58,10 +66,13 @@ public class Postgres {
             .addValue("p_is_exposed", info.isExposed())
             .addValue("p_supervisor_email", info.getSupervisorEmail());
 
+    log.debug("Preparing to save health info: {}", info);
+
     saveHealthInfoCall.executeFunction(null, parameterSource);
   }
 
   public void savePledge(final Pledge pledge) {
+    log.debug("Saving pledge: {}", pledge);
     jdbcTemplate.update(
         INSERT_PLEDGE,
         pledge.getEmail(),
@@ -71,10 +82,12 @@ public class Postgres {
   }
 
   public AnalyticInfo getAnalyticInfo(final String interval) {
+    log.debug("Getting analytic info for interval: {}", interval);
     return jdbcTemplate.queryForObject(GET_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
   }
 
   public AnalyticInfo getAnonymousAnalyticInfo(final String interval) {
+    log.debug("Getting anonymous analytic info for interval: {}", interval);
     return jdbcTemplate.queryForObject(GET_ANONYMOUS_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
   }
 
@@ -93,8 +106,11 @@ public class Postgres {
 
       info.setPledge(pledge);
 
+      log.debug("Found recent submission for {} : {}", email, info);
+
       return Optional.of(info);
     } catch (final EmptyResultDataAccessException e) {
+      log.debug("No recent info for: {}", email);
       return Optional.empty();
     }
   }
@@ -103,6 +119,7 @@ public class Postgres {
     try {
       return Optional.of(jdbcTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
     } catch (final EmptyResultDataAccessException e) {
+      log.debug("No recent info for: {}", pidm);
       return Optional.empty();
     }
   }
@@ -113,6 +130,7 @@ public class Postgres {
       return Optional.of(
           jdbcTemplate.queryForObject(GET_GUEST_INFO, HealthInfo.mapper, name, email, phone));
     } catch (final EmptyResultDataAccessException e) {
+      log.debug("No recent info for: {}", email);
       return Optional.empty();
     }
   }
@@ -121,6 +139,7 @@ public class Postgres {
     try {
       return Optional.of(jdbcTemplate.queryForObject(GET_SUPERVISOR_EMAIL, String.class, email));
     } catch (final EmptyResultDataAccessException e) {
+      log.debug("No supervisor found for {}", email);
       return Optional.empty();
     }
   }
