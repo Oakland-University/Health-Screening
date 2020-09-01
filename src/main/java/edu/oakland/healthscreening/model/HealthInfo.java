@@ -76,7 +76,7 @@ public class HealthInfo {
       (rs, rowNum) -> {
         final HealthInfo info = new HealthInfo();
 
-        info.setAccountType(AccountType.from(rs.getString("account_type")));
+        info.setAccountType(AccountType.fromString(rs.getString("account_type")));
         info.setPidm(rs.getString("pidm"));
         info.setName(rs.getString("name"));
         info.setEmail(rs.getString("email"));

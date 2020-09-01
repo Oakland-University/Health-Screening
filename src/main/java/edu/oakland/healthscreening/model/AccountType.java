@@ -16,7 +16,7 @@ public enum AccountType {
   @JsonProperty("student_employee")
   STUDENT_EMPLOYEE;
 
-  public static AccountType from(String type) {
+  public static AccountType fromString(final String type) {
 
     Objects.requireNonNull(type, "Cannot infer AccountType from null");
 
