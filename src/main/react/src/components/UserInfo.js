@@ -47,6 +47,7 @@ export default function UserInfo(props) {
               id='outlined-required'
               label='Email'
               variant='outlined'
+              InputProps={{type: 'email'}}
               value={email}
               onChange={(event) => dispatch(update_email(event.target.value))}
             />

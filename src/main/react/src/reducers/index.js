@@ -48,6 +48,8 @@ const initial_state = {
   distancing: null,
 }
 
+const email_expression = /.+@.+\..+/
+
 export default function reducer(state = initial_state, action) {
   switch (action.type) {
     case UPDATE_COMING_TO_CAMPUS: {
@@ -113,8 +115,12 @@ export default function reducer(state = initial_state, action) {
         }
       } else if (current_modal_page === modal_pages.USER_INFO) {
         const name_error = !state.name
-        const email_error = !state.email
+        let email_error = !state.email
         const phone_error = !state.phone
+
+        if (!email_error) {
+          email_error = !email_expression.test(state.email)
+        }
 
         const modal_page =
           name_error || email_error || phone_error ? state.modal_page : modal_pages.PLEDGE
@@ -124,7 +130,7 @@ export default function reducer(state = initial_state, action) {
         const { face_covering, good_hygiene, distancing, supervisor_email, account_type, student_employee } = state
         const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
 
-        if (is_employee && supervisor_email.length === 0) {
+        if (is_employee && (supervisor_email.length === 0 || !email_expression.test(supervisor_email))) {
           return { ...state, supervisor_email_error: true }
         }
 
