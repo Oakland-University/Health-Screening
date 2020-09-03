@@ -36,7 +36,13 @@ export const submit_form = async (pledge_info, user_info, questions) => {
     const status = response.status
     if (status > 399 && status < 500) {
       alert('Your MySAIL session has expired. You may have to sign in again and fill out the health screening form again.')
-      window.location.href = window.location.hostname
+      if (window.location.hostname.includes('mysaildev')) {
+        window.location.href = 'https://mysaildev.oakland.edu'
+      } else if (window.location.hostname.includes('mysailtest')) {
+        window.location.href = 'https://mysailtest.oakland.edu'
+      } else {
+        window.location.href = 'https://mysail.oakland.edu'
+      }
     }
     return await response.json()
   } catch (err) {
