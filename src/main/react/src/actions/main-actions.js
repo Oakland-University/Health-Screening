@@ -25,7 +25,7 @@ export const fetch_past_submission = () => (dispatch) => {
 export const fetch_supervisor_email = () => (dispatch, getState) => {
   const account_type = getState().account_type
 
-  if (account_type != account_types.GUEST) {
+  if (account_type !== account_types.GUEST) {
     get_supervisor_email().then(data => {
       if (data !== null && data !== undefined) {
         dispatch({type: actions.UPDATE_SUPERVISOR_EMAIL, payload: data})
