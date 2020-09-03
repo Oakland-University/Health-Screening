@@ -36,7 +36,7 @@ export const submit_form = async (pledge_info, user_info, questions) => {
     const status = response.status
     if (status > 399 && status < 500) {
       alert('Your MySAIL session has expired. You may have to sign in again and fill out the health screening form again.')
-      window.location.href = window.location.host
+      window.location.href = window.location.hostname
     }
     return await response.json()
   } catch (err) {
