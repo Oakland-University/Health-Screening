@@ -174,7 +174,7 @@ export default function Pledge(props) {
                   required={student_employee}
                   label='Supervisor Email'
                   variant='outlined'
-                  InputProps={{type: 'email'}}
+                  type='email'
                   error={supervisor_email_error}
                   value={supervisor_email}
                   onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
