@@ -14,17 +14,17 @@ public class AnalyticsService {
   @Autowired private Postgres postgres;
 
   public AnalyticInfo getAnalyticInfo(final int amount, final String interval) {
-    final String cleanedInterval = amountToString(amount) + " " + sanitziedInterval(interval);
+    final String cleanedInterval = amountToString(amount) + " " + sanitizedInterval(interval);
     return postgres.getAnalyticInfo(cleanedInterval);
   }
 
   public AnalyticInfo getAnonymousAnalyticInfo(final int amount, final String interval) {
-    final String cleanedInterval = amountToString(amount) + " " + sanitziedInterval(interval);
+    final String cleanedInterval = amountToString(amount) + " " + sanitizedInterval(interval);
     return postgres.getAnonymousAnalyticInfo(cleanedInterval);
   }
 
   public String getAnalyticCSV(final int amount, final String interval) {
-    final String cleanedInterval = amountToString(amount) + " " + sanitziedInterval(interval);
+    final String cleanedInterval = amountToString(amount) + " " + sanitizedInterval(interval);
     return CSV_HEADER + postgres.getAnonymousAnalyticInfo(cleanedInterval).toCSVString();
   }
 
@@ -36,10 +36,12 @@ public class AnalyticsService {
     }
   }
 
-  private String sanitziedInterval(final String interval) {
+  private String sanitizedInterval(String interval) {
     if (interval == null) {
       return "years";
     }
+
+    interval = interval.toLowerCase();
 
     if (interval.contains("hour")) {
       return "hours";
