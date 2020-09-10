@@ -34,7 +34,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     http.csrf()
         .disable()
         .authorizeRequests()
-        .antMatchers("/api/v1/analytics/{interval:[\\w+]}/csv")
+        .antMatchers("/api/v1/health-info/analytics/*/csv")
         .fullyAuthenticated()
         .and()
         .requestCache()

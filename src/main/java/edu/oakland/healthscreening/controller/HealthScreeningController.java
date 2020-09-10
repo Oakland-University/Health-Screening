@@ -58,11 +58,6 @@ public class HealthScreeningController {
     log.error("Unspecified exception", e);
   }
 
-  @GetMapping("test")
-  public String blob() {
-    return "Test success";
-  }
-
   @PostMapping("pledge")
   public void saveHealthInfo(@Valid @RequestBody Pledge pledge, HttpServletRequest request)
       throws SoffitAuthException {
