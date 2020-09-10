@@ -65,15 +65,15 @@ processResources {
   filesMatching("**/application.properties") {
     def props = new Properties()
 
-	file(System.getenv("PORTAL_HOME") + "/global.properties").withInputStream {
-		props.load(it)
-	}
+  file(System.getenv("PORTAL_HOME") + "/global.properties").withInputStream {
+    props.load(it)
+  }
 
-	file(System.getenv("PORTAL_HOME") + "/uPortal.properties").withInputStream {
-		props.load(it)
-	}
+  file(System.getenv("PORTAL_HOME") + "/uPortal.properties").withInputStream {
+    props.load(it)
+  }
 
-	filter(ReplaceTokens, tokens: props)
+  filter(ReplaceTokens, tokens: props)
 
   }
 }
@@ -115,6 +115,8 @@ publishing {
 dependencies {
     implementation 'org.jasig.portal:uPortal-soffit-renderer:5.6.0'
     implementation 'edu.oakland:soffit-auth:1.0.0.RC'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-ldap'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'

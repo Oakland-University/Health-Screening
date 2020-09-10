@@ -58,6 +58,11 @@ public class HealthScreeningController {
     log.error("Unspecified exception", e);
   }
 
+  @GetMapping("test")
+  public String blob() {
+    return "Test success";
+  }
+
   @PostMapping("pledge")
   public void saveHealthInfo(@Valid @RequestBody Pledge pledge, HttpServletRequest request)
       throws SoffitAuthException {
@@ -188,8 +193,7 @@ public class HealthScreeningController {
   @GetMapping(value = "health-info/analytics/{interval}/csv", produces = "text/csv")
   public String getAnalyticsCsv(
       @RequestParam("amount") int amount,
-      @PathVariable(value = "interval", required = true) String interval,
-      HttpServletRequest request) {
+      @PathVariable(value = "interval", required = true) String interval) {
     return analytics.getAnalyticCSV(amount, interval);
   }
 
