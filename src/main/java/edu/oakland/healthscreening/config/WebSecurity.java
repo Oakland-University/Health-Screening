@@ -35,7 +35,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         .disable()
         .authorizeRequests()
         .antMatchers("/api/v1/health-info/analytics/*/csv")
-        .fullyAuthenticated()
+        .hasRole("HEALTH_SCREENING_API")
         .and()
         .requestCache()
         .requestCache(new NullRequestCache())
