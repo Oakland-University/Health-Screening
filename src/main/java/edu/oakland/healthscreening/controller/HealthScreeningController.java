@@ -1,6 +1,9 @@
 package edu.oakland.healthscreening.controller;
 
-import static edu.oakland.healthscreening.model.AccountType.*;
+import static edu.oakland.healthscreening.model.AccountType.FACULTY;
+import static edu.oakland.healthscreening.model.AccountType.GUEST;
+import static edu.oakland.healthscreening.model.AccountType.STAFF;
+import static edu.oakland.healthscreening.model.AccountType.STUDENT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -167,15 +170,26 @@ public class HealthScreeningController {
 
   @GetMapping("health-info/analytics/{interval}")
   public AnalyticInfo getAnalyticInfo(
-      @PathVariable("interval") String interval, HttpServletRequest request)
+      @PathVariable("interval") String interval,
+      @RequestParam("amount") int amount,
+      HttpServletRequest request)
       throws SoffitAuthException {
     List<String> groups = authorizer.getClaimFromJWE(request, "groups").asList(String.class);
 
     if (groups != null && groups.contains("GHC")) {
-      return analytics.getAnalyticInfo(interval);
+      return analytics.getAnalyticInfo(amount, interval);
+    } else if (groups != null && groups.contains("Portal Administrators")) {
+      return analytics.getAnonymousAnalyticInfo(amount, interval);
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
+  }
+
+  @GetMapping(value = "health-info/analytics/{interval}/csv", produces = "text/csv")
+  public String getAnalyticsCsv(
+      @RequestParam("amount") int amount,
+      @PathVariable(value = "interval", required = true) String interval) {
+    return analytics.getAnalyticCSV(amount, interval);
   }
 
   private AccountType getAccountFromRequest(Claim groupsClaim) {

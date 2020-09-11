@@ -28,6 +28,25 @@ public class Constants {
               + "     AGE(submission_time) <= ?::INTERVAL                                 ")
           .replaceAll("\\s+", " ");
 
+  public static final String GET_ANONYMOUS_ANALYTIC_INFO =
+      (" SELECT                                                                           "
+              + "     COUNT(*) AS total,                                                  "
+              + "     SUM                                                                 "
+              + "     (CASE                                                               "
+              + "         WHEN is_feverish = TRUE                                         "
+              + "         OR is_coughing = TRUE                                           "
+              + "         OR is_exposed = TRUE THEN 1                                     "
+              + "         ELSE 0                                                          "
+              + "     END) AS sick,                                                       "
+              + "     SUM(CASE WHEN is_coughing = TRUE THEN 1 ELSE 0 END) AS coughing,    "
+              + "     SUM(CASE WHEN is_feverish = TRUE THEN 1 ELSE 0 END) AS feverish,    "
+              + "     SUM(CASE WHEN is_exposed = TRUE THEN 1 ELSE 0 END) AS exposed       "
+              + " FROM                                                                    "
+              + "     screening.analytics                                                 "
+              + " WHERE                                                                   "
+              + "     AGE(submission_time) <= ?::INTERVAL                                 ")
+          .replaceAll("\\s+", " ");
+
   public static final String GET_ALL_RESPONSES =
       (" SELECT                                     "
               + "     *                             "
@@ -93,4 +112,10 @@ public class Constants {
               + " WHERE                                         "
               + "   age(submission_time) >= INTERVAL '30 days'  ")
           .replaceAll("\\s+", " ");
+
+  public static final String CSV_HEADER =
+      "id,Date,State,County,Zip Code,Address,# of Screenings,workplace_exclusion_for_symptoms,"
+          + "fever,sore_throat,chills,headache,muscle_aches,abdominal_aches,runny_nose,nausea_vomiting,"
+          + "shortness_breath,loss_taste_smell,cough,temp,workplace_exclusion_for_contact,"
+          + "workplace_exclusion_for_travel\n";
 }
