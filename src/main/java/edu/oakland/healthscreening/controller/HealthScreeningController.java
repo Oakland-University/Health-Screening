@@ -171,7 +171,7 @@ public class HealthScreeningController {
   @GetMapping("health-info/analytics/{interval}")
   public AnalyticInfo getAnalyticInfo(
       @PathVariable("interval") String interval,
-      @RequestParam("amount") int amount,
+      @RequestParam(defaultValue = "1") int amount,
       HttpServletRequest request)
       throws SoffitAuthException {
     List<String> groups = authorizer.getClaimFromJWE(request, "groups").asList(String.class);
