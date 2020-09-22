@@ -12,13 +12,13 @@
     }
   }
 
-  var token  = '${bearer.getEncryptedToken()}'
+  var token  = `${bearer.getEncryptedToken()}`
   var IS_DEMO = false
-  var PICTURE_URL = '${pageContext.request.contextPath}/static/covid.jpg'
-  var PHONE = '${bearer.attributes.telephoneNumber}'
-  var ACCOUNT_TYPE = determine_account_type('${bearer.groups}')
-  var NAME = '${bearer.attributes.displayName}'
-  var EMAIL = '${bearer.attributes.mail}'
+  var PICTURE_URL = `${pageContext.request.contextPath}/static/covid.jpg`
+  var PHONE = `${bearer.attributes.telephoneNumber}`
+  var ACCOUNT_TYPE = determine_account_type(`${bearer.groups}`)
+  var NAME = `${bearer.attributes.displayName}`
+  var EMAIL = `${bearer.attributes.mail}`
 
   PHONE = PHONE ? PHONE.replace('[', '').replace(']', '') : ''
   EMAIL = EMAIL ? EMAIL.replace('[', '').replace(']', '') : ''
