@@ -4,7 +4,7 @@ public class Constants {
 
   public static final String INSERT_PLEDGE =
       (" INSERT INTO screening.pledge                                                               "
-              + "   (email, face_covering, good_hygiene, distancing)                                 "
+              + "   (email, face_covering, good_hygiene, distancing)                                "
               + " VALUES                                                                            "
               + "   (?, ?, ?, ?)                                                                    ")
           .replaceAll("\\s+", " ");
@@ -45,6 +45,28 @@ public class Constants {
               + "     screening.analytics                                                 "
               + " WHERE                                                                   "
               + "     AGE(submission_time) <= ?::INTERVAL                                 ")
+          .replaceAll("\\s+", " ");
+
+  public static final String GET_ANALYTICS_BY_TYPE =
+      (" select                                                              "
+              + "   account_type,                               "
+              + "   COUNT(*) as total,                                                "
+              + "   SUM                                                               "
+              + "   (case                                                             "
+              + "     when is_feverish = true                                         "
+              + "     or is_coughing = true                                           "
+              + "     or is_exposed = true then 1                                     "
+              + "     else 0                                                          "
+              + "   end) as sick,                                                     "
+              + "   SUM(case when is_coughing = true then 1 else 0 end) as coughing,  "
+              + "   SUM(case when is_feverish = true then 1 else 0 end) as feverish,  "
+              + "   SUM(case when is_exposed = true then 1 else 0 end) as exposed     "
+              + " from                                                                "
+              + "   screening.analytics                                               "
+              + " where                                                               "
+              + "   AGE(submission_time) <= ?::INTERVAL                               "
+              + " group by                                                            "
+              + "   account_type                                                     ")
           .replaceAll("\\s+", " ");
 
   public static final String GET_ALL_RESPONSES =

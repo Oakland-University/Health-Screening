@@ -176,10 +176,8 @@ public class HealthScreeningController {
       throws SoffitAuthException {
     List<String> groups = authorizer.getClaimFromJWE(request, "groups").asList(String.class);
 
-    if (groups != null && groups.contains("GHC")) {
-      return analytics.getAnalyticInfo(amount, interval);
-    } else if (groups != null && groups.contains("Portal Administrators")) {
-      return analytics.getAnonymousAnalyticInfo(amount, interval);
+    if (groups != null && (groups.contains("GHC") || groups.contains("Portal Administrators"))) {
+      return analytics.getChartsInfo(amount, interval);
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }

@@ -2,9 +2,11 @@ package edu.oakland.healthscreening.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import lombok.Data;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 
 @Data
 public class AnalyticInfo {
@@ -13,6 +15,8 @@ public class AnalyticInfo {
   private int coughing;
   private int feverish;
   private int exposed;
+  @Nullable private AccountType accountType;
+  @Nullable private Map<AccountType, AnalyticInfo> subTypeAnalytics;
 
   public String toCSVString() {
     final String dateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
@@ -66,6 +70,12 @@ public class AnalyticInfo {
         info.setCoughing(rs.getInt("coughing"));
         info.setFeverish(rs.getInt("feverish"));
         info.setExposed(rs.getInt("exposed"));
+
+        String accountType = rs.getString("account_type");
+
+        if (accountType != null) {
+          info.setAccountType(AccountType.fromString(accountType));
+        }
 
         return info;
       };

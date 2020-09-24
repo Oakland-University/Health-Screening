@@ -1,14 +1,6 @@
 package edu.oakland.healthscreening.dao;
 
-import static edu.oakland.healthscreening.dao.Constants.DELETE_OLD_RECORDS;
-import static edu.oakland.healthscreening.dao.Constants.GET_ALL_RESPONSES;
-import static edu.oakland.healthscreening.dao.Constants.GET_ANALYTIC_INFO;
-import static edu.oakland.healthscreening.dao.Constants.GET_ANONYMOUS_ANALYTIC_INFO;
-import static edu.oakland.healthscreening.dao.Constants.GET_GUEST_INFO;
-import static edu.oakland.healthscreening.dao.Constants.GET_RECENT_INFO;
-import static edu.oakland.healthscreening.dao.Constants.GET_RECENT_PLEDGE;
-import static edu.oakland.healthscreening.dao.Constants.GET_SUPERVISOR_EMAIL;
-import static edu.oakland.healthscreening.dao.Constants.INSERT_PLEDGE;
+import static edu.oakland.healthscreening.dao.Constants.*;
 
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
@@ -82,13 +74,13 @@ public class Postgres {
   }
 
   public AnalyticInfo getAnalyticInfo(final String interval) {
-    log.debug("Getting analytic info for interval: {}", interval);
-    return jdbcTemplate.queryForObject(GET_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
-  }
-
-  public AnalyticInfo getAnonymousAnalyticInfo(final String interval) {
     log.debug("Getting anonymous analytic info for interval: {}", interval);
     return jdbcTemplate.queryForObject(GET_ANONYMOUS_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
+  }
+
+  public List<AnalyticInfo> getAnalyticsByType(final String interval) {
+    log.debug("Getting chart data for interval: {}", interval);
+    return jdbcTemplate.query(GET_ANALYTICS_BY_TYPE, AnalyticInfo.mapper, interval);
   }
 
   public List<HealthInfo> getHealthInfo() {
