@@ -28,7 +28,7 @@ public class AnalyticsService {
   public AnalyticInfo getChartsInfo(final int amount, final String interval) {
     final String cleanedInterval = amountToString(amount) + " " + sanitizedInterval(interval);
 
-    final BinaryOperator<AnalyticInfo> infoCombiner =
+    final BinaryOperator<AnalyticInfo> infoAccumulator =
         (info, subType) -> {
           info.setCoughing(info.getCoughing() + subType.getCoughing());
           info.setExposed(info.getExposed() + subType.getExposed());
@@ -40,7 +40,7 @@ public class AnalyticsService {
 
     final List<AnalyticInfo> infoByType = postgres.getAnalyticsByType(cleanedInterval);
 
-    final AnalyticInfo totalInfo = infoByType.stream().reduce(new AnalyticInfo(), infoCombiner);
+    final AnalyticInfo totalInfo = infoByType.stream().reduce(new AnalyticInfo(), infoAccumulator);
 
     totalInfo.setSubTypeAnalytics(
         infoByType.stream()
