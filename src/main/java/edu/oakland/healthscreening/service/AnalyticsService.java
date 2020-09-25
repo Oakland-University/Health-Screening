@@ -19,7 +19,7 @@ public class AnalyticsService {
 
   @Autowired private Postgres postgres;
 
-  public List<HealthInfo> getIdentifiableRecords(int amount, String interval) {
+  public List<HealthInfo> getIdentifiableRecords(final int amount, final String interval) {
     final String cleanedInterval = amountToString(amount) + " " + sanitizedInterval(interval);
 
     return postgres.getHealthForInterval(cleanedInterval);
