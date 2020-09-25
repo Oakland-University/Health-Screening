@@ -4,6 +4,7 @@ import static edu.oakland.healthscreening.dao.Constants.CSV_HEADER;
 
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AnalyticInfo;
+import edu.oakland.healthscreening.model.HealthInfo;
 
 import java.util.List;
 import java.util.function.BinaryOperator;
@@ -17,6 +18,12 @@ import org.springframework.stereotype.Service;
 public class AnalyticsService {
 
   @Autowired private Postgres postgres;
+
+  public List<HealthInfo> getIdentifiableRecords(int amount, String interval) {
+    final String cleanedInterval = amountToString(amount) + " " + sanitizedInterval(interval);
+
+    return postgres.getHealthForInterval(cleanedInterval);
+  }
 
   public AnalyticInfo getChartsInfo(final int amount, final String interval) {
     final String cleanedInterval = amountToString(amount) + " " + sanitizedInterval(interval);

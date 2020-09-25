@@ -83,8 +83,9 @@ public class Postgres {
     return jdbcTemplate.query(GET_ANALYTICS_BY_TYPE, AnalyticInfo.mapper, interval);
   }
 
-  public List<HealthInfo> getHealthInfo() {
-    return jdbcTemplate.query(GET_ALL_RESPONSES, HealthInfo.mapper);
+  public List<HealthInfo> getHealthForInterval(final String interval) {
+    log.debug("Getting chart data for interval: {}", interval);
+    return jdbcTemplate.query(GET_ALL_RESPONSES, HealthInfo.mapper, interval);
   }
 
   public Optional<HealthInfo> getRecentSubmission(final String pidm, final String email) {

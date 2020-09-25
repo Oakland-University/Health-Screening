@@ -70,12 +70,14 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String GET_ALL_RESPONSES =
-      (" SELECT                                     "
-              + "     *                             "
-              + " FROM                              "
-              + "     screening.health_screening    "
-              + " ORDER BY                          "
-              + "     submission_time DESC          ")
+      (" SELECT                                           "
+              + "     *                                   "
+              + " FROM                                    "
+              + "     screening.health_screening          "
+              + " WHERE                                   "
+              + "     AGE(submission_time) <= ?::INTERVAL "
+              + " ORDER BY                                "
+              + "     submission_time DESC                ")
           .replaceAll("\\s+", " ");
 
   public static final String GET_SUPERVISOR_EMAIL =
