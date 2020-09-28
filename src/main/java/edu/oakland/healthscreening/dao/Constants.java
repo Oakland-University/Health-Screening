@@ -3,10 +3,10 @@ package edu.oakland.healthscreening.dao;
 public class Constants {
 
   public static final String INSERT_PLEDGE =
-      (" INSERT INTO screening.pledge                                                               "
-              + "   (email, face_covering, good_hygiene, distancing)                                "
-              + " VALUES                                                                            "
-              + "   (?, ?, ?, ?)                                                                    ")
+      (" INSERT INTO screening.pledge                                         "
+              + "   (email, face_covering, good_hygiene, distancing)          "
+              + " VALUES                                                      "
+              + "   (?, ?, ?, ?)                                              ")
           .replaceAll("\\s+", " ");
 
   public static final String GET_ANALYTIC_INFO =
@@ -48,8 +48,8 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String GET_ANALYTICS_BY_TYPE =
-      (" select                                                              "
-              + "   account_type,                               "
+      (" select                                                                       "
+              + "   account_type,                                                     "
               + "   COUNT(*) as total,                                                "
               + "   SUM                                                               "
               + "   (case                                                             "
@@ -90,7 +90,7 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String GET_RECENT_INFO =
-      (" SELECT                                     "
+      (" SELECT                                              "
               + "   *                                        "
               + " FROM                                       "
               + "   screening.health_screening               "
@@ -103,7 +103,7 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String GET_RECENT_PLEDGE =
-      (" SELECT                                     "
+      (" SELECT                                              "
               + "   *                                        "
               + " FROM                                       "
               + "   screening.pledge                         "
@@ -116,7 +116,7 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String GET_GUEST_INFO =
-      (" SELECT                                     "
+      (" SELECT                                              "
               + "   *                                        "
               + " FROM                                       "
               + "   screening.health_screening               "
@@ -131,7 +131,7 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String DELETE_OLD_RECORDS =
-      (" DELETE FROM                                   "
+      (" DELETE FROM                                            "
               + "   screening.health_screening                  "
               + " WHERE                                         "
               + "   age(submission_time) >= INTERVAL '30 days'  ")
