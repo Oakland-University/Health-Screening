@@ -3,10 +3,13 @@ package edu.oakland.healthscreening.service;
 import static edu.oakland.healthscreening.dao.Constants.CSV_HEADER;
 
 import edu.oakland.healthscreening.dao.Postgres;
+import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -39,12 +42,17 @@ public class AnalyticsService {
         };
 
     final List<AnalyticInfo> infoByType = postgres.getAnalyticsByType(cleanedInterval);
+    EnumSet<AccountType> accountTypes = EnumSet.allOf(AccountType.class);
 
     final AnalyticInfo totalInfo = infoByType.stream().reduce(new AnalyticInfo(), infoAccumulator);
 
-    totalInfo.setSubTypeAnalytics(
+    Map<AccountType, AnalyticInfo> subTypeAnalytics =
         infoByType.stream()
-            .collect(Collectors.toMap(AnalyticInfo::getAccountType, Function.identity())));
+            .collect(Collectors.toMap(AnalyticInfo::getAccountType, Function.identity()));
+
+    accountTypes.forEach(type -> subTypeAnalytics.putIfAbsent(type, new AnalyticInfo()));
+
+    totalInfo.setSubTypeAnalytics(subTypeAnalytics);
 
     return totalInfo;
   }

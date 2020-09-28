@@ -1,22 +1,25 @@
 package edu.oakland.healthscreening.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.lang.Nullable;
 
 @Data
+@JsonInclude(NON_NULL)
 public class AnalyticInfo {
   private int total;
   private int sick;
   private int coughing;
   private int feverish;
   private int exposed;
-  @Nullable private AccountType accountType;
-  @Nullable private Map<AccountType, AnalyticInfo> subTypeAnalytics;
+  private AccountType accountType;
+  private Map<AccountType, AnalyticInfo> subTypeAnalytics;
 
   public String toCSVString() {
     final String dateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
