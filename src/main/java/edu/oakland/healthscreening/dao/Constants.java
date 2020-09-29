@@ -3,10 +3,10 @@ package edu.oakland.healthscreening.dao;
 public class Constants {
 
   public static final String INSERT_PLEDGE =
-      (" INSERT INTO screening.pledge                                                               "
-              + "   (email, face_covering, good_hygiene, distancing)                                 "
-              + " VALUES                                                                            "
-              + "   (?, ?, ?, ?)                                                                    ")
+      (" INSERT INTO screening.pledge                                         "
+              + "   (email, face_covering, good_hygiene, distancing)          "
+              + " VALUES                                                      "
+              + "   (?, ?, ?, ?)                                              ")
           .replaceAll("\\s+", " ");
 
   public static final String GET_ANALYTIC_INFO =
@@ -47,13 +47,37 @@ public class Constants {
               + "     AGE(submission_time) <= ?::INTERVAL                                 ")
           .replaceAll("\\s+", " ");
 
+  public static final String GET_ANALYTICS_BY_TYPE =
+      (" select                                                                       "
+              + "   account_type,                                                     "
+              + "   COUNT(*) as total,                                                "
+              + "   SUM                                                               "
+              + "   (case                                                             "
+              + "     when is_feverish = true                                         "
+              + "     or is_coughing = true                                           "
+              + "     or is_exposed = true then 1                                     "
+              + "     else 0                                                          "
+              + "   end) as sick,                                                     "
+              + "   SUM(case when is_coughing = true then 1 else 0 end) as coughing,  "
+              + "   SUM(case when is_feverish = true then 1 else 0 end) as feverish,  "
+              + "   SUM(case when is_exposed = true then 1 else 0 end) as exposed     "
+              + " from                                                                "
+              + "   screening.analytics                                               "
+              + " where                                                               "
+              + "   AGE(submission_time) <= ?::INTERVAL                               "
+              + " group by                                                            "
+              + "   account_type                                                     ")
+          .replaceAll("\\s+", " ");
+
   public static final String GET_ALL_RESPONSES =
-      (" SELECT                                     "
-              + "     *                             "
-              + " FROM                              "
-              + "     screening.health_screening    "
-              + " ORDER BY                          "
-              + "     submission_time DESC          ")
+      (" SELECT                                           "
+              + "     *                                   "
+              + " FROM                                    "
+              + "     screening.health_screening          "
+              + " WHERE                                   "
+              + "     AGE(submission_time) <= ?::INTERVAL "
+              + " ORDER BY                                "
+              + "     submission_time DESC                ")
           .replaceAll("\\s+", " ");
 
   public static final String GET_SUPERVISOR_EMAIL =
@@ -66,7 +90,7 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String GET_RECENT_INFO =
-      (" SELECT                                     "
+      (" SELECT                                              "
               + "   *                                        "
               + " FROM                                       "
               + "   screening.health_screening               "
@@ -79,7 +103,7 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String GET_RECENT_PLEDGE =
-      (" SELECT                                     "
+      (" SELECT                                              "
               + "   *                                        "
               + " FROM                                       "
               + "   screening.pledge                         "
@@ -92,7 +116,7 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String GET_GUEST_INFO =
-      (" SELECT                                     "
+      (" SELECT                                              "
               + "   *                                        "
               + " FROM                                       "
               + "   screening.health_screening               "
@@ -107,7 +131,7 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String DELETE_OLD_RECORDS =
-      (" DELETE FROM                                   "
+      (" DELETE FROM                                            "
               + "   screening.health_screening                  "
               + " WHERE                                         "
               + "   age(submission_time) >= INTERVAL '30 days'  ")

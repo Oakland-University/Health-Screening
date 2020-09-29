@@ -131,12 +131,16 @@ public class HealthScreeningController {
     postgres.saveHealthInfo(info);
   }
 
-  @GetMapping("health-info")
-  public List<HealthInfo> getHealthInfo(HttpServletRequest request) throws SoffitAuthException {
+  @GetMapping("health-info/{interval}")
+  public List<HealthInfo> getHealthInfo(
+      HttpServletRequest request,
+      @PathVariable("interval") String interval,
+      @RequestParam(defaultValue = "1") int amount)
+      throws SoffitAuthException {
     List<String> groups = authorizer.getClaimFromJWE(request, "groups").asList(String.class);
 
     if (groups != null && groups.contains("GHC")) {
-      return postgres.getHealthInfo();
+      return analytics.getIdentifiableRecords(amount, interval);
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
@@ -176,10 +180,8 @@ public class HealthScreeningController {
       throws SoffitAuthException {
     List<String> groups = authorizer.getClaimFromJWE(request, "groups").asList(String.class);
 
-    if (groups != null && groups.contains("GHC")) {
-      return analytics.getAnalyticInfo(amount, interval);
-    } else if (groups != null && groups.contains("Portal Administrators")) {
-      return analytics.getAnonymousAnalyticInfo(amount, interval);
+    if (groups != null && (groups.contains("GHC") || groups.contains("Portal Administrators"))) {
+      return analytics.getChartsInfo(amount, interval);
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
