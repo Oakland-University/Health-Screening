@@ -5,8 +5,8 @@ plugins {
     id 'maven-publish'
     id 'war'
 
-    id "com.diffplug.gradle.spotless" version "4.3.0"
-    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'com.diffplug.spotless' version '5.7.0'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'com.github.node-gradle.node' version '2.2.3'
 }
@@ -20,6 +20,7 @@ bootWar {
 }
 
 war {
+	enabled = true
   archiveName project.name + '.war'
 }
 
