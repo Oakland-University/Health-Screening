@@ -118,7 +118,8 @@ public class Postgres {
 
   public Optional<HealthInfo> getRecentSubmission(final String pidm) {
     try {
-      return Optional.of(jdbcTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
+      return Optional.ofNullable(
+          jdbcTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
     } catch (final EmptyResultDataAccessException e) {
       log.debug("No recent info for: {}", pidm);
       return Optional.empty();
@@ -128,7 +129,7 @@ public class Postgres {
   public Optional<HealthInfo> getGuestSubmission(
       final String name, final String email, final String phone) {
     try {
-      return Optional.of(
+      return Optional.ofNullable(
           jdbcTemplate.queryForObject(GET_GUEST_INFO, HealthInfo.mapper, name, email, phone));
     } catch (final EmptyResultDataAccessException e) {
       log.debug("No recent info for: {}", email);
@@ -138,7 +139,8 @@ public class Postgres {
 
   public Optional<String> getSupervisorEmail(String email) {
     try {
-      return Optional.of(jdbcTemplate.queryForObject(GET_SUPERVISOR_EMAIL, String.class, email));
+      return Optional.ofNullable(
+          jdbcTemplate.queryForObject(GET_SUPERVISOR_EMAIL, String.class, email));
     } catch (final EmptyResultDataAccessException e) {
       log.debug("No supervisor found for {}", email);
       return Optional.empty();

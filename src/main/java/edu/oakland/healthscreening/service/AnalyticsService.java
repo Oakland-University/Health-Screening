@@ -75,15 +75,15 @@ public class AnalyticsService {
       return "years";
     }
 
-    interval = interval.toLowerCase();
+    final String lowerCaseInterval = interval.toLowerCase();
 
-    if (interval.contains("hour")) {
+    if (lowerCaseInterval.contains("hour")) {
       return "hours";
-    } else if (interval.contains("day")) {
+    } else if (lowerCaseInterval.contains("day")) {
       return "days";
-    } else if (interval.contains("week")) {
+    } else if (lowerCaseInterval.contains("week")) {
       return "weeks";
-    } else if (interval.contains("month")) {
+    } else if (lowerCaseInterval.contains("month")) {
       return "months";
     } else {
       return "years";
