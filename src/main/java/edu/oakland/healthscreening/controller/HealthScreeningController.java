@@ -96,6 +96,7 @@ public class HealthScreeningController {
   public void saveHealthInfo(@Valid @RequestBody HealthInfo info, HttpServletRequest request)
       throws SoffitAuthException {
 
+
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));

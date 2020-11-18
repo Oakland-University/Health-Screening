@@ -29,6 +29,7 @@ public class HealthInfo {
   private boolean coughing;
   private boolean diarrhea;
   private boolean exposed;
+  private boolean testedPositive;
   private boolean feverish;
   private boolean headache;
   private boolean lossOfTasteOrSmell;
@@ -51,7 +52,8 @@ public class HealthInfo {
         || lossOfTasteOrSmell
         || headache
         || diarrhea
-        || nauseous);
+        || nauseous
+        || testedPositive);
   }
 
   public String summarize() {
@@ -110,6 +112,7 @@ public class HealthInfo {
         info.setHeadache(rs.getBoolean(("has_headache")));
         info.setDiarrhea(rs.getBoolean(("has_diarrhea")));
         info.setNauseous(rs.getBoolean(("is_nauseous")));
+        info.setTestedPositive(rs.getBoolean(("has_tested_positive")));
         info.setSubmissionTime(rs.getTimestamp("submission_time"));
 
         return info;
@@ -160,6 +163,10 @@ public class HealthInfo {
 
     if (nauseous) {
       summaryList.add("is experiencing nausea or vomiting");
+    }
+
+    if (testedPositive) {
+      summaryList.add("has tested positive for COVID-19 within the last 10 days");
     }
 
     return String.join("\n\t- ", summaryList);
