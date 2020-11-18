@@ -2,9 +2,9 @@
 /* global token */
 
 export const submit_form = async (pledge_info, user_info, questions) => {
-  if (IS_DEMO) {
-    return
-  }
+  //if (IS_DEMO) {
+  //  return
+  //}
 
   let request_body = {
     accountType: user_info == null ? 'student' : 'guest',
@@ -14,6 +14,16 @@ export const submit_form = async (pledge_info, user_info, questions) => {
     coughing: questions.cough,
     feverish: questions.fever,
     exposed: questions.exposure,
+    short_of_breath: questions.short_of_breath,
+    congestion: questions.congestion,
+    diarrhea: questions.diarrhea,
+    headache: questions.headache,
+    loss_of_taste_or_smell: questions.loss_of_taste_or_smell,
+    muscle_ache: questions.muscle_ache,
+    nausea: questions.nausea,
+    sore_throat: questions.sore_throat,
+    confirmation: questions.confirmation,
+    positive_test: questions.positive_test,
     pledge: {
       faceCovering: pledge_info.face_covering,
       goodHygiene: pledge_info.good_hygiene,
@@ -22,6 +32,10 @@ export const submit_form = async (pledge_info, user_info, questions) => {
     },
   }
 
+  console.log(request_body)
+  if (IS_DEMO) {
+    return
+  }
   try {
     const response = await fetch('/health-screening/api/v1/health-info', {
       credentials: 'include',

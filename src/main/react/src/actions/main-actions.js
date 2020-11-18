@@ -70,12 +70,52 @@ export const update_fever = (new_fever) => (dispatch) => {
   dispatch({ type: actions.UPDATE_FEVER, payload: new_fever })
 }
 
-export const update_face_covering = (new_face_covering) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_FACE_COVERING, payload: new_face_covering })
+export const update_congestion = (new_congestion) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_CONGESTION, payload: new_congestion })
+}
+
+export const update_diarrhea = (new_diarrhea) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_DIARRHEA, payload: new_diarrhea })
 }
 
 export const update_good_hygiene = (new_good_hygiene) => (dispatch) => {
   dispatch({ type: actions.UPDATE_GOOD_HYGIENE, payload: new_good_hygiene })
+}
+
+export const update_headache = (new_headache) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_HEADACHE, payload: new_headache })
+}
+
+export const update_loss_of_taste_or_smell = (new_loss_of_taste_or_smell) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_LOSS_OF_TASTE_OR_SMELL, payload: new_loss_of_taste_or_smell })
+}
+
+export const update_muscle_ache = (new_muscle_ache) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_MUSCLE_ACHE, payload: new_muscle_ache })
+}
+
+export const update_nausea = (new_nausea) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_NAUSEA, payload: new_nausea })
+}
+
+export const update_short_of_breath = (new_short_of_breath) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_SHORT_OF_BREATH, payload: new_short_of_breath })
+}
+
+export const update_sore_throat = (new_sore_throat) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_SORE_THROAT, payload: new_sore_throat })
+}
+
+export const update_confirmation = (new_confirmation) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_CONFIRMATION, payload: new_confirmation })
+}
+
+export const update_positive_test = (new_positive_test) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_POSITIVE_TEST, payload: new_positive_test })
+}
+
+export const update_face_covering = (new_face_covering) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_FACE_COVERING, payload: new_face_covering })
 }
 
 export const update_distancing = (new_distancing) => (dispatch) => {
@@ -120,7 +160,16 @@ export const press_modal_button = () => (dispatch, getState) => {
       good_hygiene,
       distancing,
       supervisor_email,
-      student_employee
+      student_employee,
+          short_of_breath,
+          congestion,
+          diarrhea,
+          headache,
+          loss_of_taste_or_smell,
+          muscle_ache,
+          nausea,
+          sore_throat,
+          confirmation
     } = getState()
 
     const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
@@ -131,7 +180,20 @@ export const press_modal_button = () => (dispatch, getState) => {
       submit_form(
         { face_covering, good_hygiene, distancing, supervisor_email: is_employee ? supervisor_email : null },
         { name, email, phone, account_type },
-        { fever, cough, exposure }
+        {
+          fever,
+          cough,
+          exposure,
+          short_of_breath,
+          congestion,
+          diarrhea,
+          headache,
+          loss_of_taste_or_smell,
+          muscle_ache,
+          nausea,
+          sore_throat,
+          confirmation
+        }
       )
     }
   }
