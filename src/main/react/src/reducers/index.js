@@ -206,7 +206,9 @@ export default function reducer(state = initial_state, action) {
 
         const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
 
-        if (cough !== null && fever !== null && exposure !== null && can_submit) {
+        if (cough !== null && fever !== null && exposure !== null && congestion !== null && diarrhea !== null &&
+            headache !== null && loss_of_taste_or_smell !== null && muscle_ache !== null && nausea !== null &&
+            short_of_breath !== null && sore_throat !== null && can_submit) {
           const showing_symptoms = !(cough || fever || exposure || congestion || diarrhea || headache || loss_of_taste_or_smell || muscle_ache || nausea || short_of_breath || sore_throat)
           new_user_status = showing_symptoms ? user_statuses.DISALLOWED : user_statuses.ALLOWED
 
