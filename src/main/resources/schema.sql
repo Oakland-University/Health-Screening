@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS screening.health_screening (
     has_headache boolean,
     has_diarrhea boolean,
     is_nauseous boolean,
+    has_tested_positive boolean,
     submission_time timestamp not null default now(),
     supervisor_email text,
     supervisor_name text,
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS screening.analytics (
     has_headache boolean,
     has_diarrhea boolean,
     is_nauseous boolean,
+    has_tested_positive boolean,
     submission_time timestamp not null default now(),
     notes text
 );
@@ -85,7 +87,7 @@ begin
     values
         (cast(in_account_type as screening.account_type), in_is_coughing, in_is_feverish, in_is_exposed,
             in_is_is_short_of_breath, in_has_sore_throat, in_has_muscle_aches, in_has_lost_taste_smell, in_has_diarrhea,
-            in_is_nauseous)
+            in_is_nauseous);
 
 -- Update supervisor email if it doesn't match the current record
 
