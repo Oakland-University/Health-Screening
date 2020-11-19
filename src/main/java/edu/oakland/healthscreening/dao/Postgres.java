@@ -63,12 +63,6 @@ public class Postgres {
                 new SqlParameter("is_nauseous", Types.BOOLEAN),
                 new SqlParameter("has_tested_positive", Types.BOOLEAN));
 
-
-
-
-
-
-
     final SqlParameterSource parameterSource =
         new MapSqlParameterSource()
             .addValue("p_account_type", info.getAccountType().toString())
