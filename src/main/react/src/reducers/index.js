@@ -197,7 +197,7 @@ export default function reducer(state = initial_state, action) {
       } else if (current_modal_page === modal_pages.HEALTH_SCREENING) {
         const { cough, fever, exposure, phone, supervisor_email, account_type, student_employee,
               congestion, diarrhea, headache, loss_of_taste_or_smell, muscle_ache, nausea, short_of_breath,
-              sore_throat} = state
+              sore_throat, confirmation} = state
         const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
 
         if (!phone) {
@@ -208,8 +208,12 @@ export default function reducer(state = initial_state, action) {
 
         if (cough !== null && fever !== null && exposure !== null && congestion !== null && diarrhea !== null &&
             headache !== null && loss_of_taste_or_smell !== null && muscle_ache !== null && nausea !== null &&
-            short_of_breath !== null && sore_throat !== null && can_submit) {
-          const showing_symptoms = !(cough || fever || exposure || congestion || diarrhea || headache || loss_of_taste_or_smell || muscle_ache || nausea || short_of_breath || sore_throat)
+            short_of_breath !== null && sore_throat !== null && confirmation && can_submit) {
+
+          const showing_symptoms = (cough || fever || exposure || congestion || diarrhea
+                                     || headache || loss_of_taste_or_smell || muscle_ache || nausea
+                                     || short_of_breath || sore_throat)
+
           new_user_status = showing_symptoms ? user_statuses.DISALLOWED : user_statuses.ALLOWED
 
           new_modal_page = action.payload
