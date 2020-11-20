@@ -62,11 +62,12 @@ CREATE TABLE IF NOT EXISTS screening.employee_supervisor (
     supervisor_email text not null
 );
 
-create function screening.save_health_info(in_account_type text, in_pidm text, in_email text, in_phone text,
+create or replace function screening.save_health_info(in_account_type text, in_pidm text, in_email text, in_phone text,
             in_name text, in_is_coughing boolean, in_is_feverish boolean, in_is_exposed boolean,
             in_supervisor_email text, in_is_is_short_of_breath boolean, in_has_sore_throat boolean,
-            in_has_muscle_aches boolean, in_has_lost_taste_smell boolean, in_has_diarrhea boolean,
-            in_is_nauseous boolean) returns void as $$
+            in_is_congested boolean, in_has_muscle_aches boolean, in_has_lost_taste_smell boolean,
+            in_has_headache boolean, in_has_diarrhea boolean, in_is_nauseous boolean,
+            in_has_tested_positive boolean) returns void as $$
 declare
     old_supervisor_email text;
 begin
@@ -74,20 +75,24 @@ begin
     -- Insert into the health-screening table
 
     insert into screening.health_screening
-        (account_type, pidm, email, name, phone, is_coughing, is_feverish, is_exposed, is_short_of_breath, has_sore_throat, is_congested, has_muscle_aches, has_lost_taste_smell, has_headache, has_diarrhea, is_nauseous)
+        (account_type, pidm, email, name, phone, is_coughing, is_feverish, is_exposed,
+        is_short_of_breath, has_sore_throat, is_congested, has_muscle_aches, has_lost_taste_smell,
+        has_headache, has_diarrhea, is_nauseous, has_tested_positive)
     values
         (cast(in_account_type as screening.account_type), in_pidm, in_email, in_name, in_phone, in_is_coughing,
-            in_is_feverish, in_is_exposed, in_is_is_short_of_breath, in_has_sore_throat, in_has_muscle_aches,
-            in_has_lost_taste_smell, in_has_diarrhea, in_is_nauseous);
+            in_is_feverish, in_is_exposed, in_is_is_short_of_breath, in_has_sore_throat, in_is_congested,
+            in_has_muscle_aches, in_has_lost_taste_smell, in_has_headache, in_has_diarrhea, in_is_nauseous, in_has_tested_positive);
 
     -- Insert into the analytics table
 
     insert into screening.analytics
-        (account_type, is_coughing, is_feverish, is_exposed, is_short_of_breath, has_sore_throat, is_congested, has_muscle_aches, has_lost_taste_smell, has_headache, has_diarrhea, is_nauseous)
+        (account_type, is_coughing, is_feverish, is_exposed, is_short_of_breath, has_sore_throat,
+        is_congested, has_muscle_aches, has_lost_taste_smell, has_headache, has_diarrhea,
+        is_nauseous, has_tested_positive)
     values
         (cast(in_account_type as screening.account_type), in_is_coughing, in_is_feverish, in_is_exposed,
-            in_is_is_short_of_breath, in_has_sore_throat, in_has_muscle_aches, in_has_lost_taste_smell, in_has_diarrhea,
-            in_is_nauseous);
+            in_is_is_short_of_breath, in_has_sore_throat, in_is_congested, in_has_muscle_aches,
+            in_has_lost_taste_smell, in_has_headache, in_has_diarrhea, in_is_nauseous, in_has_tested_positive);
 
 -- Update supervisor email if it doesn't match the current record
 

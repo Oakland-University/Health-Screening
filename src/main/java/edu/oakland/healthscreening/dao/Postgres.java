@@ -44,7 +44,6 @@ public class Postgres {
             .withoutProcedureColumnMetaDataAccess()
             .declareParameters(
                 new SqlParameter("p_account_type", Types.VARCHAR),
-                new SqlParameter("p_account_type", Types.VARCHAR),
                 new SqlParameter("p_pidm", Types.VARCHAR),
                 new SqlParameter("p_email", Types.VARCHAR),
                 new SqlParameter("p_phone", Types.VARCHAR),
@@ -53,15 +52,15 @@ public class Postgres {
                 new SqlParameter("p_is_feverish", Types.BOOLEAN),
                 new SqlParameter("p_is_exposed", Types.BOOLEAN),
                 new SqlParameter("p_supervisor_email", Types.VARCHAR),
-                new SqlParameter("is_short_of_breath", Types.BOOLEAN),
-                new SqlParameter("has_sore_throat", Types.BOOLEAN),
-                new SqlParameter("is_congested", Types.BOOLEAN),
-                new SqlParameter("has_muscle_aches", Types.BOOLEAN),
-                new SqlParameter("has_lost_taste_smell", Types.BOOLEAN),
-                new SqlParameter("has_headache", Types.BOOLEAN),
-                new SqlParameter("has_diarrhea", Types.BOOLEAN),
-                new SqlParameter("is_nauseous", Types.BOOLEAN),
-                new SqlParameter("has_tested_positive", Types.BOOLEAN));
+                new SqlParameter("p_is_short_of_breath", Types.BOOLEAN),
+                new SqlParameter("p_has_sore_throat", Types.BOOLEAN),
+                new SqlParameter("p_is_congested", Types.BOOLEAN),
+                new SqlParameter("p_has_muscle_aches", Types.BOOLEAN),
+                new SqlParameter("p_has_lost_taste_smell", Types.BOOLEAN),
+                new SqlParameter("p_has_headache", Types.BOOLEAN),
+                new SqlParameter("p_has_diarrhea", Types.BOOLEAN),
+                new SqlParameter("p_is_nauseous", Types.BOOLEAN),
+                new SqlParameter("p_has_tested_positive", Types.BOOLEAN));
 
     final SqlParameterSource parameterSource =
         new MapSqlParameterSource()
@@ -74,15 +73,15 @@ public class Postgres {
             .addValue("p_is_feverish", info.isFeverish())
             .addValue("p_is_exposed", info.isExposed())
             .addValue("p_supervisor_email", info.getSupervisorEmail())
-            .addValue("is_short_of_breath", info.isShortOfBreath())
-            .addValue("has_sore_throat", info.isSoreThroat())
-            .addValue("is_congested", info.isCongested())
-            .addValue("has_muscle_aches", info.isMuscleAche())
-            .addValue("has_lost_taste_smell", info.isLossOfTasteOrSmell())
-            .addValue("has_headache", info.isHeadache())
-            .addValue("has_diarrhea", info.isDiarrhea())
-            .addValue("is_nauseous", info.isNauseous())
-            .addValue("has_tested_positive", info.isTestedPositive());
+            .addValue("p_is_short_of_breath", info.isShortOfBreath())
+            .addValue("p_has_sore_throat", info.isSoreThroat())
+            .addValue("p_is_congested", info.isCongested())
+            .addValue("p_has_muscle_aches", info.isMuscleAche())
+            .addValue("p_has_lost_taste_smell", info.isLossOfTasteOrSmell())
+            .addValue("p_has_headache", info.isHeadache())
+            .addValue("p_has_diarrhea", info.isDiarrhea())
+            .addValue("p_is_nauseous", info.isNauseous())
+            .addValue("p_has_tested_positive", info.isTestedPositive());
 
     log.debug("Preparing to save health info: {}", info);
 
