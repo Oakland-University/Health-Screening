@@ -176,7 +176,9 @@ export const press_modal_button = () => (dispatch, getState) => {
     const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
     const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
 
-    if (cough !== null && fever !== null && exposure !== null && can_submit) {
+    if (cough !== null && fever !== null && exposure !== null && congestion !== null && diarrhea !== null &&
+            headache !== null && loss_of_taste_or_smell !== null && muscle_ache !== null && nausea !== null &&
+            short_of_breath !== null && sore_throat !== null && can_submit) {
       submit_form(
         { face_covering, good_hygiene, distancing, supervisor_email: is_employee ? supervisor_email : null },
         { name, email, phone, account_type },
