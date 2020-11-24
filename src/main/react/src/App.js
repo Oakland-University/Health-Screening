@@ -77,7 +77,7 @@ export default function App() {
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          {modal_page !== modal_pages.SUBMITTED && modal_page !== modal_pages.PLEDGE && (
+          {(modal_page === modal_pages.USER_INFO || modal_page === modal_pages.CAMPUS_CHECK) && (
             <Typography variant='body2' color='textSecondary' component='p'>
               Anyone intending on visiting campus is required to fill out this
               health screening form beforehand.

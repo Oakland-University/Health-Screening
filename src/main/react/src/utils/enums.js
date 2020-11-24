@@ -38,5 +38,16 @@ export const actions = {
     UPDATE_USER_STATUS: 'update-user-status',
     GET_PREVIOUS_HEALTH_INFO: 'get-previous-health-info',
     CLEAR_MODAL: 'clear-modal',
-    NEXT_MODAL_PAGE: 'next-modal-page'
+    NEXT_MODAL_PAGE: 'next-modal-page',
+    UPDATE_CONGESTION: 'congestion',
+    UPDATE_DIARRHEA: 'diarrhea',
+    UPDATE_HEADACHE: 'headache',
+    UPDATE_LOSS_OF_TASTE_OR_SMELL: 'loss-of-taste-or-smell',
+    UPDATE_MUSCLE_ACHE: 'muscle-ache',
+    UPDATE_NAUSEA: 'nausea',
+    UPDATE_SHORT_OF_BREATH: 'short-of-breath',
+    UPDATE_SORE_THROAT: 'sore-throat',
+    UPDATE_CONFIRMATION: 'update-confirmation',
+    UPDATE_POSITIVE_TEST: 'update-positive-test',
 }
+

@@ -23,29 +23,49 @@ const {
   GET_PREVIOUS_HEALTH_INFO,
   CLEAR_MODAL,
   NEXT_MODAL_PAGE,
+  UPDATE_CONGESTION,
+  UPDATE_DIARRHEA,
+  UPDATE_HEADACHE,
+  UPDATE_LOSS_OF_TASTE_OR_SMELL,
+  UPDATE_MUSCLE_ACHE,
+  UPDATE_NAUSEA,
+  UPDATE_SHORT_OF_BREATH,
+  UPDATE_SORE_THROAT,
+  UPDATE_CONFIRMATION,
+  UPDATE_POSITIVE_TEST
 } = actions
 
 const initial_state = {
   account_type: ACCOUNT_TYPE,
-  cough: null,
   coming_to_campus: null,
+  congestion: null,
+  cough: null,
+  diarrhea: null,
+  distancing: null,
   email: EMAIL.includes('guest') ? '' : EMAIL,
   email_error: false,
   exposure: null,
+  face_covering: null,
   fever: null,
+  good_hygiene: null,
+  headache: null,
+  loss_of_taste_or_smell: null,
   modal_page: modal_pages.CAMPUS_CHECK,
+  muscle_ache: null,
   name: NAME.includes('Guest') ? '' : NAME,
   name_error: false,
+  nausea: null,
   phone: PHONE,
   phone_error: false,
+  short_of_breath: null,
+  sore_throat: null,
   student_employee: null,
   submission_time: '',
   supervisor_email: '',
   supervisor_email_error: false,
   user_status: user_statuses.LOADING,
-  face_covering: null,
-  good_hygiene: null,
-  distancing: null,
+  confirmation: null,
+  positive_test: null
 }
 
 const email_expression = /.+@.+\..+/
@@ -100,6 +120,37 @@ export default function reducer(state = initial_state, action) {
     case CLEAR_MODAL: {
       return { ...initial_state, user_status: user_statuses.DISMISSED, supervisor_email: state.supervisor_email }
     }
+    case UPDATE_CONGESTION: {
+      return { ...state, congestion: action.payload }
+    }
+    case UPDATE_DIARRHEA: {
+      return { ...state, diarrhea: action.payload }
+    }
+    case UPDATE_HEADACHE: {
+          return { ...state, headache: action.payload }
+    }
+    case UPDATE_LOSS_OF_TASTE_OR_SMELL: {
+          return { ...state, loss_of_taste_or_smell: action.payload }
+    }
+    case UPDATE_MUSCLE_ACHE: {
+      return { ...state, muscle_ache: action.payload }
+    }
+    case UPDATE_NAUSEA: {
+      return { ...state, nausea: action.payload }
+    }
+    case UPDATE_SHORT_OF_BREATH: {
+      return { ...state, short_of_breath: action.payload }
+    }
+    case UPDATE_SORE_THROAT: {
+      return { ...state, sore_throat: action.payload }
+    }
+    case UPDATE_CONFIRMATION: {
+      return { ...state, confirmation: action.payload }
+    }
+    case UPDATE_POSITIVE_TEST: {
+      return { ...state, positive_test: action.payload }
+    }
+
     case NEXT_MODAL_PAGE: {
       const current_modal_page = state.modal_page
 
@@ -144,7 +195,9 @@ export default function reducer(state = initial_state, action) {
             state.account_type === '' ? modal_pages.USER_INFO : modal_pages.HEALTH_SCREENING
         }
       } else if (current_modal_page === modal_pages.HEALTH_SCREENING) {
-        const { cough, fever, exposure, phone, supervisor_email, account_type, student_employee } = state
+        const { cough, fever, exposure, phone, supervisor_email, account_type, student_employee,
+              congestion, diarrhea, headache, loss_of_taste_or_smell, muscle_ache, nausea, short_of_breath,
+              sore_throat, confirmation} = state
         const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
 
         if (!phone) {
@@ -153,8 +206,15 @@ export default function reducer(state = initial_state, action) {
 
         const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
 
-        if (cough !== null && fever !== null && exposure !== null && can_submit) {
-          new_user_status = cough || fever || exposure ? user_statuses.DISALLOWED : user_statuses.ALLOWED
+        if (cough !== null && fever !== null && exposure !== null && congestion !== null && diarrhea !== null &&
+            headache !== null && loss_of_taste_or_smell !== null && muscle_ache !== null && nausea !== null &&
+            short_of_breath !== null && sore_throat !== null && confirmation && can_submit) {
+
+          const showing_symptoms = (cough || fever || exposure || congestion || diarrhea
+                                     || headache || loss_of_taste_or_smell || muscle_ache || nausea
+                                     || short_of_breath || sore_throat)
+
+          new_user_status = showing_symptoms ? user_statuses.DISALLOWED : user_statuses.ALLOWED
 
           new_modal_page = action.payload
         }

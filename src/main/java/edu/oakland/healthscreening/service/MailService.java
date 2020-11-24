@@ -84,21 +84,11 @@ public class MailService {
   }
 
   public void sendGuestCertificate(String name, String email, String phone) throws MailException {
-    postgres
-        .getGuestSubmission(name, email, phone)
-        .ifPresent(
-            info -> {
-              sendCertificate(info);
-            });
+    postgres.getGuestSubmission(name, email, phone).ifPresent(this::sendCertificate);
   }
 
   public void sendAuthenticatedCertificate(String pidm) throws MailException {
-    postgres
-        .getRecentSubmission(pidm)
-        .ifPresent(
-            info -> {
-              sendCertificate(info);
-            });
+    postgres.getRecentSubmission(pidm).ifPresent(this::sendCertificate);
   }
 
   private String getEmailSubject(HealthInfo info) {
@@ -139,7 +129,8 @@ public class MailService {
       msg.setText(bodyText);
     }
 
-    log.debug("Sending certificate to: {}\tWith stay_home = ", msg.getTo(), info.shouldStayHome());
+    log.debug(
+        "Sending certificate to: {}\tWith stay_home = {}", msg.getTo(), info.shouldStayHome());
     mailSender.send(msg);
   }
 }

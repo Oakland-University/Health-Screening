@@ -15,9 +15,17 @@ import org.springframework.jdbc.core.RowMapper;
 public class AnalyticInfo {
   private int total;
   private int sick;
+  private int congested;
   private int coughing;
-  private int feverish;
+  private int diarrhea;
   private int exposed;
+  private int feverish;
+  private int headache;
+  private int lossOfTasteOrSmell;
+  private int muscleAche;
+  private int nauseous;
+  private int shortOfBreath;
+  private int soreThroat;
   private AccountType accountType;
   private Map<AccountType, AnalyticInfo> subTypeAnalytics;
 
@@ -33,9 +41,9 @@ public class AnalyticInfo {
         + "2200 North Squirrel Road,"
         + total
         + ","
-        + String.valueOf(sick)
+        + sick
         + ","
-        + String.valueOf(feverish)
+        + feverish
         + ","
         +
         /*sore_throat*/ ","
@@ -55,11 +63,11 @@ public class AnalyticInfo {
         /*shortness_breath*/ ","
         +
         /*loss_taste_smell*/ ","
-        + String.valueOf(coughing)
+        + coughing
         + ","
         +
         /*temp*/ ","
-        + String.valueOf(exposed)
+        + exposed
         + ","
     /*workplace_exclusion_travel*/ ;
   }
