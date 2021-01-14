@@ -11,6 +11,7 @@ public class Constants {
 
   public static final String GET_ANONYMOUS_ANALYTIC_INFO =
       (" SELECT                                                                           "
+              + "     account_type,                                                       "
               + "     COUNT(*) AS total,                                                  "
               + "     SUM                                                                 "
               + "     (CASE                                                               "
