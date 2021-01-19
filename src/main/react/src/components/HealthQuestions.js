@@ -87,8 +87,8 @@ export default function HealthQuestions(props) {
             Fever (100.4 or higher) or feeling feverish or chills
           </FormLabel>
           <RadioGroup
-            aria-label='cough'
-            name='cough'
+            aria-label='fever'
+            name='fever'
             value={fever}
             onChange={(event) =>
               dispatch(update_fever(event.target.value === 'true'))
@@ -104,7 +104,7 @@ export default function HealthQuestions(props) {
             (example: allergies, asthma)
           </FormLabel>
           <RadioGroup
-            aria-label='fever'
+            aria-label='cough'
             name='cough'
             value={cough}
             onChange={(event) =>
@@ -200,7 +200,7 @@ export default function HealthQuestions(props) {
             Headache that you cannot attribute to another health condition
           </FormLabel>
           <RadioGroup
-            aria-label='nausea'
+            aria-label='headache'
             name='headache'
             value={headache}
             onChange={(event) =>
@@ -232,7 +232,7 @@ export default function HealthQuestions(props) {
             Nausea or vomiting that you cannot attribute to another health condition (example: pregnancy)
           </FormLabel>
           <RadioGroup
-            aria-label='nausea'
+            aria-label='nausea or vomiting'
             name='nausea'
             value={nausea}
             onChange={(event) =>
