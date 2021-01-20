@@ -190,7 +190,7 @@ export const press_modal_button = () => (dispatch, getState) => {
 
     if (cough !== null && fever !== null && exposure !== null && congestion !== null && diarrhea !== null &&
             headache !== null && loss_of_taste_or_smell !== null && muscle_ache !== null && nausea !== null &&
-            short_of_breath !== null && sore_throat !== null && confirmation && can_submit) {
+            short_of_breath !== null && sore_throat !== null && positive_test !== null && confirmation && can_submit) {
       submit_form(
         { face_covering, good_hygiene, distancing, supervisor_email: is_employee ? supervisor_email : null },
         { name, email, phone, account_type },
