@@ -8,7 +8,19 @@ export const fetch_past_submission = () => (dispatch) => {
     if (data === null || data === undefined) {
       user_status = user_statuses.NOT_COMPLETED
     } else {
-      const has_symptoms = data.coughing || data.feverish || data.exposed
+      const has_symptoms =
+        data.coughing ||
+        data.feverish ||
+        data.exposed ||
+        data.congested ||
+        data.diarrhea ||
+        data.testedPositive ||
+        data.headache ||
+        data.lossOfTasteOrSmell ||
+        data.muscleAche ||
+        data.nauseous ||
+        data.shortOfBreath ||
+        data.soreThroat
 
       const { faceCovering, goodHygiene, distancing } = data.pledge
 
