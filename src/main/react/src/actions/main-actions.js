@@ -8,7 +8,19 @@ export const fetch_past_submission = () => (dispatch) => {
     if (data === null || data === undefined) {
       user_status = user_statuses.NOT_COMPLETED
     } else {
-      const has_symptoms = data.coughing || data.feverish || data.exposed
+      const has_symptoms =
+        data.coughing ||
+        data.feverish ||
+        data.exposed ||
+        data.congested ||
+        data.diarrhea ||
+        data.testedPositive ||
+        data.headache ||
+        data.lossOfTasteOrSmell ||
+        data.muscleAche ||
+        data.nauseous ||
+        data.shortOfBreath ||
+        data.soreThroat
 
       const { faceCovering, goodHygiene, distancing } = data.pledge
 
@@ -178,7 +190,7 @@ export const press_modal_button = () => (dispatch, getState) => {
 
     if (cough !== null && fever !== null && exposure !== null && congestion !== null && diarrhea !== null &&
             headache !== null && loss_of_taste_or_smell !== null && muscle_ache !== null && nausea !== null &&
-            short_of_breath !== null && sore_throat !== null && confirmation && can_submit) {
+            short_of_breath !== null && sore_throat !== null && positive_test !== null && confirmation && can_submit) {
       submit_form(
         { face_covering, good_hygiene, distancing, supervisor_email: is_employee ? supervisor_email : null },
         { name, email, phone, account_type },
