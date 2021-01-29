@@ -59,19 +59,19 @@ export default function HealthQuestions(props) {
   const dispatch = useDispatch()
 
   const { 
-    cough, 
-    fever, 
-    exposure, 
+    coughing,
+    feverish,
+    exposed,
     phone, 
     phone_error,
-    short_of_breath,
-    congestion,
+    shortOfBreath,
+    congested,
     diarrhea,
     headache,
-    loss_of_taste_or_smell,
-    muscle_ache,
-    nausea,
-    sore_throat,
+    lossOfTasteOrSmell,
+    muscleAche,
+    nauseous,
+    soreThroat,
     confirmation,
     positive_test
   } = useSelector((state) => state)
@@ -89,7 +89,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='fever'
             name='fever'
-            value={fever}
+            value={feverish}
             onChange={(event) =>
               dispatch(update_fever(event.target.value === 'true'))
             }
@@ -106,7 +106,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='cough'
             name='cough'
-            value={cough}
+            value={coughing}
             onChange={(event) =>
               dispatch(update_cough(event.target.value === 'true'))
             }
@@ -122,7 +122,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='shortness of breath'
             name='short_of_breath'
-            value={short_of_breath}
+            value={shortOfBreath}
             onChange={(event) =>
               dispatch(update_short_of_breath(event.target.value === 'true'))
             }
@@ -138,7 +138,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='sore throat'
             name='sore_throat'
-            value={sore_throat}
+            value={soreThroat}
             onChange={(event) =>
               dispatch(update_sore_throat(event.target.value === 'true'))
             }
@@ -154,7 +154,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='nasal congestion'
             name='congestion'
-            value={congestion}
+            value={congested}
             onChange={(event) =>
               dispatch(update_congestion(event.target.value === 'true'))
             }
@@ -170,7 +170,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='muscle aches'
             name='muscle_ache'
-            value={muscle_ache}
+            value={muscleAche}
             onChange={(event) =>
               dispatch(update_muscle_ache(event.target.value === 'true'))
             }
@@ -186,7 +186,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='loss of taste or smell'
             name='loss_of_taste_or_smell'
-            value={loss_of_taste_or_smell}
+            value={lossOfTasteOrSmell}
             onChange={(event) =>
               dispatch(update_loss_of_taste_or_smell(event.target.value === 'true'))
             }
@@ -234,7 +234,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='nausea or vomiting'
             name='nausea'
-            value={nausea}
+            value={nauseous}
             onChange={(event) =>
               dispatch(update_nausea(event.target.value === 'true'))
             }
@@ -275,7 +275,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='exposure'
             name='exposure'
-            value={exposure}
+            value={exposed}
             onChange={(event) =>
               dispatch(update_exposure(event.target.value === 'true'))
             }
