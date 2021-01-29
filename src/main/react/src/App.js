@@ -61,9 +61,7 @@ export default function App() {
     modal_page === modal_pages.PLEDGE ? 'Coronavirus Honor Pledge' : 'OU Health Screening'
 
   const handle_close = () => {
-    if (modal_page !== modal_pages.SUBMITTED) {
-      dispatch(close_modal())
-    }
+    dispatch(close_modal())
     set_modal_open(false)
   }
 
