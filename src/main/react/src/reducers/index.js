@@ -33,7 +33,7 @@ const {
   UPDATE_SHORT_OF_BREATH,
   UPDATE_SORE_THROAT,
   UPDATE_CONFIRMATION,
-  UPDATE_POSITIVE_TEST
+  UPDATE_TESTED_POSITIVE
 } = actions
 
 const initial_state = {
@@ -50,23 +50,23 @@ const initial_state = {
   feverish: null,
   good_hygiene: null,
   headache: null,
-  lossOfTasteOrSmell: null,
+  loss_of_taste_or_smell: null,
   modal_page: modal_pages.CAMPUS_CHECK,
-  muscleAche: null,
+  muscle_ache: null,
   name: NAME.includes('Guest') ? '' : NAME,
   name_error: false,
   nauseous: null,
   phone: PHONE,
   phone_error: false,
-  shortOfBreath: null,
-  soreThroat: null,
+  short_of_breath: null,
+  sore_throat: null,
   student_employee: null,
   submission_time: '',
   supervisor_email: '',
   supervisor_email_error: false,
   user_status: user_statuses.LOADING,
   confirmation: null,
-  positive_test: null
+  tested_positive: null
 }
 
 const email_expression = /.+@.+\..+/
@@ -131,25 +131,25 @@ export default function reducer(state = initial_state, action) {
           return { ...state, headache: action.payload }
     }
     case UPDATE_LOSS_OF_TASTE_OR_SMELL: {
-          return { ...state, lossOfTasteOrSmell: action.payload }
+          return { ...state, loss_of_taste_or_smell: action.payload }
     }
     case UPDATE_MUSCLE_ACHE: {
-      return { ...state, muscleAche: action.payload }
+      return { ...state, muscle_ache: action.payload }
     }
     case UPDATE_NAUSEOUS: {
       return { ...state, nauseous: action.payload }
     }
     case UPDATE_SHORT_OF_BREATH: {
-      return { ...state, shortOfBreath: action.payload }
+      return { ...state, short_of_breath: action.payload }
     }
     case UPDATE_SORE_THROAT: {
-      return { ...state, soreThroat: action.payload }
+      return { ...state, sore_throat: action.payload }
     }
     case UPDATE_CONFIRMATION: {
       return { ...state, confirmation: action.payload }
     }
-    case UPDATE_POSITIVE_TEST: {
-      return { ...state, positive_test: action.payload }
+    case UPDATE_TESTED_POSITIVE: {
+      return { ...state, tested_positive: action.payload }
     }
 
     case NEXT_MODAL_PAGE: {

@@ -9,13 +9,13 @@ export const has_symptoms = (data) => {
     data.exposed ||
     data.congested ||
     data.diarrhea ||
-    data.testedPositive ||
+    data.tested_positive ||
     data.headache ||
-    data.lossOfTasteOrSmell ||
-    data.muscleAche ||
+    data.loss_of_taste_or_smell ||
+    data.muscle_ache ||
     data.nauseous ||
-    data.shortOfBreath ||
-    data.soreThroat
+    data.short_of_breath ||
+    data.sore_throat
   )
 }
 
@@ -26,18 +26,17 @@ export const agrees_to_pledge = (obj) => {
 
 export const all_symptoms_non_null = (symptom_data) => {
   return (
-    symptom_data.cough !== null &&
-    symptom_data.fever !== null &&
-    symptom_data.exposure !== null &&
-    symptom_data.congestion !== null &&
+    symptom_data.coughing !== null &&
+    symptom_data.feverish !== null &&
+    symptom_data.exposed !== null &&
+    symptom_data.congested !== null &&
     symptom_data.diarrhea !== null &&
+    symptom_data.tested_positive !== null &&
     symptom_data.headache !== null &&
     symptom_data.loss_of_taste_or_smell !== null &&
     symptom_data.muscle_ache !== null &&
-    symptom_data.nausea !== null &&
+    symptom_data.nauseous !== null &&
     symptom_data.short_of_breath !== null &&
-    symptom_data.sore_throat !== null &&
-    symptom_data.positive_test !== null &&
-    symptom_data.confirmation
+    symptom_data.sore_throat !== null
   )
 }

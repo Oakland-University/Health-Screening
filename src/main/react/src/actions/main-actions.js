@@ -105,8 +105,8 @@ export const update_confirmation = (new_confirmation) => (dispatch) => {
   dispatch({ type: actions.UPDATE_CONFIRMATION, payload: new_confirmation })
 }
 
-export const update_positive_test = (new_positive_test) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_POSITIVE_TEST, payload: new_positive_test })
+export const update_tested_positive = (new_positive_test) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_TESTED_POSITIVE, payload: new_positive_test })
 }
 
 export const update_face_covering = (new_face_covering) => (dispatch) => {
@@ -156,14 +156,14 @@ export const press_modal_button = () => (dispatch, getState) => {
       distancing,
       supervisor_email,
       student_employee,
-      shortOfBreath,
+      short_of_breath,
       congested,
       diarrhea,
       headache,
-      lossOfTasteOrSmell,
+      loss_of_taste_or_smell,
       muscleAche,
       nauseous,
-      soreThroat,
+      sore_throat,
       positive_test,
       confirmation
     } = getState()
@@ -179,14 +179,14 @@ export const press_modal_button = () => (dispatch, getState) => {
           feverish,
           coughing,
           exposed,
-          shortOfBreath,
+          short_of_breath,
           congested,
           diarrhea,
           headache,
-          lossOfTasteOrSmell,
+          loss_of_taste_or_smell,
           muscleAche,
           nauseous,
-          soreThroat,
+          sore_throat,
           positive_test,
           confirmation
         }
