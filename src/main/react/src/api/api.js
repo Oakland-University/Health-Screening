@@ -1,34 +1,16 @@
 /*global IS_DEMO*/
 /* global token */
 
-export const submit_form = async (pledge_info, user_info, questions) => {
+export const submit_form = async (pledge, user_info, questions) => {
   if (IS_DEMO) {
     return
   }
 
   let request_body = {
     accountType: user_info == null ? 'student' : 'guest',
-    name: user_info.name,
-    phone: user_info.phone,
-    email: user_info.email,
-    coughing: questions.cough,
-    feverish: questions.fever,
-    exposed: questions.exposure,
-    shortOfBreath: questions.short_of_breath,
-    congested: questions.congestion,
-    diarrhea: questions.diarrhea,
-    headache: questions.headache,
-    lossOfTasteOrSmell: questions.loss_of_taste_or_smell,
-    muscleAche: questions.muscle_ache,
-    nauseous: questions.nausea,
-    soreThroat: questions.sore_throat,
-    testedPositive: questions.positive_test,
-    pledge: {
-      faceCovering: pledge_info.face_covering,
-      goodHygiene: pledge_info.good_hygiene,
-      distancing: pledge_info.distancing,
-      supervisorEmail: pledge_info.supervisor_email
-    },
+    ...user_info,
+    ...questions,
+    pledge
   }
 
   try {
