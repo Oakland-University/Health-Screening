@@ -7,7 +7,7 @@ export const submit_form = async (pledge, user_info, questions) => {
   }
 
   let request_body = {
-    accountType: user_info == null ? 'student' : 'guest',
+    account_type: user_info == null ? 'student' : 'guest',
     ...user_info,
     ...questions,
     pledge
