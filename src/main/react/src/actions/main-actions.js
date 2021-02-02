@@ -1,36 +1,19 @@
 import { get_user_submission, submit_form, send_pledge_info, get_supervisor_email } from '../api/api'
 
 import { actions, user_statuses, account_types, modal_pages } from '../utils/enums'
+import { allowed_on_campus, all_symptoms_non_null } from '../utils/functions'
 
 export const fetch_past_submission = () => (dispatch) => {
   get_user_submission().then((data) => {
     let user_status = user_statuses.DISALLOWED
+
     if (data === null || data === undefined) {
       user_status = user_statuses.NOT_COMPLETED
-    } else {
-      const has_symptoms =
-        data.coughing ||
-        data.feverish ||
-        data.exposed ||
-        data.congested ||
-        data.diarrhea ||
-        data.testedPositive ||
-        data.headache ||
-        data.lossOfTasteOrSmell ||
-        data.muscleAche ||
-        data.nauseous ||
-        data.shortOfBreath ||
-        data.soreThroat
-
-      const { faceCovering, goodHygiene, distancing } = data.pledge
-
-      const agreed_to_pledge = faceCovering && goodHygiene && distancing
-
-      if (agreed_to_pledge && !has_symptoms) {
+    } else if (allowed_on_campus(data)){
         user_status = user_statuses.ALLOWED
-      }
     }
-      dispatch({ type: actions.GET_PREVIOUS_HEALTH_INFO, payload: user_status })
+
+    dispatch({ type: actions.GET_PREVIOUS_HEALTH_INFO, payload: user_status })
   })
 }
 
@@ -71,19 +54,19 @@ export const update_supervisor_email = (new_supervisor_email) => (dispatch) => {
 }
 
 export const update_cough = (new_cough) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_COUGH, payload: new_cough })
+  dispatch({ type: actions.UPDATE_COUGHING, payload: new_cough })
 }
 
 export const update_exposure = (new_exposure) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_EXPOSURE, payload: new_exposure })
+  dispatch({ type: actions.UPDATE_EXPOSED, payload: new_exposure })
 }
 
 export const update_fever = (new_fever) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_FEVER, payload: new_fever })
+  dispatch({ type: actions.UPDATE_FEVERISH, payload: new_fever })
 }
 
 export const update_congestion = (new_congestion) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_CONGESTION, payload: new_congestion })
+  dispatch({ type: actions.UPDATE_CONGESTED, payload: new_congestion })
 }
 
 export const update_diarrhea = (new_diarrhea) => (dispatch) => {
@@ -107,7 +90,7 @@ export const update_muscle_ache = (new_muscle_ache) => (dispatch) => {
 }
 
 export const update_nausea = (new_nausea) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_NAUSEA, payload: new_nausea })
+  dispatch({ type: actions.UPDATE_NAUSEOUS, payload: new_nausea })
 }
 
 export const update_short_of_breath = (new_short_of_breath) => (dispatch) => {
@@ -122,8 +105,8 @@ export const update_confirmation = (new_confirmation) => (dispatch) => {
   dispatch({ type: actions.UPDATE_CONFIRMATION, payload: new_confirmation })
 }
 
-export const update_positive_test = (new_positive_test) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_POSITIVE_TEST, payload: new_positive_test })
+export const update_tested_positive = (new_positive_test) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_TESTED_POSITIVE, payload: new_positive_test })
 }
 
 export const update_face_covering = (new_face_covering) => (dispatch) => {
@@ -161,9 +144,9 @@ export const press_modal_button = () => (dispatch, getState) => {
     payload = modal_pages.SUBMITTED
 
     const {
-      fever,
-      cough,
-      exposure,
+      feverish,
+      coughing,
+      exposed,
       name,
       email,
       phone,
@@ -174,39 +157,37 @@ export const press_modal_button = () => (dispatch, getState) => {
       supervisor_email,
       student_employee,
       short_of_breath,
-      congestion,
+      congested,
       diarrhea,
       headache,
       loss_of_taste_or_smell,
       muscle_ache,
-      nausea,
+      nauseous,
       sore_throat,
-      positive_test,
+      tested_positive,
       confirmation
     } = getState()
 
     const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
     const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
 
-    if (cough !== null && fever !== null && exposure !== null && congestion !== null && diarrhea !== null &&
-            headache !== null && loss_of_taste_or_smell !== null && muscle_ache !== null && nausea !== null &&
-            short_of_breath !== null && sore_throat !== null && positive_test !== null && confirmation && can_submit) {
+    if (all_symptoms_non_null(getState()) && can_submit) {
       submit_form(
         { face_covering, good_hygiene, distancing, supervisor_email: is_employee ? supervisor_email : null },
         { name, email, phone, account_type },
         {
-          fever,
-          cough,
-          exposure,
+          feverish,
+          coughing,
+          exposed,
           short_of_breath,
-          congestion,
+          congested,
           diarrhea,
           headache,
           loss_of_taste_or_smell,
           muscle_ache,
-          nausea,
+          nauseous,
           sore_throat,
-          positive_test,
+          tested_positive,
           confirmation
         }
       )

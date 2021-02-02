@@ -3,12 +3,28 @@
 POST http://localhost:8095/api/v1/health-info
 Content-Type: application/json
 {
-"accountType": "student",
-"phone": "5555555555",
-"email": "student@oakland.edu",
+"account_type": "guest",
+"confirmation": true,
+"congested": false,
 "coughing": false,
+"diarrhea": false,
+"email": "demo@example.com",
+"exposed": false,
 "feverish": false,
-"exposed": false
+"headache": false,
+"loss_of_taste_or_smell": false,
+"muscle_ache": false,
+"name": "John Smith",
+"nauseous": false,
+"phone": "555 525-2231",
+"pledge": {
+    "face_covering": true,
+    "good_hygiene": true,
+    "distancing": true
+},
+"tested_positive": false,
+"short_of_breath": false,
+"sore_throat": false
 }
 
 # Get a list of all responses
