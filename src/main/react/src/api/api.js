@@ -2,15 +2,16 @@
 /* global token */
 
 export const submit_form = async (pledge, user_info, questions) => {
-  if (IS_DEMO) {
-    return
-  }
-
   let request_body = {
     account_type: user_info == null ? 'student' : 'guest',
     ...user_info,
     ...questions,
     pledge
+  }
+
+  if (IS_DEMO) {
+    console.log(request_body)
+    return
   }
 
   try {

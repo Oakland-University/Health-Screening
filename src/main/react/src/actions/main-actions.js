@@ -161,10 +161,10 @@ export const press_modal_button = () => (dispatch, getState) => {
       diarrhea,
       headache,
       loss_of_taste_or_smell,
-      muscleAche,
+      muscle_ache,
       nauseous,
       sore_throat,
-      positive_test,
+      tested_positive,
       confirmation
     } = getState()
 
@@ -184,10 +184,10 @@ export const press_modal_button = () => (dispatch, getState) => {
           diarrhea,
           headache,
           loss_of_taste_or_smell,
-          muscleAche,
+          muscle_ache,
           nauseous,
           sore_throat,
-          positive_test,
+          tested_positive,
           confirmation
         }
       )
