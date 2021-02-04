@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS screening.health_screening (
 );
 
 CREATE TABLE IF NOT EXISTS screening.archived_health_screening (
-    id serial primary key,
+    id integer primary key,
     account_type screening.account_type not null default 'guest',
     pidm text,
     email text not null,
