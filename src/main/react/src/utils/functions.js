@@ -21,7 +21,7 @@ export const has_symptoms = (data) => {
 
 export const agrees_to_pledge = (obj) => {
   let data = obj.pledge ? obj.pledge : obj
-  return data.faceCovering && data.goodHygiene && data.distancing
+  return data.face_covering && data.good_hygiene && data.distancing
 }
 
 export const all_symptoms_non_null = (symptom_data) => {

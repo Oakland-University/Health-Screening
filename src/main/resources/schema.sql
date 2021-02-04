@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS screening.archived_health_screening (
     archived_time timestamp not null default now(),
     supervisor_email text,
     supervisor_name text,
-    supervisor_phone text,
+    supervisor_phone text
 );
 
 CREATE TABLE IF NOT EXISTS screening.analytics (
@@ -155,6 +155,7 @@ begin
     get diagnostics update_count = row_count;
 
     -- Remove today's record from health_screening table if it exists
+
     if update_count > 0 then
         delete from
             screening.health_screening
@@ -202,18 +203,3 @@ end;
 $$ language plpgsql;
 
 
-/* For converting from the original schema to the current one */
-
-alter type screening.account_type add value 'faculty' after 'student';
-alter type screening.account_type add value 'staff' after 'faculty';
-alter type screening.account_type add value 'student_employee' after 'staff';
-
-
-alter table screening.health_screening
-    add column supervisor_email text,
-    add column supervisor_name text,
-    add column supervisor_phone text,
-    add column notes text,
-    alter column account_type drop default,
-    alter column account_type type screening.account_type USING account_type::screening.account_type,
-    alter column account_type set default 'guest';
