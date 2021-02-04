@@ -145,7 +145,29 @@ begin
     insert into
         screening.archived_health_screening
     select
-        *
+        id,
+        account_type,
+        pidm,
+        email,
+        phone,
+        name,
+        is_coughing,
+        is_feverish,
+        is_exposed,
+        is_short_of_breath,
+        has_sore_throat,
+        is_congested,
+        has_muscle_aches,
+        has_lost_taste_smell,
+        has_headache,
+        has_diarrhea,
+        is_nauseous,
+        has_tested_positive,
+        submission_time,
+        now() as archived_time,
+        supervisor_email,
+        supervisor_name,
+        supervisor_phone
     from
         screening.health_screening
     where
