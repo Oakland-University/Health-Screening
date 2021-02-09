@@ -121,15 +121,6 @@ export const send_pledge_info = async (pledge_info) => {
     return
   }
 
-  let request_body = {
-    face_covering: pledge_info.face_covering,
-    good_hygiene: pledge_info.good_hygiene,
-    distancing: pledge_info.distancing,
-    email: pledge_info.email,
-    name: pledge_info.name,
-    supervisor_email: pledge_info.supervisor_email
-  }
-
   try {
     const response = await fetch('/health-screening/api/v1/pledge', {
       credentials: 'include',
@@ -139,7 +130,7 @@ export const send_pledge_info = async (pledge_info) => {
         Authorization: 'Bearer ' + token,
       },
       method: 'POST',
-      body: JSON.stringify(request_body),
+      body: JSON.stringify(pledge_info),
     })
     return await response.ok
   } catch (err) {
