@@ -131,7 +131,7 @@ public class Postgres {
       log.debug("No recent info for: {}", email);
       return Optional.empty();
     } catch (final Exception e) {
-      log.error("Unknown DAO error finding record for: {}", email);
+      log.error("Unknown DAO error finding record for: {}", email, e);
       return Optional.empty();
     }
   }
