@@ -125,7 +125,7 @@ public class HealthScreeningController {
       previousPositive =
           postgres
               .getRecentSubmission(info.getPidm(), info.getEmail())
-              .map(hs -> hs.shouldStayHome())
+              .map(HealthInfo::shouldStayHome)
               .orElse(false);
     }
 
