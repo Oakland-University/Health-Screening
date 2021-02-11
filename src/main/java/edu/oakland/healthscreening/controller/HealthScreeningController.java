@@ -103,6 +103,8 @@ public class HealthScreeningController {
     String supervisorEmail = info.getPledge().getSupervisorEmail();
     info.setSupervisorEmail(supervisorEmail);
 
+    boolean previousPositive = false;
+
     if (accountType != GUEST) {
       info.setPidm(personInfo.get("pidm").asString());
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
@@ -119,9 +121,15 @@ public class HealthScreeningController {
       }
 
       postgres.savePledge(info.getPledge());
+
+      previousPositive =
+          postgres
+              .getRecentSubmission(info.getPidm(), info.getEmail())
+              .map(HealthInfo::shouldStayHome)
+              .orElse(false);
     }
 
-    if (info.shouldStayHome()) {
+    if (info.shouldStayHome() || previousPositive) {
       mailService.emailHealthCenter(info, accountType);
     }
     if (supervisorEmail != null && !supervisorEmail.isEmpty()) {

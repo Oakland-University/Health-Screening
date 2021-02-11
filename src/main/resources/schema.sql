@@ -28,6 +28,32 @@ CREATE TABLE IF NOT EXISTS screening.health_screening (
     notes text
 );
 
+CREATE TABLE IF NOT EXISTS screening.archived_health_screening (
+    id integer primary key,
+    account_type screening.account_type not null default 'guest',
+    pidm text,
+    email text not null,
+    phone text,
+    name text,
+    is_coughing boolean not null,
+    is_feverish boolean not null,
+    is_exposed boolean not null,
+    is_short_of_breath boolean,
+    has_sore_throat boolean,
+    is_congested boolean,
+    has_muscle_aches boolean,
+    has_lost_taste_smell boolean,
+    has_headache boolean,
+    has_diarrhea boolean,
+    is_nauseous boolean,
+    has_tested_positive boolean,
+    submission_time timestamp not null default now(),
+    archived_time timestamp not null default now(),
+    supervisor_email text,
+    supervisor_name text,
+    supervisor_phone text
+);
+
 CREATE TABLE IF NOT EXISTS screening.analytics (
     id serial primary key,
     account_type screening.account_type not null default 'guest',
@@ -62,6 +88,47 @@ CREATE TABLE IF NOT EXISTS screening.employee_supervisor (
     supervisor_email text not null
 );
 
+
+CREATE OR REPLACE VIEW screening.anonymous_data AS
+SELECT
+    id,
+    account_type,
+    is_coughing,
+    is_feverish,
+    is_exposed,
+    is_short_of_breath,
+    has_sore_throat,
+    is_congested,
+    has_muscle_aches,
+    has_lost_taste_smell,
+    has_headache,
+    has_diarrhea,
+    is_nauseous,
+    has_tested_positive,
+    submission_time
+FROM
+    screening.health_screening
+UNION
+SELECT
+    id,
+    account_type,
+    is_coughing,
+    is_feverish,
+    is_exposed,
+    is_short_of_breath,
+    has_sore_throat,
+    is_congested,
+    has_muscle_aches,
+    has_lost_taste_smell,
+    has_headache,
+    has_diarrhea,
+    is_nauseous,
+    has_tested_positive,
+    submission_time
+FROM
+    screening.analytics;
+
+
 create or replace function screening.save_health_info(in_account_type text, in_pidm text, in_email text, in_phone text,
             in_name text, in_is_coughing boolean, in_is_feverish boolean, in_is_exposed boolean,
             in_supervisor_email text, in_is_is_short_of_breath boolean, in_has_sore_throat boolean,
@@ -70,7 +137,54 @@ create or replace function screening.save_health_info(in_account_type text, in_p
             in_has_tested_positive boolean) returns void as $$
 declare
     old_supervisor_email text;
+    update_count integer;
 begin
+
+    -- If today's record exists, put it in the archive table
+
+    insert into
+        screening.archived_health_screening
+    select
+        id,
+        account_type,
+        pidm,
+        email,
+        phone,
+        name,
+        is_coughing,
+        is_feverish,
+        is_exposed,
+        is_short_of_breath,
+        has_sore_throat,
+        is_congested,
+        has_muscle_aches,
+        has_lost_taste_smell,
+        has_headache,
+        has_diarrhea,
+        is_nauseous,
+        has_tested_positive,
+        submission_time,
+        now() as archived_time,
+        supervisor_email,
+        supervisor_name,
+        supervisor_phone
+    from
+        screening.health_screening
+    where
+        submission_time >= now()::date
+        and email = in_email;
+
+    get diagnostics update_count = row_count;
+
+    -- Remove today's record from health_screening table if it exists
+
+    if update_count > 0 then
+        delete from
+            screening.health_screening
+        where
+            submission_time >= now()::date
+            and email = in_email;
+    end if;
 
     -- Insert into the health-screening table
 
@@ -82,17 +196,6 @@ begin
         (cast(in_account_type as screening.account_type), in_pidm, in_email, in_name, in_phone, in_is_coughing,
             in_is_feverish, in_is_exposed, in_is_is_short_of_breath, in_has_sore_throat, in_is_congested,
             in_has_muscle_aches, in_has_lost_taste_smell, in_has_headache, in_has_diarrhea, in_is_nauseous, in_has_tested_positive);
-
-    -- Insert into the analytics table
-
-    insert into screening.analytics
-        (account_type, is_coughing, is_feverish, is_exposed, is_short_of_breath, has_sore_throat,
-        is_congested, has_muscle_aches, has_lost_taste_smell, has_headache, has_diarrhea,
-        is_nauseous, has_tested_positive)
-    values
-        (cast(in_account_type as screening.account_type), in_is_coughing, in_is_feverish, in_is_exposed,
-            in_is_is_short_of_breath, in_has_sore_throat, in_is_congested, in_has_muscle_aches,
-            in_has_lost_taste_smell, in_has_headache, in_has_diarrhea, in_is_nauseous, in_has_tested_positive);
 
 -- Update supervisor email if it doesn't match the current record
 
@@ -122,18 +225,3 @@ end;
 $$ language plpgsql;
 
 
-/* For converting from the original schema to the current one */
-
-alter type screening.account_type add value 'faculty' after 'student';
-alter type screening.account_type add value 'staff' after 'faculty';
-alter type screening.account_type add value 'student_employee' after 'staff';
-
-
-alter table screening.health_screening
-    add column supervisor_email text,
-    add column supervisor_name text,
-    add column supervisor_phone text,
-    add column notes text,
-    alter column account_type drop default,
-    alter column account_type type screening.account_type USING account_type::screening.account_type,
-    alter column account_type set default 'guest';

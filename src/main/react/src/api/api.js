@@ -3,9 +3,9 @@
 
 export const submit_form = async (pledge, user_info, questions) => {
   let request_body = {
-    account_type: user_info == null ? 'student' : 'guest',
     ...user_info,
     ...questions,
+    account_type: user_info == null ? 'student' : 'guest',
     pledge
   }
 
@@ -121,15 +121,6 @@ export const send_pledge_info = async (pledge_info) => {
     return
   }
 
-  let request_body = {
-    faceCovering: pledge_info.face_covering,
-    goodHygiene: pledge_info.good_hygiene,
-    distancing: pledge_info.distancing,
-    email: pledge_info.email,
-    name: pledge_info.name,
-    supervisorEmail: pledge_info.supervisor_email
-  }
-
   try {
     const response = await fetch('/health-screening/api/v1/pledge', {
       credentials: 'include',
@@ -139,7 +130,7 @@ export const send_pledge_info = async (pledge_info) => {
         Authorization: 'Bearer ' + token,
       },
       method: 'POST',
-      body: JSON.stringify(request_body),
+      body: JSON.stringify(pledge_info),
     })
     return await response.ok
   } catch (err) {
