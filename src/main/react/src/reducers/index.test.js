@@ -1,5 +1,5 @@
-import reducer from './reducers/index'
-import { actions, user_statuses, modal_pages, account_types } from './utils/enums'
+import reducer from './index'
+import { actions, user_statuses, modal_pages, account_types } from '../utils/enums'
 
 /*global PHONE*/
 /*global EMAIL*/
