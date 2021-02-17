@@ -36,7 +36,7 @@ const initial_state = {
   supervisor_email_error: false,
   user_status: user_statuses.LOADING,
   confirmation: null,
-  tested_positive: null,
+  tested_positive: null
 }
 
 describe('General', () => {
@@ -66,13 +66,13 @@ describe('Coming to Campus Page', () => {
       ...initial_state,
       user_status: user_statuses.NOT_COMING,
       coming_to_campus: true,
-      account_type: account_types.GUEST,
+      account_type: account_types.GUEST
     }
 
     expect(reducer(state_going_in, { type: actions.NEXT_MODAL_PAGE })).toEqual({
       ...state_going_in,
       user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.USER_INFO,
+      modal_page: modal_pages.USER_INFO
     })
   })
 
@@ -81,1017 +81,374 @@ describe('Coming to Campus Page', () => {
       ...initial_state,
       user_status: user_statuses.NOT_COMING,
       coming_to_campus: true,
-      account_type: account_types.STUDENT,
+      account_type: account_types.STUDENT
     }
 
     expect(reducer(state_going_in, { type: actions.NEXT_MODAL_PAGE })).toEqual({
       ...state_going_in,
       user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE,
+      modal_page: modal_pages.PLEDGE
     })
   })
 })
 
 describe('Honor Pledge Page', () => {
+  const not_filled_out_state = {
+    ...initial_state,
+    user_status: user_statuses.NOT_COMPLETED,
+    modal_page: modal_pages.PLEDGE,
+    coming_to_campus: true,
+    account_type: account_types.STUDENT,
+    student_employee: false
+  }
+
+  const all_true_state = {
+    ...initial_state,
+    user_status: user_statuses.NOT_COMPLETED,
+    modal_page: modal_pages.PLEDGE,
+    coming_to_campus: true,
+    account_type: account_types.STUDENT,
+    student_employee: false,
+    face_covering: true,
+    good_hygiene: true,
+    distancing: true
+  }
 
   it('should NOT proceed to symptom page if no pledge questions are filled out', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-    }
-
-    expect(reducer(state_going_in, { type: actions.NEXT_MODAL_PAGE })).toEqual({
-      ...state_going_in,
+    expect(reducer(not_filled_out_state, { type: actions.NEXT_MODAL_PAGE })).toEqual({
+      ...not_filled_out_state
     })
   })
 
   it('should NOT proceed to symptom page if face_covering is NOT filled out', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // face_covering not filled out
-    expect(reducer({ ...state_going_in, good_hygiene: true, distancing: true }, action)).toEqual({
-      ...state_going_in,
-      good_hygiene: true,
-      distancing: true,
-    })
 
+    expect(
+      reducer({ ...not_filled_out_state, good_hygiene: true, distancing: true }, action)
+    ).toEqual({
+      ...not_filled_out_state,
+      good_hygiene: true,
+      distancing: true
+    })
   })
 
   it('should NOT proceed to symptom page if good_hygiene is NOT filled out', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    // good_hygiene not filled out
-    expect(reducer({ ...state_going_in, face_covering: true, distancing: true }, action)).toEqual({
-      ...state_going_in,
+    expect(
+      reducer({ ...not_filled_out_state, face_covering: true, distancing: true }, action)
+    ).toEqual({
+      ...not_filled_out_state,
       face_covering: true,
-      distancing: true,
+      distancing: true
     })
-
   })
 
   it('should NOT proceed to symptom page if distancing is NOT filled out', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    // distancing not filled out
-    expect(reducer({ ...state_going_in, face_covering: true, good_hygiene: true }, action)).toEqual(
-      {
-        ...state_going_in,
-        face_covering: true,
-        good_hygiene: true,
-      }
-    )
+    expect(
+      reducer({ ...not_filled_out_state, face_covering: true, good_hygiene: true }, action)
+    ).toEqual({
+      ...not_filled_out_state,
+      face_covering: true,
+      good_hygiene: true
+    })
   })
 
   it('should proceed to symptom page if all pledge questions are "true"', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-    }
-
-    expect(reducer(state_going_in, { type: actions.NEXT_MODAL_PAGE })).toEqual({
-      ...state_going_in,
-      modal_page: modal_pages.HEALTH_SCREENING,
+    expect(reducer(all_true_state, { type: actions.NEXT_MODAL_PAGE })).toEqual({
+      ...all_true_state,
+      modal_page: modal_pages.HEALTH_SCREENING
     })
   })
 
-
   it('should set state to DISALLOWED if face_covering is false', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    // face_covering false
-    expect(reducer({ ...state_going_in, face_covering: false }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_true_state, face_covering: false }, action)).toEqual({
+      ...all_true_state,
       face_covering: false,
       user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
+      modal_page: modal_pages.SUBMITTED
     })
-
   })
 
   it('should set state to DISALLOWED if good_hygiene is false', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    // good_hygiene false
-    expect(reducer({ ...state_going_in, good_hygiene: false }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_true_state, good_hygiene: false }, action)).toEqual({
+      ...all_true_state,
       good_hygiene: false,
       user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
+      modal_page: modal_pages.SUBMITTED
     })
-
   })
 
   it('should set state to DISALLOWED if distancing is false', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    // distancing false
-    expect(reducer({ ...state_going_in, distancing: false }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_true_state, distancing: false }, action)).toEqual({
+      ...all_true_state,
       distancing: false,
       user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
+      modal_page: modal_pages.SUBMITTED
     })
   })
 })
 
 describe('Health Questions Page', () => {
+  const all_false = {
+    ...initial_state,
+    user_status: user_statuses.NOT_COMPLETED,
+    modal_page: modal_pages.HEALTH_SCREENING,
+    coming_to_campus: true,
+    account_type: account_types.STUDENT,
+    student_employee: false,
+    face_covering: true,
+    good_hygiene: true,
+    distancing: true,
+    coughing: false,
+    feverish: false,
+    exposed: false,
+    congested: false,
+    diarrhea: false,
+    tested_positive: false,
+    headache: false,
+    loss_of_taste_or_smell: false,
+    muscle_ache: false,
+    nauseous: false,
+    short_of_breath: false,
+    sore_throat: false
+  }
 
   it('should not submit a HS if coughing is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // coughing is null
-    expect(reducer({ ...state_going_in, coughing: null }, action)).toEqual({
-      ...state_going_in,
-      coughing: null,
-    })
 
+    expect(reducer({ ...all_false, coughing: null }, action)).toEqual({
+      ...all_false,
+      coughing: null
+    })
   })
 
   it('should not submit a HS if feverish field is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // feverish is null
-    expect(reducer({ ...state_going_in, feverish: null }, action)).toEqual({
-      ...state_going_in,
-      feverish: null,
-    })
 
+    expect(reducer({ ...all_false, feverish: null }, action)).toEqual({
+      ...all_false,
+      feverish: null
+    })
   })
 
   it('should not submit a HS if congested is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // congested is null
-    expect(reducer({ ...state_going_in, congested: null }, action)).toEqual({
-      ...state_going_in,
-      congested: null,
-    })
 
+    expect(reducer({ ...all_false, congested: null }, action)).toEqual({
+      ...all_false,
+      congested: null
+    })
   })
 
   it('should not submit a HS if diarrhea is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // diarrhea is null
-    expect(reducer({ ...state_going_in, diarrhea: null }, action)).toEqual({
-      ...state_going_in,
-      diarrhea: null,
-    })
 
+    expect(reducer({ ...all_false, diarrhea: null }, action)).toEqual({
+      ...all_false,
+      diarrhea: null
+    })
   })
 
   it('should not submit a HS if tested_positive is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // tested_positive is null
-    expect(reducer({ ...state_going_in, tested_positive: null }, action)).toEqual({
-      ...state_going_in,
-      tested_positive: null,
-    })
 
+    expect(reducer({ ...all_false, tested_positive: null }, action)).toEqual({
+      ...all_false,
+      tested_positive: null
+    })
   })
 
   it('should not submit a HS if headache is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // headache is null
-    expect(reducer({ ...state_going_in, headache: null }, action)).toEqual({
-      ...state_going_in,
-      headache: null,
-    })
 
+    expect(reducer({ ...all_false, headache: null }, action)).toEqual({
+      ...all_false,
+      headache: null
+    })
   })
 
   it('should not submit a HS if loss_of_taste_smell is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // loss_of_taste_smell is null
-    expect(reducer({ ...state_going_in, loss_of_taste_or_smell: null }, action)).toEqual({
-      ...state_going_in,
-      loss_of_taste_or_smell: null,
-    })
 
+    expect(reducer({ ...all_false, loss_of_taste_or_smell: null }, action)).toEqual({
+      ...all_false,
+      loss_of_taste_or_smell: null
+    })
   })
 
   it('should not submit a HS if muscle_ache is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // muscle_ache is null
-    expect(reducer({ ...state_going_in, muscle_ache: null }, action)).toEqual({
-      ...state_going_in,
-      muscle_ache: null,
-    })
 
+    expect(reducer({ ...all_false, muscle_ache: null }, action)).toEqual({
+      ...all_false,
+      muscle_ache: null
+    })
   })
 
   it('should not submit a HS if nauseous is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // nauseous is null
-    expect(reducer({ ...state_going_in, nauseous: null }, action)).toEqual({
-      ...state_going_in,
-      nauseous: null,
-    })
 
+    expect(reducer({ ...all_false, nauseous: null }, action)).toEqual({
+      ...all_false,
+      nauseous: null
+    })
   })
 
   it('should not submit a HS if short_of_breath is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // short_of_breath is null
-    expect(reducer({ ...state_going_in, short_of_breath: null }, action)).toEqual({
-      ...state_going_in,
-      short_of_breath: null,
-    })
 
+    expect(reducer({ ...all_false, short_of_breath: null }, action)).toEqual({
+      ...all_false,
+      short_of_breath: null
+    })
   })
 
   it('should not submit a HS if sore_throat is null', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE }
-    // sore_throat is null
-    expect(reducer({ ...state_going_in, sore_throat: null }, action)).toEqual({
-      ...state_going_in,
-      sore_throat: null,
+
+    expect(reducer({ ...all_false, sore_throat: null }, action)).toEqual({
+      ...all_false,
+      sore_throat: null
     })
   })
 
-
-
   it('should give DISALLOWED if coughing symptom is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // coughing is true
-    expect(reducer({ ...state_going_in, coughing: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, coughing: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      coughing: true,
+      coughing: true
     })
-
   })
 
   it('should give DISALLOWED if feverish is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // feverish is true
-    expect(reducer({ ...state_going_in, feverish: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, feverish: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      feverish: true,
+      feverish: true
     })
-
   })
 
   it('should give DISALLOWED if congested is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // congested is true
-    expect(reducer({ ...state_going_in, congested: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, congested: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      congested: true,
+      congested: true
     })
-
   })
 
   it('should give DISALLOWED if diarrhea is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // diarrhea is true
-    expect(reducer({ ...state_going_in, diarrhea: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, diarrhea: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      diarrhea: true,
+      diarrhea: true
     })
-
   })
 
   it('should give DISALLOWED if tested_positive is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // tested_positive is true
-    expect(reducer({ ...state_going_in, tested_positive: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, tested_positive: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      tested_positive: true,
+      tested_positive: true
     })
-
   })
 
   it('should give DISALLOWED if headache is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // headache is true
-    expect(reducer({ ...state_going_in, headache: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, headache: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      headache: true,
+      headache: true
     })
-
   })
 
   it('should give DISALLOWED if loss_of_taste_smell is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // loss_of_taste_smell is true
-    expect(reducer({ ...state_going_in, loss_of_taste_or_smell: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, loss_of_taste_or_smell: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      loss_of_taste_or_smell: true,
+      loss_of_taste_or_smell: true
     })
-
   })
 
   it('should give DISALLOWED if muscle_ache is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // muscle_ache is true
-    expect(reducer({ ...state_going_in, muscle_ache: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, muscle_ache: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      muscle_ache: true,
+      muscle_ache: true
     })
-
   })
 
   it('should give DISALLOWED if nauseous is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // nauseous is true
-    expect(reducer({ ...state_going_in, nauseous: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, nauseous: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      nauseous: true,
+      nauseous: true
     })
-
   })
 
   it('should give DISALLOWED if short_of_breath is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // short_of_breath is true
-    expect(reducer({ ...state_going_in, short_of_breath: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, short_of_breath: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      short_of_breath: true,
+      short_of_breath: true
     })
-
   })
 
   it('should give DISALLOWED if sore_throat is true', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-
-    // sore_throat is true
-    expect(reducer({ ...state_going_in, sore_throat: true }, action)).toEqual({
-      ...state_going_in,
+    expect(reducer({ ...all_false, sore_throat: true }, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      sore_throat: true,
+      sore_throat: true
     })
   })
 
   it('should give ALL CLEAR if all symptoms are false', () => {
-    const state_going_in = {
-      ...initial_state,
-      user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.HEALTH_SCREENING,
-      coming_to_campus: true,
-      account_type: account_types.STUDENT,
-      student_employee: false,
-      face_covering: true,
-      good_hygiene: true,
-      distancing: true,
-      coughing: false,
-      feverish: false,
-      exposed: false,
-      congested: false,
-      diarrhea: false,
-      tested_positive: false,
-      headache: false,
-      loss_of_taste_or_smell: false,
-      muscle_ache: false,
-      nauseous: false,
-      short_of_breath: false,
-      sore_throat: false,
-    }
-
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-    expect(reducer(state_going_in, action)).toEqual({
-      ...state_going_in,
+    expect(reducer(all_false, action)).toEqual({
+      ...all_false,
       user_status: user_statuses.ALLOWED,
-      modal_page: modal_pages.SUBMITTED,
+      modal_page: modal_pages.SUBMITTED
     })
   })
 })
