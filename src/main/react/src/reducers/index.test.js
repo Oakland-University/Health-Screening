@@ -240,6 +240,15 @@ describe('Health Questions Page', () => {
     })
   })
 
+  it('should not submit a HS if exposed field is null', () => {
+    const action = { type: actions.NEXT_MODAL_PAGE }
+
+    expect(reducer({ ...all_false, exposed: null }, action)).toEqual({
+      ...all_false,
+      exposed: null
+    })
+  })
+
   it('should not submit a HS if congested is null', () => {
     const action = { type: actions.NEXT_MODAL_PAGE }
 
@@ -340,6 +349,17 @@ describe('Health Questions Page', () => {
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
       feverish: true
+    })
+  })
+
+  it('should give DISALLOWED if exposed is true', () => {
+    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
+
+    expect(reducer({ ...all_false, exposed: true }, action)).toEqual({
+      ...all_false,
+      user_status: user_statuses.DISALLOWED,
+      modal_page: modal_pages.SUBMITTED,
+      exposed: true
     })
   })
 
