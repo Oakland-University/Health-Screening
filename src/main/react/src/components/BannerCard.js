@@ -245,7 +245,7 @@ const Warning = (props) => {
           </Box>
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions className={classes.bannerCardActions}>
         <Button
           color='secondary'
           variant='outlined'
