@@ -49,6 +49,8 @@ public class MailService {
 
     if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
       emailList.add(supervisorEmail);
+    } else if (accountType == GUEST) {
+      return;
     }
 
     if (accountType == STUDENT) {
@@ -76,7 +78,7 @@ public class MailService {
   public void emailSupervisor(HealthInfo info) {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setFrom(mailFrom);
-    msg.setSubject("Employee Health Screening");
+    msg.setSubject("Employee Health Screening -- " + info.getEmail());
     msg.setTo(info.getPledge().getSupervisorEmail());
     msg.setText(info.supervisorSummary());
     log.debug("Sending mail to: {}\nWho is {}'s supervisor'", msg.getTo(), info.getName());
@@ -95,15 +97,15 @@ public class MailService {
 
     switch (info.getAccountType()) {
       case STUDENT:
-        return "Student Health Screening";
+        return "Student Health Screening -- " + info.getEmail();
       case GUEST:
-        return "Guest Health Screening";
+        return "Guest Health Screening -- " + info.getEmail();
       case STAFF:
-        return "Staff Health Screening";
+        return "Staff Health Screening -- " + info.getEmail();
       case FACULTY:
-        return "Faculty Health Screening";
+        return "Faculty Health Screening -- " + info.getEmail();
       default:
-        return "Health Screening";
+        return "Health Screening -- " + info.getEmail();
     }
   }
 

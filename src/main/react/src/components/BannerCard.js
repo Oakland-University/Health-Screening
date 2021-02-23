@@ -20,15 +20,12 @@ import { send_certificate_email } from '../api/api'
 import { update_user_status } from '../actions/main-actions'
 import { user_statuses } from '../utils/enums'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_theme) => ({
   avatar: {
     minWidth: 32,
   },
   card: {
     marginTop: 10,
-  },
-  headerContent: {
-    paddingLeft: 10,
   },
   media: {
     paddingTop: '20%', // 16:9
@@ -54,38 +51,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const determine_color = (type) => {
+const get_header_icon = (type) => {
   const fontSize = 32
-  let color = '#FFCA28'
 
   switch (type.toLowerCase()) {
     case user_statuses.NOT_COMPLETED:
     case user_statuses.NOT_COMING:
     case user_statuses.DISMISSED:
     case user_statuses.LOADING:
-      return <WarningIcon style={{ color, fontSize }} />
+      return <WarningIcon style={{ color: '#FFCA28', fontSize }} />
     case user_statuses.ALLOWED:
-      color = '#388E3C'
-      return <CheckCircle style={{ color, fontSize }} />
+      return <CheckCircle style={{ color: '#388E3C', fontSize }} />
     case user_statuses.DISALLOWED:
-      color = '#D32F2F'
-      return <ErrorIcon style={{ color, fontSize }} />
+      return <ErrorIcon style={{ color: '#D32F2F', fontSize }} />
     default:
       console.error('Unknown banner type: ' + type)
-      return <WarningIcon style={{ color, fontSize }} />
+      return <WarningIcon style={{ color: '#FFCA28', fontSize }} />
   }
 }
 
 const BannerCard = (props) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const { type, submission_time, banner_action } = props
 
-  const icon = determine_color(type)
+  const open_form = () => {
+    props.set_modal_open(true)
+    dispatch(update_user_status(user_statuses.NOT_COMPLETED))
+  }
 
   return (
     <Card className={classes.card}>
       <CardHeader
-        avatar={icon}
+        avatar={get_header_icon(type)}
         title='OU Health Screening'
         subheader={
           submission_time &&
@@ -96,10 +94,10 @@ const BannerCard = (props) => {
         type === user_statuses.NOT_COMING ||
         type === user_statuses.DISMISSED ||
         type === user_statuses.LOADING) && (
-        <Prompt set_modal_open={props.set_modal_open} />
+        <Prompt open_form={open_form}/>
       )}
-      {type === user_statuses.ALLOWED && <Certificate action={banner_action} />}
-      {type === user_statuses.DISALLOWED && <Warning />}
+      {type === user_statuses.ALLOWED && <Certificate action={banner_action} open_form={open_form} />}
+      {type === user_statuses.DISALLOWED && <Warning open_form={open_form}/>}
     </Card>
   )
 }
@@ -107,7 +105,6 @@ const BannerCard = (props) => {
 const Certificate = (props) => {
   const classes = useStyles()
   const { name, email, phone } = useSelector((state) => state)
-  const display_name = name || email
   const [open, set_open] = useState(false)
   const [email_error, set_email_error] = useState(false)
 
@@ -126,7 +123,7 @@ const Certificate = (props) => {
           <Box textAlign='center'>
             Thank you for doing your part to keep the campus healthy!
             <br />
-            This is a certificate for {display_name} to be on campus for the
+            This is a certificate for {name || email} to be on campus for the
             duration of
           </Box>
         </Typography>
@@ -138,6 +135,13 @@ const Certificate = (props) => {
         </Typography>
       </CardContent>
       <CardActions className={classes.bannerCardActions}>
+        <Button
+          color='secondary'
+          variant='outlined'
+          onClick={props.open_form}
+        >
+          Re-take Screening
+        </Button>
         <Button color='secondary' variant='outlined' onClick={handle_click}>
           Send Email
         </Button>
@@ -167,7 +171,6 @@ const Certificate = (props) => {
 
 const Prompt = (props) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const { user_status } = useSelector((state) => state)
   const [open, set_open] = useState(false)
 
@@ -176,11 +179,6 @@ const Prompt = (props) => {
       set_open(true)
     }
   }, [user_status])
-
-  const handle_close = () => {
-    props.set_modal_open(true)
-    dispatch(update_user_status(user_statuses.NOT_COMPLETED))
-  }
 
   return (
     <>
@@ -206,7 +204,7 @@ const Prompt = (props) => {
         <Button
           color='secondary'
           variant='outlined'
-          onClick={handle_close}
+          onClick={props.open_form}
         >
           Fill Out Form
         </Button>
@@ -218,7 +216,7 @@ const Prompt = (props) => {
         }}
         open={open}
         autoHideDuration={6000}
-        onClose={() => set_open(false)}
+        onClose={props.open_form}
         message="You don't need to fill out this form if you're not coming to campus"
         action={
           <IconButton size="small" aria-label="close" color="inherit" onClick={() => set_open(false)}>
@@ -247,6 +245,15 @@ const Warning = (props) => {
           </Box>
         </Typography>
       </CardContent>
+      <CardActions className={classes.bannerCardActions}>
+        <Button
+          color='secondary'
+          variant='outlined'
+          onClick={props.open_form}
+        >
+          Re-take Screening
+        </Button>
+      </CardActions>
     </>
   )
 }

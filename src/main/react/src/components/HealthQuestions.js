@@ -25,7 +25,7 @@ import {
   update_short_of_breath,
   update_sore_throat,
   update_confirmation,
-  update_positive_test,
+  update_tested_positive,
 } from '../actions/main-actions'
   
 const useStyles = makeStyles((theme) => ({
@@ -59,21 +59,21 @@ export default function HealthQuestions(props) {
   const dispatch = useDispatch()
 
   const { 
-    cough, 
-    fever, 
-    exposure, 
+    coughing,
+    feverish,
+    exposed,
     phone, 
     phone_error,
     short_of_breath,
-    congestion,
+    congested,
     diarrhea,
     headache,
     loss_of_taste_or_smell,
     muscle_ache,
-    nausea,
+    nauseous,
     sore_throat,
     confirmation,
-    positive_test
+    tested_positive
   } = useSelector((state) => state)
 
   return (
@@ -89,7 +89,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='fever'
             name='fever'
-            value={fever}
+            value={feverish}
             onChange={(event) =>
               dispatch(update_fever(event.target.value === 'true'))
             }
@@ -106,7 +106,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='cough'
             name='cough'
-            value={cough}
+            value={coughing}
             onChange={(event) =>
               dispatch(update_cough(event.target.value === 'true'))
             }
@@ -154,7 +154,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='nasal congestion'
             name='congestion'
-            value={congestion}
+            value={congested}
             onChange={(event) =>
               dispatch(update_congestion(event.target.value === 'true'))
             }
@@ -234,7 +234,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='nausea or vomiting'
             name='nausea'
-            value={nausea}
+            value={nauseous}
             onChange={(event) =>
               dispatch(update_nausea(event.target.value === 'true'))
             }
@@ -257,9 +257,9 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='positive-test'
             name='positive-test'
-            value={positive_test}
+            value={tested_positive}
             onChange={(event) =>
-              dispatch(update_positive_test(event.target.value === 'true'))
+              dispatch(update_tested_positive(event.target.value === 'true'))
             }
             className={classes.radioGroup}
           >
@@ -275,7 +275,7 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='exposure'
             name='exposure'
-            value={exposure}
+            value={exposed}
             onChange={(event) =>
               dispatch(update_exposure(event.target.value === 'true'))
             }
