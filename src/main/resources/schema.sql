@@ -172,6 +172,7 @@ begin
         screening.health_screening
     where
         submission_time >= now()::date
+        and account_type = (cast (in_account_type as screening.account_type))
         and email = in_email;
 
     get diagnostics update_count = row_count;
@@ -183,6 +184,7 @@ begin
             screening.health_screening
         where
             submission_time >= now()::date
+            and account_type = (cast (in_account_type as screening.account_type))
             and email = in_email;
     end if;
 

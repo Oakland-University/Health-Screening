@@ -49,6 +49,8 @@ public class MailService {
 
     if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
       emailList.add(supervisorEmail);
+    } else if (accountType == GUEST) {
+      return;
     }
 
     if (accountType == STUDENT) {

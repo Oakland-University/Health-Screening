@@ -119,7 +119,7 @@ export default function reducer(state = initial_state, action) {
       return { ...state, user_status: action.payload }
     }
     case CLEAR_MODAL: {
-      return { ...initial_state, user_status: state.user_status, modal_page: modal_pages.CAMPUS_CHECK, supervisor_email: state.supervisor_email }
+      return { ...initial_state, user_status: state.user_status, modal_page: modal_pages.CAMPUS_CHECK, supervisor_email: state.supervisor_email, name: state.name, phone: state.phone, email: state.email }
     }
     case UPDATE_CONGESTED: {
       return { ...state, congested: action.payload }
