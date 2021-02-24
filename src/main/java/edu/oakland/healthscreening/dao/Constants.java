@@ -24,7 +24,7 @@ public class Constants {
               + "     SUM(CASE WHEN is_feverish = TRUE THEN 1 ELSE 0 END) AS feverish,    "
               + "     SUM(CASE WHEN is_exposed = TRUE THEN 1 ELSE 0 END) AS exposed       "
               + " FROM                                                                    "
-              + "     screening.analytics                                                 "
+              + "     screening.anonymous_data                                            "
               + " WHERE                                                                   "
               + "     AGE(submission_time) <= ?::INTERVAL                                 ")
           .replaceAll("\\s+", " ");
@@ -44,7 +44,7 @@ public class Constants {
               + "   SUM(case when is_feverish = true then 1 else 0 end) as feverish,  "
               + "   SUM(case when is_exposed = true then 1 else 0 end) as exposed     "
               + " from                                                                "
-              + "   screening.analytics                                               "
+              + "     screening.anonymous_data                                        "
               + " where                                                               "
               + "   AGE(submission_time) <= ?::INTERVAL                               "
               + " group by                                                            "
