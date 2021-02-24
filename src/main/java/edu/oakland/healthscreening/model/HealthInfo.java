@@ -57,18 +57,32 @@ public class HealthInfo {
   }
 
   public String summarize() {
-    return "A potential positive self-screening response was submitted by a "
-        + accountType.toString()
-        + ":\n\n"
-        + "Information about this person:\n"
-        + "\tName: "
-        + name
-        + "\n\tPhone: "
-        + phone
-        + "\n\tEmail: "
-        + email
-        + "\n\nResponses: \n\t- "
-        + this.responseSummary();
+    if (!shouldStayHome()) {
+      return "A health screening correction was submitted by a "
+          + accountType.toString()
+          + ":\n\n"
+          + "Information about this person:\n"
+          + "\tName: "
+          + name
+          + "\n\tPhone: "
+          + phone
+          + "\n\tEmail: "
+          + email
+          + "\n\n They currently are not reporting any symptoms";
+    } else {
+      return "A potential positive self-screening response was submitted by a "
+          + accountType.toString()
+          + ":\n\n"
+          + "Information about this person:\n"
+          + "\tName: "
+          + name
+          + "\n\tPhone: "
+          + phone
+          + "\n\tEmail: "
+          + email
+          + "\n\nResponses: \n\t- "
+          + this.responseSummary();
+    }
   }
 
   public String supervisorSummary() {
