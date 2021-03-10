@@ -216,7 +216,7 @@ const Prompt = (props) => {
         }}
         open={open}
         autoHideDuration={6000}
-        onClose={props.open_form}
+        onClose={() => set_open(false)}
         message="You don't need to fill out this form if you're not coming to campus"
         action={
           <IconButton size="small" aria-label="close" color="inherit" onClick={() => set_open(false)}>
