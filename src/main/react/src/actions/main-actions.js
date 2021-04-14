@@ -105,6 +105,10 @@ export const update_confirmation = (new_confirmation) => (dispatch) => {
   dispatch({ type: actions.UPDATE_CONFIRMATION, payload: new_confirmation })
 }
 
+export const update_fully_vaccinated = (new_fully_vaccinated) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_FULLY_VACCINATED, payload: new_fully_vaccinated })
+}
+
 export const update_tested_positive = (new_positive_test) => (dispatch) => {
   dispatch({ type: actions.UPDATE_TESTED_POSITIVE, payload: new_positive_test })
 }
