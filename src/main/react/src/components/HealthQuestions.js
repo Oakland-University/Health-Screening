@@ -302,8 +302,14 @@ export default function HealthQuestions(props) {
               }
               className={classes.radioGroup}
             >
-              <FormControlLabel value={true} control={<Radio />} label='I am fully vaccinated and my final dose was over 14 days ago' />
-              <FormControlLabel value={false} control={<Radio />} label='I have not started or not completed a COVID vaccine series, or it is less than 14 days since my final dose' />
+              <FormControlLabel
+                value={true}
+                control={<Radio />}
+                label='I am fully vaccinated and my final dose was over 14 days ago' />
+              <FormControlLabel
+                value={false}
+                control={<Radio />}
+                label='I have not completed a COVID vaccine series, or it is less than 14 days since my final dose' />
             </RadioGroup>
           </Collapse>
           <Divider className={classes.phoneDivider}/>
