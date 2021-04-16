@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '10px',
     border: 'none',
   },
-  phoneDivider: {
+  divider: {
     marginTop: 20,
   },
   phoneLabel: {
@@ -247,7 +247,7 @@ export default function HealthQuestions(props) {
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
 
-          <Divider className={classes.phoneDivider} />
+          <Divider className={classes.divider} />
 
           <Typography paragraph className={classes.phoneLabel}>
             Answer the following to the best of your knowledge:
@@ -270,7 +270,7 @@ export default function HealthQuestions(props) {
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
 
-          <Divider className={classes.phoneDivider} />
+          <Divider className={classes.divider} />
 
           <FormLabel className={classes.formLabel} component='legend'>
             Have you had known, unprotected exposure (for healthcare workers) or close
@@ -294,8 +294,8 @@ export default function HealthQuestions(props) {
               Vaccination Status:
             </FormLabel>
             <RadioGroup
-              aria-label='exposure'
-              name='exposure'
+              aria-label='vaccination status'
+              name='vaccination status'
               value={fully_vaccinated}
               onChange={(event) =>
                 dispatch(update_fully_vaccinated(event.target.value === 'true'))
@@ -309,10 +309,10 @@ export default function HealthQuestions(props) {
               <FormControlLabel
                 value={false}
                 control={<Radio />}
-                label='I have not completed a COVID vaccine series, or it is less than 14 days since my final dose' />
+                label='I have not completed a COVID vaccine series, or it has been less than 14 days since my final dose' />
             </RadioGroup>
           </Collapse>
-          <Divider className={classes.phoneDivider}/>
+          <Divider className={classes.divider}/>
           <div className={classes.confirmationDiv}>
             <Checkbox
               className={classes.confirmationCheck}
@@ -328,7 +328,7 @@ export default function HealthQuestions(props) {
             </FormLabel>
           </div>
 
-          <Divider className={classes.phoneDivider} />
+          <Divider className={classes.divider} />
 
           <Typography paragraph className={classes.phoneLabel}>
             The Graham Health Center might want to get in contact with you.
