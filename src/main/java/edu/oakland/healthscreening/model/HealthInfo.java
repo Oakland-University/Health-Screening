@@ -45,7 +45,7 @@ public class HealthInfo {
   public boolean shouldStayHome() {
     return (coughing
         || feverish
-        || (exposed && !fullyVaccinated)
+        || (exposed && Boolean.TRUE.equals(fullyVaccinated))
         || shortOfBreath
         || soreThroat
         || congested
