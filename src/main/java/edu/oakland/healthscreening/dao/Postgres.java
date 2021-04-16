@@ -60,6 +60,7 @@ public class Postgres {
                 new SqlParameter("p_has_headache", Types.BOOLEAN),
                 new SqlParameter("p_has_diarrhea", Types.BOOLEAN),
                 new SqlParameter("p_is_nauseous", Types.BOOLEAN),
+                new SqlParameter("p_is_fully_vaccinated", Types.BOOLEAN),
                 new SqlParameter("p_has_tested_positive", Types.BOOLEAN));
 
     final SqlParameterSource parameterSource =
@@ -81,6 +82,7 @@ public class Postgres {
             .addValue("p_has_headache", info.isHeadache())
             .addValue("p_has_diarrhea", info.isDiarrhea())
             .addValue("p_is_nauseous", info.isNauseous())
+            .addValue("p_is_fully_vaccinated", info.isFullyVaccinated())
             .addValue("p_has_tested_positive", info.isTestedPositive());
 
     log.debug("Preparing to save health info: {}", info);
