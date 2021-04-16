@@ -7,6 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
+import Collapse from '@material-ui/core/Collapse'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
@@ -25,6 +26,7 @@ import {
   update_short_of_breath,
   update_sore_throat,
   update_confirmation,
+  update_fully_vaccinated,
   update_tested_positive,
 } from '../actions/main-actions'
   
@@ -37,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '10px',
     border: 'none',
   },
-  phoneDivider: {
+  divider: {
     marginTop: 20,
   },
   phoneLabel: {
@@ -73,7 +75,8 @@ export default function HealthQuestions(props) {
     nauseous,
     sore_throat,
     confirmation,
-    tested_positive
+    tested_positive,
+    fully_vaccinated,
   } = useSelector((state) => state)
 
   return (
@@ -244,7 +247,7 @@ export default function HealthQuestions(props) {
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
 
-          <Divider className={classes.phoneDivider} />
+          <Divider className={classes.divider} />
 
           <Typography paragraph className={classes.phoneLabel}>
             Answer the following to the best of your knowledge:
@@ -267,6 +270,8 @@ export default function HealthQuestions(props) {
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
 
+          <Divider className={classes.divider} />
+
           <FormLabel className={classes.formLabel} component='legend'>
             Have you had known, unprotected exposure (for healthcare workers) or close
             contact (within 6 feet for 15 minutes or longer) with someone diagnosed
@@ -284,7 +289,30 @@ export default function HealthQuestions(props) {
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
-
+          <Collapse in={exposed} unmountOnExit>
+            <FormLabel className={classes.formLabel} component='legend'>
+              Vaccination Status:
+            </FormLabel>
+            <RadioGroup
+              aria-label='vaccination status'
+              name='vaccination status'
+              value={fully_vaccinated}
+              onChange={(event) =>
+                dispatch(update_fully_vaccinated(event.target.value === 'true'))
+              }
+              className={classes.radioGroup}
+            >
+              <FormControlLabel
+                value={true}
+                control={<Radio />}
+                label='I am fully vaccinated and my final dose was over 14 days ago' />
+              <FormControlLabel
+                value={false}
+                control={<Radio />}
+                label='I have not completed a COVID vaccine series, or it has been less than 14 days since my final dose' />
+            </RadioGroup>
+          </Collapse>
+          <Divider className={classes.divider}/>
           <div className={classes.confirmationDiv}>
             <Checkbox
               className={classes.confirmationCheck}
@@ -300,7 +328,7 @@ export default function HealthQuestions(props) {
             </FormLabel>
           </div>
 
-          <Divider className={classes.phoneDivider} />
+          <Divider className={classes.divider} />
 
           <Typography paragraph className={classes.phoneLabel}>
             The Graham Health Center might want to get in contact with you.

@@ -36,6 +36,7 @@ const initial_state = {
   supervisor_email_error: false,
   user_status: user_statuses.LOADING,
   confirmation: null,
+  fully_vaccinated: null,
   tested_positive: null
 }
 
@@ -219,6 +220,7 @@ describe('Health Questions Page', () => {
     muscle_ache: false,
     nauseous: false,
     short_of_breath: false,
+    fully_vaccinated: false,
     sore_throat: false
   }
 
@@ -312,6 +314,25 @@ describe('Health Questions Page', () => {
     })
   })
 
+  it('should not submit a HS if exposed is null', () => {
+    const action = { type: actions.NEXT_MODAL_PAGE }
+
+    expect(reducer({ ...all_false, exposed: null }, action)).toEqual({
+      ...all_false,
+      exposed: null
+    })
+  })
+
+  it('should not submit a HS if exposed is true and fully_vaccinated is null', () => {
+    const action = { type: actions.NEXT_MODAL_PAGE }
+
+    expect(reducer({ ...all_false, exposed: true, fully_vaccinated: null }, action)).toEqual({
+      ...all_false,
+      exposed: true,
+      fully_vaccinated: null
+    })
+  })
+
   it('should not submit a HS if short_of_breath is null', () => {
     const action = { type: actions.NEXT_MODAL_PAGE }
 
@@ -352,14 +373,27 @@ describe('Health Questions Page', () => {
     })
   })
 
-  it('should give DISALLOWED if exposed is true', () => {
+  it('should give DISALLOWED if exposed is true and fully_vaccinated is false', () => {
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-    expect(reducer({ ...all_false, exposed: true }, action)).toEqual({
+    expect(reducer({ ...all_false, exposed: true, fully_vaccinated: false }, action)).toEqual({
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      exposed: true
+      exposed: true,
+      fully_vaccinated: false
+    })
+  })
+
+  it('should give ALLOWED if both exposed and fully_vaccinated are true', () => {
+    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
+
+    expect(reducer({ ...all_false, exposed: true, fully_vaccinated: true }, action)).toEqual({
+      ...all_false,
+      user_status: user_statuses.ALLOWED,
+      modal_page: modal_pages.SUBMITTED,
+      exposed: true,
+      fully_vaccinated: true
     })
   })
 

@@ -33,6 +33,7 @@ const {
   UPDATE_SHORT_OF_BREATH,
   UPDATE_SORE_THROAT,
   UPDATE_CONFIRMATION,
+  UPDATE_FULLY_VACCINATED,
   UPDATE_TESTED_POSITIVE
 } = actions
 
@@ -66,7 +67,8 @@ const initial_state = {
   supervisor_email_error: false,
   user_status: user_statuses.LOADING,
   confirmation: null,
-  tested_positive: null
+  tested_positive: null,
+  fully_vaccinated: null,
 }
 
 const email_expression = /.+@.+\..+/
@@ -147,6 +149,9 @@ export default function reducer(state = initial_state, action) {
     }
     case UPDATE_CONFIRMATION: {
       return { ...state, confirmation: action.payload }
+    }
+    case UPDATE_FULLY_VACCINATED: {
+      return { ...state, fully_vaccinated: action.payload }
     }
     case UPDATE_TESTED_POSITIVE: {
       return { ...state, tested_positive: action.payload }

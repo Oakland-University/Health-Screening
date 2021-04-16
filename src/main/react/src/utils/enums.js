@@ -48,6 +48,8 @@ export const actions = {
     UPDATE_SHORT_OF_BREATH: 'update-short-of-breath',
     UPDATE_SORE_THROAT: 'update-sore-throat',
     UPDATE_CONFIRMATION: 'update-confirmation',
+    UPDATE_FULLY_VACCINATED: 'update-fully-vaccinated',
+    UPDATE_NOT_FULLY_VACCINATED: 'update-not-fully-vaccinated',
     UPDATE_TESTED_POSITIVE: 'update-tested-positive',
 }
 
