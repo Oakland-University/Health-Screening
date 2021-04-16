@@ -107,6 +107,7 @@ SELECT
     has_headache,
     has_diarrhea,
     is_nauseous,
+    is_fully_vaccinated,
     has_tested_positive,
     submission_time
 FROM
@@ -126,6 +127,7 @@ SELECT
     has_headache,
     has_diarrhea,
     is_nauseous,
+    is_fully_vaccinated,
     has_tested_positive,
     submission_time
 FROM
@@ -165,13 +167,13 @@ begin
         has_headache,
         has_diarrhea,
         is_nauseous,
-        is_fully_vaccinated,
         has_tested_positive,
         submission_time,
         now() as archived_time,
         supervisor_email,
         supervisor_name,
-        supervisor_phone
+        supervisor_phone,
+        is_fully_vaccinated,
     from
         screening.health_screening
     where
