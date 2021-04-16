@@ -37,7 +37,7 @@ public class HealthInfo {
   private boolean nauseous;
   private boolean shortOfBreath;
   private boolean soreThroat;
-  private boolean fullyVaccinated;
+  private Boolean fullyVaccinated;
   private Timestamp submissionTime;
   private String supervisorEmail;
   private Pledge pledge;

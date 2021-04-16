@@ -82,7 +82,7 @@ public class Postgres {
             .addValue("p_has_headache", info.isHeadache())
             .addValue("p_has_diarrhea", info.isDiarrhea())
             .addValue("p_is_nauseous", info.isNauseous())
-            .addValue("p_is_fully_vaccinated", info.isFullyVaccinated())
+            .addValue("p_is_fully_vaccinated", info.getFullyVaccinated())
             .addValue("p_has_tested_positive", info.isTestedPositive());
 
     log.debug("Preparing to save health info: {}", info);
