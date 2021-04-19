@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS screening.health_screening (
     has_headache boolean,
     has_diarrhea boolean,
     is_nauseous boolean,
+    is_fully_vaccinated boolean,
     has_tested_positive boolean,
     submission_time timestamp not null default now(),
     supervisor_email text,
@@ -46,6 +47,7 @@ CREATE TABLE IF NOT EXISTS screening.archived_health_screening (
     has_headache boolean,
     has_diarrhea boolean,
     is_nauseous boolean,
+    is_fully_vaccinated boolean,
     has_tested_positive boolean,
     submission_time timestamp not null default now(),
     archived_time timestamp not null default now(),
@@ -68,6 +70,7 @@ CREATE TABLE IF NOT EXISTS screening.analytics (
     has_headache boolean,
     has_diarrhea boolean,
     is_nauseous boolean,
+    is_fully_vaccinated boolean,
     has_tested_positive boolean,
     submission_time timestamp not null default now(),
     notes text
@@ -104,6 +107,7 @@ SELECT
     has_headache,
     has_diarrhea,
     is_nauseous,
+    is_fully_vaccinated,
     has_tested_positive,
     submission_time
 FROM
@@ -123,6 +127,7 @@ SELECT
     has_headache,
     has_diarrhea,
     is_nauseous,
+    is_fully_vaccinated,
     has_tested_positive,
     submission_time
 FROM
@@ -133,7 +138,7 @@ create or replace function screening.save_health_info(in_account_type text, in_p
             in_name text, in_is_coughing boolean, in_is_feverish boolean, in_is_exposed boolean,
             in_supervisor_email text, in_is_is_short_of_breath boolean, in_has_sore_throat boolean,
             in_is_congested boolean, in_has_muscle_aches boolean, in_has_lost_taste_smell boolean,
-            in_has_headache boolean, in_has_diarrhea boolean, in_is_nauseous boolean,
+            in_has_headache boolean, in_has_diarrhea boolean, in_is_nauseous boolean, in_is_fully_vaccinated boolean,
             in_has_tested_positive boolean) returns void as $$
 declare
     old_supervisor_email text;
@@ -167,7 +172,8 @@ begin
         now() as archived_time,
         supervisor_email,
         supervisor_name,
-        supervisor_phone
+        supervisor_phone,
+        is_fully_vaccinated,
     from
         screening.health_screening
     where
@@ -193,11 +199,12 @@ begin
     insert into screening.health_screening
         (account_type, pidm, email, name, phone, is_coughing, is_feverish, is_exposed,
         is_short_of_breath, has_sore_throat, is_congested, has_muscle_aches, has_lost_taste_smell,
-        has_headache, has_diarrhea, is_nauseous, has_tested_positive)
+        has_headache, has_diarrhea, is_nauseous, is_fully_vaccinated, has_tested_positive)
     values
         (cast(in_account_type as screening.account_type), in_pidm, in_email, in_name, in_phone, in_is_coughing,
             in_is_feverish, in_is_exposed, in_is_is_short_of_breath, in_has_sore_throat, in_is_congested,
-            in_has_muscle_aches, in_has_lost_taste_smell, in_has_headache, in_has_diarrhea, in_is_nauseous, in_has_tested_positive);
+            in_has_muscle_aches, in_has_lost_taste_smell, in_has_headache, in_has_diarrhea, in_is_nauseous,
+            in_is_fully_vaccinated, in_has_tested_positive);
 
 -- Update supervisor email if it doesn't match the current record
 

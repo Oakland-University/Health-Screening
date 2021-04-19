@@ -37,6 +37,7 @@ public class HealthInfo {
   private boolean nauseous;
   private boolean shortOfBreath;
   private boolean soreThroat;
+  private Boolean fullyVaccinated;
   private Timestamp submissionTime;
   private String supervisorEmail;
   private Pledge pledge;
@@ -44,7 +45,7 @@ public class HealthInfo {
   public boolean shouldStayHome() {
     return (coughing
         || feverish
-        || exposed
+        || (exposed && !Boolean.TRUE.equals(fullyVaccinated))
         || shortOfBreath
         || soreThroat
         || congested
@@ -126,6 +127,7 @@ public class HealthInfo {
         info.setHeadache(rs.getBoolean(("has_headache")));
         info.setDiarrhea(rs.getBoolean(("has_diarrhea")));
         info.setNauseous(rs.getBoolean(("is_nauseous")));
+        info.setFullyVaccinated(rs.getBoolean(("is_fully_vaccinated")));
         info.setTestedPositive(rs.getBoolean(("has_tested_positive")));
         info.setSubmissionTime(rs.getTimestamp("submission_time"));
 
