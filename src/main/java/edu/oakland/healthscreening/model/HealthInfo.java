@@ -127,7 +127,7 @@ public class HealthInfo {
         info.setHeadache(rs.getBoolean("has_headache"));
         info.setDiarrhea(rs.getBoolean("has_diarrhea"));
         info.setNauseous(rs.getBoolean("is_nauseous"));
-        info.setFullyVaccinated((Boolean) rs.getObject("is_fully_vaccinated"));
+        info.setFullyVaccinated(rs.getObject("is_fully_vaccinated", Boolean.class));
         info.setTestedPositive(rs.getBoolean(("has_tested_positive")));
         info.setSubmissionTime(rs.getTimestamp("submission_time"));
 
