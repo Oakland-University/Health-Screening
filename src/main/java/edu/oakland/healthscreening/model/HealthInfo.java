@@ -146,7 +146,13 @@ public class HealthInfo {
     }
 
     if (exposed) {
-      summaryList.add("has been exposed to someone with COVID");
+      if (fullyVaccinated == null) {
+        summaryList.add("has been exposed to someone with COVID");
+      } else if (Boolean.TRUE.equals(fullyVaccinated)) {
+        summaryList.add("has been exposed to someone with COVID, but has been vaccinated");
+      } else {
+        summaryList.add("has been exposed to someone with COVID, and has not been vaccinated");
+      }
     }
 
     if (shortOfBreath) {
