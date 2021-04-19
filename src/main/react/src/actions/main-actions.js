@@ -169,6 +169,7 @@ export const press_modal_button = () => (dispatch, getState) => {
       nauseous,
       sore_throat,
       tested_positive,
+      fully_vaccinated,
       confirmation
     } = getState()
 
@@ -192,6 +193,7 @@ export const press_modal_button = () => (dispatch, getState) => {
           nauseous,
           sore_throat,
           tested_positive,
+          fully_vaccinated,
           confirmation
         }
       )
