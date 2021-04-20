@@ -119,15 +119,15 @@ public class HealthInfo {
         info.setCoughing(rs.getBoolean("is_coughing"));
         info.setFeverish(rs.getBoolean("is_feverish"));
         info.setExposed(rs.getBoolean("is_exposed"));
-        info.setShortOfBreath(rs.getBoolean(("is_short_of_breath")));
-        info.setSoreThroat(rs.getBoolean(("has_sore_throat")));
-        info.setCongested(rs.getBoolean(("is_congested")));
-        info.setMuscleAche(rs.getBoolean(("has_muscle_aches")));
-        info.setLossOfTasteOrSmell(rs.getBoolean(("has_lost_taste_smell")));
-        info.setHeadache(rs.getBoolean(("has_headache")));
-        info.setDiarrhea(rs.getBoolean(("has_diarrhea")));
-        info.setNauseous(rs.getBoolean(("is_nauseous")));
-        info.setFullyVaccinated(rs.getBoolean(("is_fully_vaccinated")));
+        info.setShortOfBreath(rs.getBoolean("is_short_of_breath"));
+        info.setSoreThroat(rs.getBoolean("has_sore_throat"));
+        info.setCongested(rs.getBoolean("is_congested"));
+        info.setMuscleAche(rs.getBoolean("has_muscle_aches"));
+        info.setLossOfTasteOrSmell(rs.getBoolean("has_lost_taste_smell"));
+        info.setHeadache(rs.getBoolean("has_headache"));
+        info.setDiarrhea(rs.getBoolean("has_diarrhea"));
+        info.setNauseous(rs.getBoolean("is_nauseous"));
+        info.setFullyVaccinated(rs.getObject("is_fully_vaccinated", Boolean.class));
         info.setTestedPositive(rs.getBoolean(("has_tested_positive")));
         info.setSubmissionTime(rs.getTimestamp("submission_time"));
 
@@ -146,7 +146,13 @@ public class HealthInfo {
     }
 
     if (exposed) {
-      summaryList.add("has been exposed to someone with COVID");
+      if (fullyVaccinated == null) {
+        summaryList.add("has been exposed to someone with COVID");
+      } else if (Boolean.TRUE.equals(fullyVaccinated)) {
+        summaryList.add("has been exposed to someone with COVID, but has been vaccinated");
+      } else {
+        summaryList.add("has been exposed to someone with COVID, and has not been vaccinated");
+      }
     }
 
     if (shortOfBreath) {
