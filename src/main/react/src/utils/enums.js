@@ -34,4 +34,5 @@ export const actions = {
   CLEAR_MODAL: 'clear-modal',
   NEXT_MODAL_PAGE: 'next-modal-page',
   UPDATE_SYMPTOMATIC: 'update-symptomatic',
+  UPDATE_PREVIOUS_INFO: 'update-previous-info',
 }

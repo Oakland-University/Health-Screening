@@ -1,4 +1,4 @@
-import { get_user_submission, submit_form, get_supervisor_email } from '../api/api'
+import { get_user_submission, submit_form, send_pledge_info, get_previous_info } from '../api/api' 
 
 import { actions, user_statuses, account_types, modal_pages } from '../utils/enums'
 import { allowed_on_campus, all_questions_non_null } from '../utils/functions'
@@ -17,13 +17,13 @@ export const fetch_past_submission = () => (dispatch) => {
   })
 }
 
-export const fetch_supervisor_email = () => (dispatch, getState) => {
+export const fetch_previous_info = () => (dispatch, getState) => {
   const account_type = getState().account_type
 
   if (account_type !== account_types.GUEST) {
-    get_supervisor_email().then((data) => {
+    get_previous_info().then(data => {
       if (data !== null && data !== undefined) {
-        dispatch({ type: actions.UPDATE_SUPERVISOR_EMAIL, payload: data })
+        dispatch({type: actions.UPDATE_PREVIOUS_INFO, payload: data})
       }
     })
   }

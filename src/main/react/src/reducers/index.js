@@ -21,6 +21,7 @@ const {
   NEXT_MODAL_PAGE,
   UPDATE_TESTED_POSITIVE,
   UPDATE_SYMPTOMATIC,
+  UPDATE_PREVIOUS_INFO
 } = actions
 
 const initial_state = {
@@ -105,6 +106,9 @@ export default function reducer(state = initial_state, action) {
     }
     case UPDATE_TESTED_POSITIVE: {
       return { ...state, tested_positive: action.payload }
+    }
+    case UPDATE_PREVIOUS_INFO: {
+      return { ...state, phone: action.payload, phone_error: false, supervisor_email: action.payload, supervisor_email_error: false }
     }
 
     case NEXT_MODAL_PAGE: {

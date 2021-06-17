@@ -16,7 +16,7 @@ import { useTheme } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   fetch_past_submission,
-  fetch_supervisor_email,
+  fetch_previous_info,
   press_modal_button,
   close_modal,
 } from './actions/main-actions'
@@ -39,7 +39,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(fetch_past_submission())
-    dispatch(fetch_supervisor_email())
+    dispatch(fetch_previous_info())
   }, [dispatch])
 
   const theme = useTheme()
