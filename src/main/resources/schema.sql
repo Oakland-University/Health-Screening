@@ -91,6 +91,19 @@ CREATE TABLE IF NOT EXISTS screening.employee_supervisor (
     supervisor_email text not null
 );
 
+CREATE TABLE IF NOT EXISTS screening.previous_information (
+    email text primary key,
+    supervisor_email text not null,
+    phone text not null
+);
+
+INSERT INTO screening.previous_information 
+    (email, supervisor_email)
+SELECT
+    email,
+    supervisor_email
+FROM 
+    screening.employee_supervisor;
 
 CREATE OR REPLACE VIEW screening.anonymous_data AS
 SELECT
@@ -142,6 +155,7 @@ create or replace function screening.save_health_info(in_account_type text, in_p
             in_has_tested_positive boolean) returns void as $$
 declare
     old_supervisor_email text;
+    old_phone text;
     update_count integer;
 begin
 
@@ -208,27 +222,30 @@ begin
 
 -- Update supervisor email if it doesn't match the current record
 
-    select
+    select 
+        phone,
         supervisor_email
     into
+        old_phone,
         old_supervisor_email
     from
-        screening.employee_supervisor
+        screening.previous_information
     where
-        employee_supervisor.email = in_email;
+        previous_information.email = in_email;
 
-    if old_supervisor_email ISNULL and in_supervisor_email IS NOT NULL then
-      insert into screening.employee_supervisor
-        (email, supervisor_email)
-      values
-        (in_email, in_supervisor_email);
-    elseif in_supervisor_email <> old_supervisor_email and in_supervisor_email IS NOT NULL then
+    if (old_supervisor_email ISNULL and in_supervisor_email IS NOT NULL) or old_phone ISNULL then
+        insert into screening.previous_information
+            (email, supervisor_email, phone)
+        values
+            (in_email, in_supervisor_email, in_phone);
+    elsif (old_supervisor_email <> in_supervisor_email and in_supervisor_email IS NOT NULL) or old_phone <> in_phone then
         update
-            screening.employee_supervisor
+            screening.previous_information
         set
+            phone = in_phone,
             supervisor_email = in_supervisor_email
         where
-            employee_supervisor.email = in_email;
+            previous_information.email = in_email;
     end if;
 end;
 $$ language plpgsql;
