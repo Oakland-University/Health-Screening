@@ -17,9 +17,9 @@ import {
   update_good_hygiene,
   update_distancing,
   update_supervisor_email,
-  update_student_employee
+  update_student_employee,
 } from '../actions/main-actions'
-import {account_types} from '../utils/enums'
+import { account_types } from '../utils/enums'
 
 const useStyles = makeStyles((theme) => ({
   radioGroup: {
@@ -36,16 +36,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
   },
   emailDivider: {
-    marginTop: 10
+    marginTop: 10,
   },
   emailLabel: {
     marginTop: 10,
-    marginBottom: 13
+    marginBottom: 13,
   },
   formLabel2: {
     marginBottom: '0px !important',
     marginTop: 20,
-    border: 'none'
+    border: 'none',
   },
 }))
 
@@ -60,17 +60,17 @@ export default function Pledge(props) {
     account_type,
     supervisor_email,
     supervisor_email_error,
-    student_employee, } = useSelector((state) => state)
+    student_employee,
+  } = useSelector((state) => state)
 
   return (
     <>
       <DialogContent>
         <DialogContentText>
-          As a member of the OU community, it is my responsibility to enhance
-          the health and safety of our campus. I therefore pledge to abide by
-          the OU guidelines to reduce the spread of the Coronavirus and to take
-          measures to protect myself; to protect others; and to protect my
-          community.
+          As a member of the OU community, it is my responsibility to enhance the health and safety
+          of our campus. I therefore pledge to abide by the OU guidelines to reduce the spread of
+          the Coronavirus and to take measures to protect myself; to protect others; and to protect
+          my community.
         </DialogContentText>
         <Divider className={classes.phoneDivider} />
         <FormControl component='fieldset'>
@@ -81,9 +81,7 @@ export default function Pledge(props) {
             aria-label='face-covering'
             name='face_covering'
             value={face_covering}
-            onChange={(event) =>
-              dispatch(update_face_covering(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_face_covering(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -96,9 +94,7 @@ export default function Pledge(props) {
             aria-label='good hygiene'
             name='good_hygiene'
             value={good_hygiene}
-            onChange={(event) =>
-              dispatch(update_good_hygiene(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_good_hygiene(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -111,33 +107,29 @@ export default function Pledge(props) {
             aria-label='physical distancing'
             name='distancing'
             value={distancing}
-            onChange={(event) =>
-              dispatch(update_distancing(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_distancing(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
             <FormControlLabel value={false} control={<Radio />} label='No' />
           </RadioGroup>
         </FormControl>
-        
-        {(face_covering === false ||
-          good_hygiene === false ||
-          distancing === false) && (
-            <>
+
+        {(face_covering === false || good_hygiene === false || distancing === false) && (
+          <>
             <Divider className={classes.phoneDivider} />
             <DialogContentText>
-              NOTE: If you answer 'no' to any of the above questions, you won't be
-              allowed on campus for the day
+              NOTE: If you answer 'no' to any of the above questions, you won't be allowed on campus
+              for the day
             </DialogContentText>
-            </>
-          )}
-          <Divider className={classes.emailDivider} />
+          </>
+        )}
+        <Divider className={classes.emailDivider} />
         {account_type === account_types.EMPLOYEE ? (
           <>
             <Typography paragraph className={classes.phoneLabel}>
               Please provide your supervisor's email in the field below.
-              </Typography>
+            </Typography>
             <TextField
               fullWidth
               required
@@ -149,39 +141,39 @@ export default function Pledge(props) {
             />
           </>
         ) : (
-            <>
-              <FormLabel className={classes.formLabel2} component='legend'>
-                {`Are you a${account_type === account_types.STUDENT ? ' student' : 'n'} employee of OU who is planning on working today?`}
-              </FormLabel>
-              <RadioGroup
-                aria-label='student-employee'
-                name='student-employee'
-                value={student_employee}
-                onChange={(event) =>
-                  dispatch(update_student_employee(event.target.value === 'true'))
-                }
-                className={classes.radioGroup}
-              >
-                <FormControlLabel value={true} control={<Radio />} label='Yes' />
-                <FormControlLabel value={false} control={<Radio />} label='No' />
-              </RadioGroup>
-              <Collapse in={student_employee} unmountOnExit>
-                <Typography paragraph className={classes.emailLabel}>
-                  Please provide your supervisor's email in the field below.
-                </Typography>
-                <TextField
-                  fullWidth
-                  required={student_employee}
-                  label='Supervisor Email'
-                  variant='outlined'
-                  type='email'
-                  error={supervisor_email_error}
-                  value={supervisor_email}
-                  onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
-                />
-              </Collapse>
-            </>
-          )}
+          <>
+            <FormLabel className={classes.formLabel2} component='legend'>
+              {`Are you a${
+                account_type === account_types.STUDENT ? ' student' : 'n'
+              } employee of OU who is planning on working today?`}
+            </FormLabel>
+            <RadioGroup
+              aria-label='student-employee'
+              name='student-employee'
+              value={student_employee}
+              onChange={(event) => dispatch(update_student_employee(event.target.value === 'true'))}
+              className={classes.radioGroup}
+            >
+              <FormControlLabel value={true} control={<Radio />} label='Yes' />
+              <FormControlLabel value={false} control={<Radio />} label='No' />
+            </RadioGroup>
+            <Collapse in={student_employee} unmountOnExit>
+              <Typography paragraph className={classes.emailLabel}>
+                Please provide your supervisor's email in the field below.
+              </Typography>
+              <TextField
+                fullWidth
+                required={student_employee}
+                label='Supervisor Email'
+                variant='outlined'
+                type='email'
+                error={supervisor_email_error}
+                value={supervisor_email}
+                onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
+              />
+            </Collapse>
+          </>
+        )}
       </DialogContent>
     </>
   )

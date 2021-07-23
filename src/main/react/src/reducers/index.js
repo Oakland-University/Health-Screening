@@ -34,7 +34,7 @@ const {
   UPDATE_SORE_THROAT,
   UPDATE_CONFIRMATION,
   UPDATE_FULLY_VACCINATED,
-  UPDATE_TESTED_POSITIVE
+  UPDATE_TESTED_POSITIVE,
 } = actions
 
 const initial_state = {
@@ -121,7 +121,15 @@ export default function reducer(state = initial_state, action) {
       return { ...state, user_status: action.payload }
     }
     case CLEAR_MODAL: {
-      return { ...initial_state, user_status: state.user_status, modal_page: modal_pages.CAMPUS_CHECK, supervisor_email: state.supervisor_email, name: state.name, phone: state.phone, email: state.email }
+      return {
+        ...initial_state,
+        user_status: state.user_status,
+        modal_page: modal_pages.CAMPUS_CHECK,
+        supervisor_email: state.supervisor_email,
+        name: state.name,
+        phone: state.phone,
+        email: state.email,
+      }
     }
     case UPDATE_CONGESTED: {
       return { ...state, congested: action.payload }
@@ -130,10 +138,10 @@ export default function reducer(state = initial_state, action) {
       return { ...state, diarrhea: action.payload }
     }
     case UPDATE_HEADACHE: {
-          return { ...state, headache: action.payload }
+      return { ...state, headache: action.payload }
     }
     case UPDATE_LOSS_OF_TASTE_OR_SMELL: {
-          return { ...state, loss_of_taste_or_smell: action.payload }
+      return { ...state, loss_of_taste_or_smell: action.payload }
     }
     case UPDATE_MUSCLE_ACHE: {
       return { ...state, muscle_ache: action.payload }
@@ -165,7 +173,8 @@ export default function reducer(state = initial_state, action) {
 
       if (current_modal_page === modal_pages.CAMPUS_CHECK) {
         if (state.coming_to_campus) {
-          new_modal_page = state.account_type === (account_types.GUEST) ? modal_pages.USER_INFO : modal_pages.PLEDGE
+          new_modal_page =
+            state.account_type === account_types.GUEST ? modal_pages.USER_INFO : modal_pages.PLEDGE
           new_user_status = user_statuses.NOT_COMPLETED
         } else if (state.coming_to_campus === false) {
           new_user_status = user_statuses.NOT_COMING
@@ -184,31 +193,46 @@ export default function reducer(state = initial_state, action) {
 
         return { ...state, name_error, email_error, phone_error, modal_page }
       } else if (current_modal_page === modal_pages.PLEDGE) {
-        const { face_covering, good_hygiene, distancing, supervisor_email, account_type, student_employee } = state
-        const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
+        const {
+          face_covering,
+          good_hygiene,
+          distancing,
+          supervisor_email,
+          account_type,
+          student_employee,
+        } = state
+        const is_employee = account_type === account_types.EMPLOYEE || student_employee
 
-        if (is_employee && (supervisor_email.length === 0 || !email_expression.test(supervisor_email))) {
+        if (
+          is_employee &&
+          (supervisor_email.length === 0 || !email_expression.test(supervisor_email))
+        ) {
           return { ...state, supervisor_email_error: true }
         }
 
-        const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee === false)
+        const can_submit =
+          (is_employee && supervisor_email.length !== 0) || student_employee === false
 
-        if ((face_covering === false || good_hygiene === false || distancing === false) && can_submit) {
+        if (
+          (face_covering === false || good_hygiene === false || distancing === false) &&
+          can_submit
+        ) {
           new_modal_page = modal_pages.SUBMITTED
           new_user_status = user_statuses.DISALLOWED
-        } else if ((face_covering && good_hygiene && distancing) && can_submit) {
+        } else if (face_covering && good_hygiene && distancing && can_submit) {
           new_modal_page =
             state.account_type === '' ? modal_pages.USER_INFO : modal_pages.HEALTH_SCREENING
         }
       } else if (current_modal_page === modal_pages.HEALTH_SCREENING) {
         const { phone, supervisor_email, account_type, student_employee } = state
-        const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
+        const is_employee = account_type === account_types.EMPLOYEE || student_employee
 
         if (!phone) {
           return { ...state, phone_error: true }
         }
 
-        const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
+        const can_submit =
+          (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
         if (all_symptoms_non_null(state) && can_submit) {
           new_user_status = has_symptoms(state) ? user_statuses.DISALLOWED : user_statuses.ALLOWED

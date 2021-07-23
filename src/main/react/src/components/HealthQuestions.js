@@ -29,7 +29,7 @@ import {
   update_fully_vaccinated,
   update_tested_positive,
 } from '../actions/main-actions'
-  
+
 const useStyles = makeStyles((theme) => ({
   radioGroup: {
     flexDirection: 'row',
@@ -47,24 +47,23 @@ const useStyles = makeStyles((theme) => ({
   },
   confirmationDiv: {
     display: 'flex',
-    marginTop: '20px'
+    marginTop: '20px',
   },
   confirmationCheck: {
     padding: '0px',
-    paddingRight: '10px'
-  }
+    paddingRight: '10px',
+  },
 }))
-
 
 export default function HealthQuestions(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const { 
+  const {
     coughing,
     feverish,
     exposed,
-    phone, 
+    phone,
     phone_error,
     short_of_breath,
     congested,
@@ -82,9 +81,7 @@ export default function HealthQuestions(props) {
   return (
     <>
       <CardContent>
-        <Typography paragraph>
-          In the past 48 hours have you had any of these symptoms:
-        </Typography>
+        <Typography paragraph>In the past 48 hours have you had any of these symptoms:</Typography>
         <FormControl component='fieldset'>
           <FormLabel className={classes.formLabel} component='legend'>
             Fever (100.4 or higher) or feeling feverish or chills
@@ -93,9 +90,7 @@ export default function HealthQuestions(props) {
             aria-label='fever'
             name='fever'
             value={feverish}
-            onChange={(event) =>
-              dispatch(update_fever(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_fever(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -103,16 +98,14 @@ export default function HealthQuestions(props) {
           </RadioGroup>
 
           <FormLabel className={classes.formLabel} component='legend'>
-            Uncontrolled cough that you cannot attribute to another health condition
-            (example: allergies, asthma)
+            Uncontrolled cough that you cannot attribute to another health condition (example:
+            allergies, asthma)
           </FormLabel>
           <RadioGroup
             aria-label='cough'
             name='cough'
             value={coughing}
-            onChange={(event) =>
-              dispatch(update_cough(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_cough(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -126,9 +119,7 @@ export default function HealthQuestions(props) {
             aria-label='shortness of breath'
             name='short_of_breath'
             value={short_of_breath}
-            onChange={(event) =>
-              dispatch(update_short_of_breath(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_short_of_breath(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -142,9 +133,7 @@ export default function HealthQuestions(props) {
             aria-label='sore throat'
             name='sore_throat'
             value={sore_throat}
-            onChange={(event) =>
-              dispatch(update_sore_throat(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_sore_throat(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -152,15 +141,14 @@ export default function HealthQuestions(props) {
           </RadioGroup>
 
           <FormLabel className={classes.formLabel} component='legend'>
-            Nasal congestion or runny nose you cannot attribute to another health condition (example: allergies)
+            Nasal congestion or runny nose you cannot attribute to another health condition
+            (example: allergies)
           </FormLabel>
           <RadioGroup
             aria-label='nasal congestion'
             name='congestion'
             value={congested}
-            onChange={(event) =>
-              dispatch(update_congestion(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_congestion(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -168,15 +156,14 @@ export default function HealthQuestions(props) {
           </RadioGroup>
 
           <FormLabel className={classes.formLabel} component='legend'>
-            Muscle aches you cannot attribute to another health condition (example: injury, exercise)
+            Muscle aches you cannot attribute to another health condition (example: injury,
+            exercise)
           </FormLabel>
           <RadioGroup
             aria-label='muscle aches'
             name='muscle_ache'
             value={muscle_ache}
-            onChange={(event) =>
-              dispatch(update_muscle_ache(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_muscle_ache(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -206,9 +193,7 @@ export default function HealthQuestions(props) {
             aria-label='headache'
             name='headache'
             value={headache}
-            onChange={(event) =>
-              dispatch(update_headache(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_headache(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -222,9 +207,7 @@ export default function HealthQuestions(props) {
             aria-label='diarrhea'
             name='diarrhea'
             value={diarrhea}
-            onChange={(event) =>
-              dispatch(update_diarrhea(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_diarrhea(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -232,15 +215,14 @@ export default function HealthQuestions(props) {
           </RadioGroup>
 
           <FormLabel className={classes.formLabel} component='legend'>
-            Nausea or vomiting that you cannot attribute to another health condition (example: pregnancy)
+            Nausea or vomiting that you cannot attribute to another health condition (example:
+            pregnancy)
           </FormLabel>
           <RadioGroup
             aria-label='nausea or vomiting'
             name='nausea'
             value={nauseous}
-            onChange={(event) =>
-              dispatch(update_nausea(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_nausea(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -261,9 +243,7 @@ export default function HealthQuestions(props) {
             aria-label='positive-test'
             name='positive-test'
             value={tested_positive}
-            onChange={(event) =>
-              dispatch(update_tested_positive(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_tested_positive(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -273,17 +253,15 @@ export default function HealthQuestions(props) {
           <Divider className={classes.divider} />
 
           <FormLabel className={classes.formLabel} component='legend'>
-            Have you had known, unprotected exposure (for healthcare workers) or close
-            contact (within 6 feet for 15 minutes or longer) with someone diagnosed
-            with COVID-19 in the past 14 days?
+            Have you had known, unprotected exposure (for healthcare workers) or close contact
+            (within 6 feet for 15 minutes or longer) with someone diagnosed with COVID-19 in the
+            past 14 days?
           </FormLabel>
           <RadioGroup
             aria-label='exposure'
             name='exposure'
             value={exposed}
-            onChange={(event) =>
-              dispatch(update_exposure(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_exposure(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
@@ -297,29 +275,27 @@ export default function HealthQuestions(props) {
               aria-label='vaccination status'
               name='vaccination status'
               value={fully_vaccinated}
-              onChange={(event) =>
-                dispatch(update_fully_vaccinated(event.target.value === 'true'))
-              }
+              onChange={(event) => dispatch(update_fully_vaccinated(event.target.value === 'true'))}
               className={classes.radioGroup}
             >
               <FormControlLabel
                 value={true}
                 control={<Radio />}
-                label='I am fully vaccinated and my final dose was over 14 days ago' />
+                label='I am fully vaccinated and my final dose was over 14 days ago'
+              />
               <FormControlLabel
                 value={false}
                 control={<Radio />}
-                label='I have not completed a COVID vaccine series, or it has been less than 14 days since my final dose' />
+                label='I have not completed a COVID vaccine series, or it has been less than 14 days since my final dose'
+              />
             </RadioGroup>
           </Collapse>
-          <Divider className={classes.divider}/>
+          <Divider className={classes.divider} />
           <div className={classes.confirmationDiv}>
             <Checkbox
               className={classes.confirmationCheck}
               checked={confirmation}
-              onChange={(event) =>
-                dispatch(update_confirmation(event.target.checked))
-              }
+              onChange={(event) => dispatch(update_confirmation(event.target.checked))}
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
             <FormLabel className={classes.formLabel} component='legend'>
@@ -331,8 +307,8 @@ export default function HealthQuestions(props) {
           <Divider className={classes.divider} />
 
           <Typography paragraph className={classes.phoneLabel}>
-            The Graham Health Center might want to get in contact with you.
-            Please fill out a good phone number to reach you.
+            The Graham Health Center might want to get in contact with you. Please fill out a good
+            phone number to reach you.
           </Typography>
           <TextField
             required

@@ -85,19 +85,16 @@ const BannerCard = (props) => {
       <CardHeader
         avatar={get_header_icon(type)}
         title='OU Health Screening'
-        subheader={
-          submission_time &&
-          `Submitted at ${submission_time.toLocaleTimeString()}`
-        }
+        subheader={submission_time && `Submitted at ${submission_time.toLocaleTimeString()}`}
       />
       {(type === user_statuses.NOT_COMPLETED ||
         type === user_statuses.NOT_COMING ||
         type === user_statuses.DISMISSED ||
-        type === user_statuses.LOADING) && (
-        <Prompt open_form={open_form}/>
+        type === user_statuses.LOADING) && <Prompt open_form={open_form} />}
+      {type === user_statuses.ALLOWED && (
+        <Certificate action={banner_action} open_form={open_form} />
       )}
-      {type === user_statuses.ALLOWED && <Certificate action={banner_action} open_form={open_form} />}
-      {type === user_statuses.DISALLOWED && <Warning open_form={open_form}/>}
+      {type === user_statuses.DISALLOWED && <Warning open_form={open_form} />}
     </Card>
   )
 }
@@ -123,8 +120,7 @@ const Certificate = (props) => {
           <Box textAlign='center'>
             Thank you for doing your part to keep the campus healthy!
             <br />
-            This is a certificate for {name || email} to be on campus for the
-            duration of
+            This is a certificate for {name || email} to be on campus for the duration of
           </Box>
         </Typography>
         <Typography variant='body1' style={{ fontSize: 34, padding: 16 }}>
@@ -135,11 +131,7 @@ const Certificate = (props) => {
         </Typography>
       </CardContent>
       <CardActions className={classes.bannerCardActions}>
-        <Button
-          color='secondary'
-          variant='outlined'
-          onClick={props.open_form}
-        >
+        <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Re-take Screening
         </Button>
         <Button color='secondary' variant='outlined' onClick={handle_click}>
@@ -155,13 +147,18 @@ const Certificate = (props) => {
         autoHideDuration={6000}
         onClose={() => set_open(false)}
         message={
-          email_error 
+          email_error
             ? 'Email was not sent. Please contact uts@oakland.edu if this problem persists'
             : 'Email sent'
         }
         action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => set_open(false)}>
-            <CloseIcon fontSize="small" />
+          <IconButton
+            size='small'
+            aria-label='close'
+            color='inherit'
+            onClick={() => set_open(false)}
+          >
+            <CloseIcon fontSize='small' />
           </IconButton>
         }
       />
@@ -175,7 +172,7 @@ const Prompt = (props) => {
   const [open, set_open] = useState(false)
 
   useEffect(() => {
-    if(user_status === user_statuses.NOT_COMING) {
+    if (user_status === user_statuses.NOT_COMING) {
       set_open(true)
     }
   }, [user_status])
@@ -189,23 +186,17 @@ const Prompt = (props) => {
       />
       <CardContent>
         <Typography variant='body1' gutterBottom className={classes.mainText}>
-          <Box textAlign='center'>
-            Do Your Part to help maintain a safe and healthy campus
-          </Box>
+          <Box textAlign='center'>Do Your Part to help maintain a safe and healthy campus</Box>
         </Typography>
         <Typography variant='body1' gutterBottom className={classes.mainText}>
           <Box textAlign='center'>
-            If you are planning on coming onto campus, please fill out this
-            health-screening form beforehand.
+            If you are planning on coming onto campus, please fill out this health-screening form
+            beforehand.
           </Box>
         </Typography>
       </CardContent>
       <CardActions className={classes.bannerCardActions}>
-        <Button
-          color='secondary'
-          variant='outlined'
-          onClick={props.open_form}
-        >
+        <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Fill Out Form
         </Button>
       </CardActions>
@@ -219,8 +210,13 @@ const Prompt = (props) => {
         onClose={() => set_open(false)}
         message="You don't need to fill out this form if you're not coming to campus"
         action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={() => set_open(false)}>
-            <CloseIcon fontSize="small" />
+          <IconButton
+            size='small'
+            aria-label='close'
+            color='inherit'
+            onClick={() => set_open(false)}
+          >
+            <CloseIcon fontSize='small' />
           </IconButton>
         }
       />
@@ -238,19 +234,14 @@ const Warning = (props) => {
           <Box textAlign='center'>
             Please do not come to the Oakland University Campus.
             <br />
-            If you have any questions, contact the Graham Health Center at (248)
-            370-2341.
+            If you have any questions, contact the Graham Health Center at (248) 370-2341.
             <br />
             Do Your Part to help maintain a safe and healthy campus: stay home.
           </Box>
         </Typography>
       </CardContent>
       <CardActions className={classes.bannerCardActions}>
-        <Button
-          color='secondary'
-          variant='outlined'
-          onClick={props.open_form}
-        >
+        <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Re-take Screening
         </Button>
       </CardActions>

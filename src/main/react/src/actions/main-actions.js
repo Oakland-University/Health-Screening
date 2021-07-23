@@ -1,4 +1,9 @@
-import { get_user_submission, submit_form, send_pledge_info, get_supervisor_email } from '../api/api'
+import {
+  get_user_submission,
+  submit_form,
+  send_pledge_info,
+  get_supervisor_email,
+} from '../api/api'
 
 import { actions, user_statuses, account_types, modal_pages } from '../utils/enums'
 import { allowed_on_campus, all_symptoms_non_null } from '../utils/functions'
@@ -9,8 +14,8 @@ export const fetch_past_submission = () => (dispatch) => {
 
     if (data === null || data === undefined) {
       user_status = user_statuses.NOT_COMPLETED
-    } else if (allowed_on_campus(data)){
-        user_status = user_statuses.ALLOWED
+    } else if (allowed_on_campus(data)) {
+      user_status = user_statuses.ALLOWED
     }
 
     dispatch({ type: actions.GET_PREVIOUS_HEALTH_INFO, payload: user_status })
@@ -21,9 +26,9 @@ export const fetch_supervisor_email = () => (dispatch, getState) => {
   const account_type = getState().account_type
 
   if (account_type !== account_types.GUEST) {
-    get_supervisor_email().then(data => {
+    get_supervisor_email().then((data) => {
       if (data !== null && data !== undefined) {
-        dispatch({type: actions.UPDATE_SUPERVISOR_EMAIL, payload: data})
+        dispatch({ type: actions.UPDATE_SUPERVISOR_EMAIL, payload: data })
       }
     })
   }
@@ -34,7 +39,7 @@ export const update_coming_to_campus = (new_coming_to_campus) => (dispatch) => {
 }
 
 export const update_student_employee = (new_student_employee) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_STUDENT_EMPLOYEE,  payload: new_student_employee })
+  dispatch({ type: actions.UPDATE_STUDENT_EMPLOYEE, payload: new_student_employee })
 }
 
 export const update_name = (new_name) => (dispatch) => {
@@ -50,7 +55,7 @@ export const update_phone = (new_phone) => (dispatch) => {
 }
 
 export const update_supervisor_email = (new_supervisor_email) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_SUPERVISOR_EMAIL,  payload: new_supervisor_email })
+  dispatch({ type: actions.UPDATE_SUPERVISOR_EMAIL, payload: new_supervisor_email })
 }
 
 export const update_cough = (new_cough) => (dispatch) => {
@@ -135,12 +140,28 @@ export const press_modal_button = () => (dispatch, getState) => {
   let payload = ''
 
   if (current_page === modal_pages.PLEDGE) {
-    const { face_covering, good_hygiene, distancing, supervisor_email, account_type, student_employee, email, name } = getState()
-    const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
-    const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee === false)
+    const {
+      face_covering,
+      good_hygiene,
+      distancing,
+      supervisor_email,
+      account_type,
+      student_employee,
+      email,
+      name,
+    } = getState()
+    const is_employee = account_type === account_types.EMPLOYEE || student_employee
+    const can_submit = (is_employee && supervisor_email.length !== 0) || student_employee === false
 
     if ((face_covering === false || good_hygiene === false || distancing === false) && can_submit) {
-      send_pledge_info({ face_covering, good_hygiene, distancing, name, email, supervisor_email: is_employee ? supervisor_email : null })
+      send_pledge_info({
+        face_covering,
+        good_hygiene,
+        distancing,
+        name,
+        email,
+        supervisor_email: is_employee ? supervisor_email : null,
+      })
     }
   }
 
@@ -170,15 +191,20 @@ export const press_modal_button = () => (dispatch, getState) => {
       sore_throat,
       tested_positive,
       fully_vaccinated,
-      confirmation
+      confirmation,
     } = getState()
 
-    const is_employee = (account_type === account_types.EMPLOYEE || student_employee)
-    const can_submit = ((is_employee && supervisor_email.length !== 0) || student_employee !== null)
+    const is_employee = account_type === account_types.EMPLOYEE || student_employee
+    const can_submit = (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
     if (all_symptoms_non_null(getState()) && can_submit) {
       submit_form(
-        { face_covering, good_hygiene, distancing, supervisor_email: is_employee ? supervisor_email : null },
+        {
+          face_covering,
+          good_hygiene,
+          distancing,
+          supervisor_email: is_employee ? supervisor_email : null,
+        },
         { name, email, phone, account_type },
         {
           feverish,
@@ -194,7 +220,7 @@ export const press_modal_button = () => (dispatch, getState) => {
           sore_throat,
           tested_positive,
           fully_vaccinated,
-          confirmation
+          confirmation,
         }
       )
     }

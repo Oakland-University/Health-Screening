@@ -37,9 +37,7 @@ export default function ComingToCampus(props) {
             aria-label='campus-visit'
             name='campus-visit'
             value={coming_to_campus}
-            onChange={(event) =>
-              dispatch(update_coming_to_campus(event.target.value === 'true'))
-            }
+            onChange={(event) => dispatch(update_coming_to_campus(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
