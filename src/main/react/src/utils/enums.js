@@ -6,7 +6,6 @@ export const account_types = {
 
 export const modal_pages = {
   CAMPUS_CHECK: 'campus-check',
-  PLEDGE: 'pledge',
   USER_INFO: 'user-info',
   HEALTH_SCREENING: 'health-screening',
   SUBMITTED: 'submitted',

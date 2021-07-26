@@ -174,7 +174,9 @@ export default function reducer(state = initial_state, action) {
       if (current_modal_page === modal_pages.CAMPUS_CHECK) {
         if (state.coming_to_campus) {
           new_modal_page =
-            state.account_type === account_types.GUEST ? modal_pages.USER_INFO : modal_pages.PLEDGE
+            state.account_type === account_types.GUEST
+              ? modal_pages.USER_INFO
+              : modal_pages.HEALTH_SCREENING
           new_user_status = user_statuses.NOT_COMPLETED
         } else if (state.coming_to_campus === false) {
           new_user_status = user_statuses.NOT_COMING
@@ -189,40 +191,9 @@ export default function reducer(state = initial_state, action) {
         }
 
         const modal_page =
-          name_error || email_error || phone_error ? state.modal_page : modal_pages.PLEDGE
+          name_error || email_error || phone_error ? state.modal_page : modal_pages.HEALTH_SCREENING
 
         return { ...state, name_error, email_error, phone_error, modal_page }
-      } else if (current_modal_page === modal_pages.PLEDGE) {
-        const {
-          face_covering,
-          good_hygiene,
-          distancing,
-          supervisor_email,
-          account_type,
-          student_employee,
-        } = state
-        const is_employee = account_type === account_types.EMPLOYEE || student_employee
-
-        if (
-          is_employee &&
-          (supervisor_email.length === 0 || !email_expression.test(supervisor_email))
-        ) {
-          return { ...state, supervisor_email_error: true }
-        }
-
-        const can_submit =
-          (is_employee && supervisor_email.length !== 0) || student_employee === false
-
-        if (
-          (face_covering === false || good_hygiene === false || distancing === false) &&
-          can_submit
-        ) {
-          new_modal_page = modal_pages.SUBMITTED
-          new_user_status = user_statuses.DISALLOWED
-        } else if (face_covering && good_hygiene && distancing && can_submit) {
-          new_modal_page =
-            state.account_type === '' ? modal_pages.USER_INFO : modal_pages.HEALTH_SCREENING
-        }
       } else if (current_modal_page === modal_pages.HEALTH_SCREENING) {
         const { phone, supervisor_email, account_type, student_employee } = state
         const is_employee = account_type === account_types.EMPLOYEE || student_employee

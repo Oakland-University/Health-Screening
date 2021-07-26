@@ -1,9 +1,4 @@
-import {
-  get_user_submission,
-  submit_form,
-  send_pledge_info,
-  get_supervisor_email,
-} from '../api/api'
+import { get_user_submission, submit_form, get_supervisor_email } from '../api/api'
 
 import { actions, user_statuses, account_types, modal_pages } from '../utils/enums'
 import { allowed_on_campus, all_symptoms_non_null } from '../utils/functions'
@@ -139,32 +134,6 @@ export const press_modal_button = () => (dispatch, getState) => {
 
   let payload = ''
 
-  if (current_page === modal_pages.PLEDGE) {
-    const {
-      face_covering,
-      good_hygiene,
-      distancing,
-      supervisor_email,
-      account_type,
-      student_employee,
-      email,
-      name,
-    } = getState()
-    const is_employee = account_type === account_types.EMPLOYEE || student_employee
-    const can_submit = (is_employee && supervisor_email.length !== 0) || student_employee === false
-
-    if ((face_covering === false || good_hygiene === false || distancing === false) && can_submit) {
-      send_pledge_info({
-        face_covering,
-        good_hygiene,
-        distancing,
-        name,
-        email,
-        supervisor_email: is_employee ? supervisor_email : null,
-      })
-    }
-  }
-
   if (current_page === modal_pages.HEALTH_SCREENING) {
     payload = modal_pages.SUBMITTED
 
@@ -176,9 +145,6 @@ export const press_modal_button = () => (dispatch, getState) => {
       email,
       phone,
       account_type,
-      face_covering,
-      good_hygiene,
-      distancing,
       supervisor_email,
       student_employee,
       short_of_breath,
@@ -199,12 +165,6 @@ export const press_modal_button = () => (dispatch, getState) => {
 
     if (all_symptoms_non_null(getState()) && can_submit) {
       submit_form(
-        {
-          face_covering,
-          good_hygiene,
-          distancing,
-          supervisor_email: is_employee ? supervisor_email : null,
-        },
         { name, email, phone, account_type },
         {
           feverish,
