@@ -2,13 +2,6 @@ package edu.oakland.healthscreening.dao;
 
 public class Constants {
 
-  public static final String INSERT_PLEDGE =
-      (" INSERT INTO screening.pledge                                         "
-              + "   (email, face_covering, good_hygiene, distancing)          "
-              + " VALUES                                                      "
-              + "   (?, ?, ?, ?)                                              ")
-          .replaceAll("\\s+", " ");
-
   public static final String GET_ANONYMOUS_ANALYTIC_INFO =
       (" SELECT                                                                           "
               + "     null as account_type,                                               "
@@ -79,19 +72,6 @@ public class Constants {
               + " WHERE                                      "
               + "   submission_time >= now()::date           "
               + "   AND pidm = ?                             "
-              + " ORDER BY                                   "
-              + "   submission_time DESC                     "
-              + " LIMIT 1                                    ")
-          .replaceAll("\\s+", " ");
-
-  public static final String GET_RECENT_PLEDGE =
-      (" SELECT                                              "
-              + "   *                                        "
-              + " FROM                                       "
-              + "   screening.pledge                         "
-              + " WHERE                                      "
-              + "   submission_time >= now()::date           "
-              + "   AND email = ?                            "
               + " ORDER BY                                   "
               + "   submission_time DESC                     "
               + " LIMIT 1                                    ")

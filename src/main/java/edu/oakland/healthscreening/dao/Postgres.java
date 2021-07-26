@@ -6,13 +6,10 @@ import static edu.oakland.healthscreening.dao.Constants.GET_ANALYTICS_BY_TYPE;
 import static edu.oakland.healthscreening.dao.Constants.GET_ANONYMOUS_ANALYTIC_INFO;
 import static edu.oakland.healthscreening.dao.Constants.GET_GUEST_INFO;
 import static edu.oakland.healthscreening.dao.Constants.GET_RECENT_INFO;
-import static edu.oakland.healthscreening.dao.Constants.GET_RECENT_PLEDGE;
 import static edu.oakland.healthscreening.dao.Constants.GET_SUPERVISOR_EMAIL;
-import static edu.oakland.healthscreening.dao.Constants.INSERT_PLEDGE;
 
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
-import edu.oakland.healthscreening.model.Pledge;
 
 import java.sql.Types;
 import java.util.List;
@@ -90,16 +87,6 @@ public class Postgres {
     saveHealthInfoCall.executeFunction(null, parameterSource);
   }
 
-  public void savePledge(final Pledge pledge) {
-    log.debug("Saving pledge: {}", pledge);
-    jdbcTemplate.update(
-        INSERT_PLEDGE,
-        pledge.getEmail(),
-        pledge.isFaceCovering(),
-        pledge.isGoodHygiene(),
-        pledge.isDistancing());
-  }
-
   public AnalyticInfo getAnalyticInfo(final String interval) {
     log.debug("Getting anonymous analytic info for interval: {}", interval);
     return jdbcTemplate.queryForObject(GET_ANONYMOUS_ANALYTIC_INFO, AnalyticInfo.mapper, interval);
@@ -117,18 +104,8 @@ public class Postgres {
 
   public Optional<HealthInfo> getRecentSubmission(final String pidm, final String email) {
     try {
-      final Pledge pledge = jdbcTemplate.queryForObject(GET_RECENT_PLEDGE, Pledge.mapper, email);
-      HealthInfo info = new HealthInfo();
-
-      if (pledge.fullAgreement()) {
-        info = jdbcTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm);
-      }
-
-      info.setPledge(pledge);
-
-      log.debug("Found recent submission for {} : {}", email, info);
-
-      return Optional.of(info);
+      return Optional.ofNullable(
+          jdbcTemplate.queryForObject(GET_RECENT_INFO, HealthInfo.mapper, pidm));
     } catch (final EmptyResultDataAccessException e) {
       log.debug("No recent info for: {}", email);
       return Optional.empty();
