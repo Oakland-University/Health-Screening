@@ -17,11 +17,6 @@ Content-Type: application/json
 "name": "John Smith",
 "nauseous": false,
 "phone": "555 525-2231",
-"pledge": {
-    "face_covering": true,
-    "good_hygiene": true,
-    "distancing": true
-},
 "tested_positive": false,
 "short_of_breath": false,
 "sore_throat": false
