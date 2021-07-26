@@ -40,7 +40,6 @@ public class HealthInfo {
   private Boolean fullyVaccinated;
   private Timestamp submissionTime;
   private String supervisorEmail;
-  private Pledge pledge;
 
   public boolean shouldStayHome() {
     return (coughing
