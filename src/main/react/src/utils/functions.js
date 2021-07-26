@@ -1,5 +1,5 @@
 export const allowed_on_campus = (data) => {
-  return agrees_to_pledge(data) && !has_symptoms(data)
+  return !has_symptoms(data)
 }
 
 export const has_symptoms = (data) => {
@@ -17,11 +17,6 @@ export const has_symptoms = (data) => {
     data.short_of_breath ||
     data.sore_throat
   )
-}
-
-export const agrees_to_pledge = (obj) => {
-  let data = obj.pledge ? obj.pledge : obj
-  return data.face_covering && data.good_hygiene && data.distancing
 }
 
 export const all_symptoms_non_null = (symptom_data) => {
