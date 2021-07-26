@@ -6,7 +6,7 @@ export const submit_form = async (pledge, user_info, questions) => {
     ...user_info,
     ...questions,
     account_type: user_info == null ? 'student' : 'guest',
-    pledge
+    pledge,
   }
 
   if (IS_DEMO) {
@@ -27,7 +27,9 @@ export const submit_form = async (pledge, user_info, questions) => {
     })
     const status = response.status
     if (status > 399 && status < 500) {
-      alert('Your MySAIL session has expired. You may have to sign in again and fill out the health screening form again.')
+      alert(
+        'Your MySAIL session has expired. You may have to sign in again and fill out the health screening form again.'
+      )
       if (window.location.hostname.includes('mysaildev')) {
         window.location.href = 'https://mysaildev.oakland.edu'
       } else if (window.location.hostname.includes('mysailtest')) {
@@ -48,18 +50,15 @@ export const get_user_submission = async () => {
   }
 
   try {
-    const response = await fetch(
-      '/health-screening/api/v1/health-info/current-user',
-      {
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        method: 'GET',
-      }
-    )
+    const response = await fetch('/health-screening/api/v1/health-info/current-user', {
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      method: 'GET',
+    })
     return await response.json()
   } catch (err) {
     return err
@@ -72,18 +71,15 @@ export const get_supervisor_email = async () => {
   }
 
   try {
-    const response = await fetch(
-      '/health-screening/api/v1/supervisor-email',
-      {
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        method: 'GET',
-      }
-    )
+    const response = await fetch('/health-screening/api/v1/supervisor-email', {
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      method: 'GET',
+    })
     return await response.json()
   } catch (err) {
     return err
@@ -95,7 +91,9 @@ export const send_certificate_email = async (name, email, phone) => {
     return
   }
 
-  const query_params = `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`
+  const query_params = `?name=${encodeURIComponent(name)}&email=${encodeURIComponent(
+    email
+  )}&phone=${encodeURIComponent(phone)}`
 
   try {
     const response = await fetch(

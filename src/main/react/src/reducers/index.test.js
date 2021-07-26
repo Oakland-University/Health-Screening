@@ -37,7 +37,7 @@ const initial_state = {
   user_status: user_statuses.LOADING,
   confirmation: null,
   fully_vaccinated: null,
-  tested_positive: null
+  tested_positive: null,
 }
 
 describe('General', () => {
@@ -67,13 +67,13 @@ describe('Coming to Campus Page', () => {
       ...initial_state,
       user_status: user_statuses.NOT_COMING,
       coming_to_campus: true,
-      account_type: account_types.GUEST
+      account_type: account_types.GUEST,
     }
 
     expect(reducer(state_going_in, { type: actions.NEXT_MODAL_PAGE })).toEqual({
       ...state_going_in,
       user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.USER_INFO
+      modal_page: modal_pages.USER_INFO,
     })
   })
 
@@ -82,13 +82,13 @@ describe('Coming to Campus Page', () => {
       ...initial_state,
       user_status: user_statuses.NOT_COMING,
       coming_to_campus: true,
-      account_type: account_types.STUDENT
+      account_type: account_types.STUDENT,
     }
 
     expect(reducer(state_going_in, { type: actions.NEXT_MODAL_PAGE })).toEqual({
       ...state_going_in,
       user_status: user_statuses.NOT_COMPLETED,
-      modal_page: modal_pages.PLEDGE
+      modal_page: modal_pages.PLEDGE,
     })
   })
 })
@@ -100,7 +100,7 @@ describe('Honor Pledge Page', () => {
     modal_page: modal_pages.PLEDGE,
     coming_to_campus: true,
     account_type: account_types.STUDENT,
-    student_employee: false
+    student_employee: false,
   }
 
   const all_true_state = {
@@ -112,12 +112,12 @@ describe('Honor Pledge Page', () => {
     student_employee: false,
     face_covering: true,
     good_hygiene: true,
-    distancing: true
+    distancing: true,
   }
 
   it('should NOT proceed to symptom page if no pledge questions are filled out', () => {
     expect(reducer(not_filled_out_state, { type: actions.NEXT_MODAL_PAGE })).toEqual({
-      ...not_filled_out_state
+      ...not_filled_out_state,
     })
   })
 
@@ -129,7 +129,7 @@ describe('Honor Pledge Page', () => {
     ).toEqual({
       ...not_filled_out_state,
       good_hygiene: true,
-      distancing: true
+      distancing: true,
     })
   })
 
@@ -141,7 +141,7 @@ describe('Honor Pledge Page', () => {
     ).toEqual({
       ...not_filled_out_state,
       face_covering: true,
-      distancing: true
+      distancing: true,
     })
   })
 
@@ -153,14 +153,14 @@ describe('Honor Pledge Page', () => {
     ).toEqual({
       ...not_filled_out_state,
       face_covering: true,
-      good_hygiene: true
+      good_hygiene: true,
     })
   })
 
   it('should proceed to symptom page if all pledge questions are "true"', () => {
     expect(reducer(all_true_state, { type: actions.NEXT_MODAL_PAGE })).toEqual({
       ...all_true_state,
-      modal_page: modal_pages.HEALTH_SCREENING
+      modal_page: modal_pages.HEALTH_SCREENING,
     })
   })
 
@@ -171,7 +171,7 @@ describe('Honor Pledge Page', () => {
       ...all_true_state,
       face_covering: false,
       user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED
+      modal_page: modal_pages.SUBMITTED,
     })
   })
 
@@ -182,7 +182,7 @@ describe('Honor Pledge Page', () => {
       ...all_true_state,
       good_hygiene: false,
       user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED
+      modal_page: modal_pages.SUBMITTED,
     })
   })
 
@@ -193,7 +193,7 @@ describe('Honor Pledge Page', () => {
       ...all_true_state,
       distancing: false,
       user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED
+      modal_page: modal_pages.SUBMITTED,
     })
   })
 })
@@ -221,7 +221,7 @@ describe('Health Questions Page', () => {
     nauseous: false,
     short_of_breath: false,
     fully_vaccinated: false,
-    sore_throat: false
+    sore_throat: false,
   }
 
   it('should not submit a HS if coughing is null', () => {
@@ -229,7 +229,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, coughing: null }, action)).toEqual({
       ...all_false,
-      coughing: null
+      coughing: null,
     })
   })
 
@@ -238,7 +238,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, feverish: null }, action)).toEqual({
       ...all_false,
-      feverish: null
+      feverish: null,
     })
   })
 
@@ -247,7 +247,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, exposed: null }, action)).toEqual({
       ...all_false,
-      exposed: null
+      exposed: null,
     })
   })
 
@@ -256,7 +256,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, congested: null }, action)).toEqual({
       ...all_false,
-      congested: null
+      congested: null,
     })
   })
 
@@ -265,7 +265,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, diarrhea: null }, action)).toEqual({
       ...all_false,
-      diarrhea: null
+      diarrhea: null,
     })
   })
 
@@ -274,7 +274,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, tested_positive: null }, action)).toEqual({
       ...all_false,
-      tested_positive: null
+      tested_positive: null,
     })
   })
 
@@ -283,7 +283,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, headache: null }, action)).toEqual({
       ...all_false,
-      headache: null
+      headache: null,
     })
   })
 
@@ -292,7 +292,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, loss_of_taste_or_smell: null }, action)).toEqual({
       ...all_false,
-      loss_of_taste_or_smell: null
+      loss_of_taste_or_smell: null,
     })
   })
 
@@ -301,7 +301,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, muscle_ache: null }, action)).toEqual({
       ...all_false,
-      muscle_ache: null
+      muscle_ache: null,
     })
   })
 
@@ -310,7 +310,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, nauseous: null }, action)).toEqual({
       ...all_false,
-      nauseous: null
+      nauseous: null,
     })
   })
 
@@ -319,7 +319,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, exposed: null }, action)).toEqual({
       ...all_false,
-      exposed: null
+      exposed: null,
     })
   })
 
@@ -329,7 +329,7 @@ describe('Health Questions Page', () => {
     expect(reducer({ ...all_false, exposed: true, fully_vaccinated: null }, action)).toEqual({
       ...all_false,
       exposed: true,
-      fully_vaccinated: null
+      fully_vaccinated: null,
     })
   })
 
@@ -338,7 +338,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, short_of_breath: null }, action)).toEqual({
       ...all_false,
-      short_of_breath: null
+      short_of_breath: null,
     })
   })
 
@@ -347,7 +347,7 @@ describe('Health Questions Page', () => {
 
     expect(reducer({ ...all_false, sore_throat: null }, action)).toEqual({
       ...all_false,
-      sore_throat: null
+      sore_throat: null,
     })
   })
 
@@ -358,7 +358,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      coughing: true
+      coughing: true,
     })
   })
 
@@ -369,7 +369,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      feverish: true
+      feverish: true,
     })
   })
 
@@ -381,7 +381,7 @@ describe('Health Questions Page', () => {
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
       exposed: true,
-      fully_vaccinated: false
+      fully_vaccinated: false,
     })
   })
 
@@ -393,7 +393,7 @@ describe('Health Questions Page', () => {
       user_status: user_statuses.ALLOWED,
       modal_page: modal_pages.SUBMITTED,
       exposed: true,
-      fully_vaccinated: true
+      fully_vaccinated: true,
     })
   })
 
@@ -404,7 +404,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      congested: true
+      congested: true,
     })
   })
 
@@ -415,7 +415,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      diarrhea: true
+      diarrhea: true,
     })
   })
 
@@ -426,7 +426,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      tested_positive: true
+      tested_positive: true,
     })
   })
 
@@ -437,7 +437,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      headache: true
+      headache: true,
     })
   })
 
@@ -448,7 +448,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      loss_of_taste_or_smell: true
+      loss_of_taste_or_smell: true,
     })
   })
 
@@ -459,7 +459,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      muscle_ache: true
+      muscle_ache: true,
     })
   })
 
@@ -470,7 +470,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      nauseous: true
+      nauseous: true,
     })
   })
 
@@ -481,7 +481,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      short_of_breath: true
+      short_of_breath: true,
     })
   })
 
@@ -492,7 +492,7 @@ describe('Health Questions Page', () => {
       ...all_false,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      sore_throat: true
+      sore_throat: true,
     })
   })
 
@@ -502,7 +502,7 @@ describe('Health Questions Page', () => {
     expect(reducer(all_false, action)).toEqual({
       ...all_false,
       user_status: user_statuses.ALLOWED,
-      modal_page: modal_pages.SUBMITTED
+      modal_page: modal_pages.SUBMITTED,
     })
   })
 })

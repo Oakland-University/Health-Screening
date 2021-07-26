@@ -29,8 +29,8 @@ export const all_symptoms_non_null = (symptom_data) => {
     symptom_data.coughing !== null &&
     symptom_data.feverish !== null &&
     symptom_data.exposed !== null &&
-      ((symptom_data.exposed === true && symptom_data.fully_vaccinated !== null) ||
-       symptom_data.exposed === false) &&
+    ((symptom_data.exposed === true && symptom_data.fully_vaccinated !== null) ||
+      symptom_data.exposed === false) &&
     symptom_data.congested !== null &&
     symptom_data.diarrhea !== null &&
     symptom_data.tested_positive !== null &&

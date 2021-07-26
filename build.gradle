@@ -137,6 +137,10 @@ task runBuild(type: NpmTask) {
   args = ['run', 'build']
 }
 
+task runFormat(type: NpmTask) {
+  args = ['run', 'format']
+}
+
 task copyTask(type: Copy) {
   from 'src/main/react/build/static/'
   into 'src/main/webapp/'
@@ -146,6 +150,7 @@ clean.finalizedBy 'npm_install'
 npm_install.finalizedBy 'runBuild'
 runBuild.finalizedBy 'copyTask'
 copyTask.finalizedBy 'spotlessApply'
+spotlessApply.finalizedBy 'runFormat'
 
 test {
     useJUnitPlatform()

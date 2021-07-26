@@ -67,18 +67,13 @@ export default function App() {
 
   return (
     <>
-      <Dialog
-        fullScreen={full_screen}
-        open={modal_open}
-        scroll='paper'
-        onClose={handle_close}
-      >
+      <Dialog fullScreen={full_screen} open={modal_open} scroll='paper' onClose={handle_close}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           {(modal_page === modal_pages.USER_INFO || modal_page === modal_pages.CAMPUS_CHECK) && (
             <Typography variant='body2' color='textSecondary' component='p'>
-              Anyone intending on visiting campus is required to fill out this
-              health screening form beforehand.
+              Anyone intending on visiting campus is required to fill out this health screening form
+              beforehand.
               <br />
               Please be aware that GHC will be notified of your response.
             </Typography>
@@ -86,9 +81,7 @@ export default function App() {
           {modal_page === modal_pages.PLEDGE && <Pledge />}
           {modal_page === modal_pages.CAMPUS_CHECK && <ComingToCampus />}
           {modal_page === modal_pages.USER_INFO && <UserInfo />}
-          {modal_page === modal_pages.HEALTH_SCREENING && (
-            <HealthQuestions view={modal_page} />
-          )}
+          {modal_page === modal_pages.HEALTH_SCREENING && <HealthQuestions view={modal_page} />}
           {modal_page === modal_pages.SUBMITTED && <FinalPage />}
         </DialogContent>
         <DialogActions className={classes.cardActionStyle}>
@@ -96,10 +89,7 @@ export default function App() {
             Close
           </Button>
           {modal_page !== modal_pages.SUBMITTED && (
-            <Button
-              color='secondary'
-              onClick={() => dispatch(press_modal_button())}
-            >
+            <Button color='secondary' onClick={() => dispatch(press_modal_button())}>
               {modal_page === modal_pages.HEALTH_SCREENING ? 'Submit' : 'Next'}
             </Button>
           )}
