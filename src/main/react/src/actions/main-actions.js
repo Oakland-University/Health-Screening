@@ -1,7 +1,7 @@
 import { get_user_submission, submit_form, get_supervisor_email } from '../api/api'
 
 import { actions, user_statuses, account_types, modal_pages } from '../utils/enums'
-import { allowed_on_campus, all_symptoms_non_null } from '../utils/functions'
+import { allowed_on_campus, all_questions_non_null } from '../utils/functions'
 
 export const fetch_past_submission = () => (dispatch) => {
   get_user_submission().then((data) => {
@@ -95,7 +95,7 @@ export const press_modal_button = () => (dispatch, getState) => {
     const is_employee = account_type === account_types.EMPLOYEE || student_employee
     const can_submit = (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
-    if (all_symptoms_non_null(getState()) && can_submit) {
+    if (all_questions_non_null(getState()) && can_submit) {
       submit_form(
         { name, email, phone, account_type, supervisor_email },
         {

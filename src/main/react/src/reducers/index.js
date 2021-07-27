@@ -1,5 +1,5 @@
 import { actions, user_statuses, modal_pages, account_types } from '../utils/enums'
-import { all_symptoms_non_null, has_symptoms } from '../utils/functions'
+import { all_questions_non_null, all_symptoms_non_null, has_symptoms } from '../utils/functions'
 
 /*global PHONE*/
 /*global EMAIL*/
@@ -35,39 +35,27 @@ const {
   UPDATE_CONFIRMATION,
   UPDATE_FULLY_VACCINATED,
   UPDATE_TESTED_POSITIVE,
+  UPDATE_SYMPTOMATIC,
 } = actions
 
 const initial_state = {
   account_type: ACCOUNT_TYPE,
   coming_to_campus: null,
-  congested: null,
-  coughing: null,
-  diarrhea: null,
-  distancing: null,
   email: EMAIL.includes('guest') ? '' : EMAIL,
   email_error: false,
   exposed: null,
-  face_covering: null,
-  feverish: null,
-  good_hygiene: null,
-  headache: null,
-  loss_of_taste_or_smell: null,
   modal_page: modal_pages.CAMPUS_CHECK,
   muscle_ache: null,
   name: NAME.includes('Guest') ? '' : NAME,
   name_error: false,
-  nauseous: null,
   phone: PHONE,
   phone_error: false,
-  short_of_breath: null,
-  sore_throat: null,
   student_employee: null,
   submission_time: '',
   supervisor_email: '',
   supervisor_email_error: false,
+  symptomatic: false,
   user_status: user_statuses.LOADING,
-  confirmation: null,
-  tested_positive: null,
   fully_vaccinated: null,
 }
 
@@ -96,26 +84,14 @@ export default function reducer(state = initial_state, action) {
     case UPDATE_ACCOUNT: {
       return { ...state, account: action.payload }
     }
-    case UPDATE_COUGHING: {
-      return { ...state, coughing: action.payload }
-    }
-    case UPDATE_FEVERISH: {
-      return { ...state, feverish: action.payload }
-    }
     case UPDATE_EXPOSED: {
       return { ...state, exposed: action.payload }
     }
-    case UPDATE_FACE_COVERING: {
-      return { ...state, face_covering: action.payload }
-    }
-    case UPDATE_GOOD_HYGIENE: {
-      return { ...state, good_hygiene: action.payload }
-    }
-    case UPDATE_DISTANCING: {
-      return { ...state, distancing: action.payload }
-    }
     case UPDATE_USER_STATUS: {
       return { ...state, user_status: action.payload }
+    }
+    case UPDATE_SYMPTOMATIC: {
+      return { ...state, symptomatic: action.payload }
     }
     case GET_PREVIOUS_HEALTH_INFO: {
       return { ...state, user_status: action.payload }
@@ -130,33 +106,6 @@ export default function reducer(state = initial_state, action) {
         phone: state.phone,
         email: state.email,
       }
-    }
-    case UPDATE_CONGESTED: {
-      return { ...state, congested: action.payload }
-    }
-    case UPDATE_DIARRHEA: {
-      return { ...state, diarrhea: action.payload }
-    }
-    case UPDATE_HEADACHE: {
-      return { ...state, headache: action.payload }
-    }
-    case UPDATE_LOSS_OF_TASTE_OR_SMELL: {
-      return { ...state, loss_of_taste_or_smell: action.payload }
-    }
-    case UPDATE_MUSCLE_ACHE: {
-      return { ...state, muscle_ache: action.payload }
-    }
-    case UPDATE_NAUSEOUS: {
-      return { ...state, nauseous: action.payload }
-    }
-    case UPDATE_SHORT_OF_BREATH: {
-      return { ...state, short_of_breath: action.payload }
-    }
-    case UPDATE_SORE_THROAT: {
-      return { ...state, sore_throat: action.payload }
-    }
-    case UPDATE_CONFIRMATION: {
-      return { ...state, confirmation: action.payload }
     }
     case UPDATE_FULLY_VACCINATED: {
       return { ...state, fully_vaccinated: action.payload }
@@ -205,7 +154,7 @@ export default function reducer(state = initial_state, action) {
         const can_submit =
           (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
-        if (all_symptoms_non_null(state) && can_submit) {
+        if (all_questions_non_null(state) && can_submit) {
           new_user_status = has_symptoms(state) ? user_statuses.DISALLOWED : user_statuses.ALLOWED
           new_modal_page = action.payload
         }

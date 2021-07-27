@@ -50,4 +50,5 @@ export const actions = {
   UPDATE_FULLY_VACCINATED: 'update-fully-vaccinated',
   UPDATE_NOT_FULLY_VACCINATED: 'update-not-fully-vaccinated',
   UPDATE_TESTED_POSITIVE: 'update-tested-positive',
+  UPDATE_SYMPTOMATIC: 'update-symptomatic',
 }
