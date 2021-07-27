@@ -17,6 +17,7 @@ import {
   update_fully_vaccinated,
   update_supervisor_email,
   update_student_employee,
+  update_symptomatic,
 } from '../actions/main-actions'
 import { account_types } from '../utils/enums'
 
@@ -63,6 +64,7 @@ export default function HealthQuestions(props) {
     phone,
     phone_error,
     fully_vaccinated,
+    symptomatic,
   } = useSelector((state) => state)
 
   return (
@@ -75,8 +77,8 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='positive-test'
             name='positive-test'
-            value={'symptomatic'}
-            onChange={(event) => console.log('update symptomatic')}
+            value={symptomatic}
+            onChange={(event) => dispatch(update_symptomatic(event.target.value === 'true'))}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />

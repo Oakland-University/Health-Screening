@@ -57,12 +57,12 @@ export const update_exposure = (new_exposure) => (dispatch) => {
   dispatch({ type: actions.UPDATE_EXPOSED, payload: new_exposure })
 }
 
-export const update_fully_vaccinated = (new_fully_vaccinated) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_FULLY_VACCINATED, payload: new_fully_vaccinated })
+export const update_symptomatic = (new_symptomatic) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_SYMPTOMATIC, payload: new_symptomatic })
 }
 
-export const update_tested_positive = (new_positive_test) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_TESTED_POSITIVE, payload: new_positive_test })
+export const update_fully_vaccinated = (new_fully_vaccinated) => (dispatch) => {
+  dispatch({ type: actions.UPDATE_FULLY_VACCINATED, payload: new_fully_vaccinated })
 }
 
 export const update_user_status = (new_user_status) => (dispatch) => {
