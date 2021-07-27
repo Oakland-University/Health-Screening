@@ -72,132 +72,128 @@ export default function HealthQuestions(props) {
   return (
     <>
       <CardContent>
-          <FormControl component="fieldset">
-              <FormLabel className={classes.formLabel} component='legend'>
-                  Are you experiencing any potential symptoms of COVID-19?
-              </FormLabel>
-              <RadioGroup
-                  aria-label='positive-test'
-                  name='positive-test'
-                  value={tested_positive}
-                  onChange={(event) => dispatch(update_tested_positive(event.target.value === 'true'))}
-                  className={classes.radioGroup}
-              >
-                  <FormControlLabel value={true} control={<Radio />} label='Yes' />
-                  <FormControlLabel value={false} control={<Radio />} label='No' />
-              </RadioGroup>
-          </FormControl>
+        <FormControl component='fieldset'>
+          <FormLabel className={classes.formLabel} component='legend'>
+            Are you experiencing any potential symptoms of COVID-19?
+          </FormLabel>
+          <RadioGroup
+            aria-label='positive-test'
+            name='positive-test'
+            value={tested_positive}
+            onChange={(event) => dispatch(update_tested_positive(event.target.value === 'true'))}
+            className={classes.radioGroup}
+          >
+            <FormControlLabel value={true} control={<Radio />} label='Yes' />
+            <FormControlLabel value={false} control={<Radio />} label='No' />
+          </RadioGroup>
+        </FormControl>
 
-          <FormControl component='fieldset'>
-              <FormLabel className={classes.formLabel} component='legend'>
-                  In the last 14 days, have you had close contact to a confirmed case of COVID-19?
-              </FormLabel>
-              <RadioGroup
-                  aria-label='exposure'
-                  name='exposure'
-                  value={exposed}
-                  onChange={(event) => dispatch(update_exposure(event.target.value === 'true'))}
-                  className={classes.radioGroup}
-              >
-                  <FormControlLabel value={true} control={<Radio />} label='Yes' />
-                  <FormControlLabel value={false} control={<Radio />} label='No' />
-              </RadioGroup>
-          </FormControl>
+        <FormControl component='fieldset'>
+          <FormLabel className={classes.formLabel} component='legend'>
+            In the last 14 days, have you had close contact to a confirmed case of COVID-19?
+          </FormLabel>
+          <RadioGroup
+            aria-label='exposure'
+            name='exposure'
+            value={exposed}
+            onChange={(event) => dispatch(update_exposure(event.target.value === 'true'))}
+            className={classes.radioGroup}
+          >
+            <FormControlLabel value={true} control={<Radio />} label='Yes' />
+            <FormControlLabel value={false} control={<Radio />} label='No' />
+          </RadioGroup>
+        </FormControl>
 
-          <FormControl component='fieldset'>
-              <FormLabel className={classes.formLabel} component='legend'>
-                  Are you fully vaccinated?
-              </FormLabel>
-              <RadioGroup
-                  aria-label='vaccination status'
-                  name='vaccination status'
-                  value={fully_vaccinated}
-                  onChange={(event) => dispatch(update_fully_vaccinated(event.target.value === 'true'))}
-                  className={classes.radioGroup}
-              >
-                  <FormControlLabel
-                      value={true}
-                      control={<Radio />}
-                      label='I am fully vaccinated and my final dose was over 14 days ago'
-                  />
-                  <FormControlLabel
-                      value={false}
-                      control={<Radio />}
-                      label='I am not fully vaccinated, or I would prefer not to answer'
-                  />
-              </RadioGroup>
+        <FormControl component='fieldset'>
+          <FormLabel className={classes.formLabel} component='legend'>
+            Are you fully vaccinated?
+          </FormLabel>
+          <RadioGroup
+            aria-label='vaccination status'
+            name='vaccination status'
+            value={fully_vaccinated}
+            onChange={(event) => dispatch(update_fully_vaccinated(event.target.value === 'true'))}
+            className={classes.radioGroup}
+          >
+            <FormControlLabel
+              value={true}
+              control={<Radio />}
+              label='I am fully vaccinated and my final dose was over 14 days ago'
+            />
+            <FormControlLabel
+              value={false}
+              control={<Radio />}
+              label='I am not fully vaccinated, or I would prefer not to answer'
+            />
+          </RadioGroup>
+        </FormControl>
 
-          </FormControl>
+        <Divider className={classes.divider} />
 
-          <Divider className={classes.divider} />
-
-          <FormControl component='fieldset'>
-              <Typography paragraph className={classes.phoneLabel} component='legend'>
-                  The Graham Health Center might want to get in contact with you. Please fill out a good
-                  phone number to reach you.
-              </Typography>
-              <TextField
-                  required
-                  error={phone_error}
-                  id='outlined-required'
-                  label='Phone Number'
-                  variant='outlined'
-                  value={phone}
-                  onChange={(event) => dispatch(update_phone(event.target.value))}
-              />
-
-          </FormControl>
-          {account_type === account_types.EMPLOYEE ? (
-            <>
-              <Typography paragraph className={classes.phoneLabel}>
+        <FormControl component='fieldset'>
+          <Typography paragraph className={classes.phoneLabel} component='legend'>
+            The Graham Health Center might want to get in contact with you. Please fill out a good
+            phone number to reach you.
+          </Typography>
+          <TextField
+            required
+            error={phone_error}
+            id='outlined-required'
+            label='Phone Number'
+            variant='outlined'
+            value={phone}
+            onChange={(event) => dispatch(update_phone(event.target.value))}
+          />
+        </FormControl>
+        {account_type === account_types.EMPLOYEE ? (
+          <>
+            <Typography paragraph className={classes.phoneLabel}>
+              Please provide your supervisor's email in the field below.
+            </Typography>
+            <TextField
+              fullWidth
+              required
+              label='Supervisor Email'
+              variant='outlined'
+              error={supervisor_email_error}
+              value={supervisor_email}
+              onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
+            />
+          </>
+        ) : (
+          <>
+            <FormLabel className={classes.formLabel2} component='legend'>
+              {`Are you a${
+                account_type === account_types.STUDENT ? ' student' : 'n'
+              } employee of OU who is planning on working today?`}
+            </FormLabel>
+            <RadioGroup
+              aria-label='student-employee'
+              name='student-employee'
+              value={student_employee}
+              onChange={(event) => dispatch(update_student_employee(event.target.value === 'true'))}
+              className={classes.radioGroup}
+            >
+              <FormControlLabel value={true} control={<Radio />} label='Yes' />
+              <FormControlLabel value={false} control={<Radio />} label='No' />
+            </RadioGroup>
+            <Collapse in={student_employee} unmountOnExit>
+              <Typography paragraph className={classes.emailLabel}>
                 Please provide your supervisor's email in the field below.
               </Typography>
               <TextField
                 fullWidth
-                required
+                required={student_employee}
                 label='Supervisor Email'
                 variant='outlined'
+                type='email'
                 error={supervisor_email_error}
                 value={supervisor_email}
                 onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
               />
-            </>
-          ) : (
-            <>
-              <FormLabel className={classes.formLabel2} component='legend'>
-                {`Are you a${
-                  account_type === account_types.STUDENT ? ' student' : 'n'
-                } employee of OU who is planning on working today?`}
-              </FormLabel>
-              <RadioGroup
-                aria-label='student-employee'
-                name='student-employee'
-                value={student_employee}
-                onChange={(event) =>
-                  dispatch(update_student_employee(event.target.value === 'true'))
-                }
-                className={classes.radioGroup}
-              >
-                <FormControlLabel value={true} control={<Radio />} label='Yes' />
-                <FormControlLabel value={false} control={<Radio />} label='No' />
-              </RadioGroup>
-              <Collapse in={student_employee} unmountOnExit>
-                <Typography paragraph className={classes.emailLabel}>
-                  Please provide your supervisor's email in the field below.
-                </Typography>
-                <TextField
-                  fullWidth
-                  required={student_employee}
-                  label='Supervisor Email'
-                  variant='outlined'
-                  type='email'
-                  error={supervisor_email_error}
-                  value={supervisor_email}
-                  onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
-                />
-              </Collapse>
-            </>
-          )}
+            </Collapse>
+          </>
+        )}
       </CardContent>
     </>
   )
