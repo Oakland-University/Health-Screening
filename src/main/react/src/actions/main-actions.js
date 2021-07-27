@@ -96,13 +96,7 @@ export const press_modal_button = () => (dispatch, getState) => {
     const can_submit = (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
     if (all_questions_non_null(getState()) && can_submit) {
-      submit_form(
-        { name, email, phone, account_type, supervisor_email },
-        {
-          exposed,
-          fully_vaccinated,
-        }
-      )
+      submit_form({ name, email, phone, account_type, supervisor_email, exposed, fully_vaccinated })
     }
   }
 

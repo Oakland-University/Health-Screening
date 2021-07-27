@@ -1,15 +1,9 @@
 /*global IS_DEMO*/
 /* global token */
 
-export const submit_form = async (user_info, questions) => {
-  let request_body = {
-    ...user_info,
-    ...questions,
-    account_type: user_info == null ? 'student' : 'guest',
-  }
-
+export const submit_form = async (data) => {
   if (IS_DEMO) {
-    console.log(request_body)
+    console.log(data)
     return
   }
 
@@ -22,7 +16,7 @@ export const submit_form = async (user_info, questions) => {
         Authorization: 'Bearer ' + token,
       },
       method: 'POST',
-      body: JSON.stringify(request_body),
+      body: JSON.stringify(data),
     })
     const status = response.status
     if (status > 399 && status < 500) {

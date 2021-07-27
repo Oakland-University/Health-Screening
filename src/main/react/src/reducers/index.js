@@ -1,10 +1,5 @@
 import { actions, user_statuses, modal_pages, account_types } from '../utils/enums'
-import {
-  allowed_on_campus,
-  all_questions_non_null,
-  all_symptoms_non_null,
-  has_symptoms,
-} from '../utils/functions'
+import { allowed_on_campus, all_questions_non_null } from '../utils/functions'
 
 /*global PHONE*/
 /*global EMAIL*/
