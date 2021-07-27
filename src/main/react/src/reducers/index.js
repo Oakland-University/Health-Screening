@@ -1,5 +1,10 @@
 import { actions, user_statuses, modal_pages, account_types } from '../utils/enums'
-import { all_questions_non_null, all_symptoms_non_null, has_symptoms } from '../utils/functions'
+import {
+  allowed_on_campus,
+  all_questions_non_null,
+  all_symptoms_non_null,
+  has_symptoms,
+} from '../utils/functions'
 
 /*global PHONE*/
 /*global EMAIL*/
@@ -45,6 +50,7 @@ const initial_state = {
 }
 
 const email_expression = /.+@.+\..+/
+const supervisor_email_expression = /.+@oakland.edu/
 
 export default function reducer(state = initial_state, action) {
   switch (action.type) {
@@ -61,7 +67,12 @@ export default function reducer(state = initial_state, action) {
       return { ...state, phone: action.payload, phone_error: false }
     }
     case UPDATE_SUPERVISOR_EMAIL: {
-      return { ...state, supervisor_email: action.payload, supervisor_email_error: false }
+      const email = action.payload
+      return {
+        ...state,
+        supervisor_email: email,
+        supervisor_email_error: !supervisor_email_expression.test(email),
+      }
     }
     case UPDATE_STUDENT_EMPLOYEE: {
       return { ...state, student_employee: action.payload }
@@ -107,12 +118,15 @@ export default function reducer(state = initial_state, action) {
 
       if (current_modal_page === modal_pages.CAMPUS_CHECK) {
         if (state.coming_to_campus) {
+          // modal page is either USER_INFO or HEALTH_QUESTIONS depending on
+          // if use is a guest or now
           new_modal_page =
             state.account_type === account_types.GUEST
               ? modal_pages.USER_INFO
               : modal_pages.HEALTH_SCREENING
           new_user_status = user_statuses.NOT_COMPLETED
         } else if (state.coming_to_campus === false) {
+          //TODO: Save not coming in local storage, just to be nice
           new_user_status = user_statuses.NOT_COMING
         }
       } else if (current_modal_page === modal_pages.USER_INFO) {
@@ -136,11 +150,17 @@ export default function reducer(state = initial_state, action) {
           return { ...state, phone_error: true }
         }
 
+        if (is_employee && !supervisor_email) {
+          return { ...state, supervisor_email_error: true }
+        }
+
         const can_submit =
           (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
         if (all_questions_non_null(state) && can_submit) {
-          new_user_status = has_symptoms(state) ? user_statuses.DISALLOWED : user_statuses.ALLOWED
+          new_user_status = allowed_on_campus(state)
+            ? user_statuses.ALLOWED
+            : user_statuses.DISALLOWED
           new_modal_page = action.payload
         }
       }
