@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Radio from '@material-ui/core/Radio'
-import Checkbox from '@material-ui/core/Checkbox'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
@@ -15,9 +14,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   update_exposure,
   update_phone,
-  update_confirmation,
   update_fully_vaccinated,
-  update_tested_positive,
   update_supervisor_email,
   update_student_employee,
 } from '../actions/main-actions'
@@ -65,7 +62,6 @@ export default function HealthQuestions(props) {
     exposed,
     phone,
     phone_error,
-    tested_positive,
     fully_vaccinated,
   } = useSelector((state) => state)
 
@@ -79,8 +75,8 @@ export default function HealthQuestions(props) {
           <RadioGroup
             aria-label='positive-test'
             name='positive-test'
-            value={tested_positive}
-            onChange={(event) => dispatch(update_tested_positive(event.target.value === 'true'))}
+            value={'symptomatic'}
+            onChange={(event) => console.log('update symptomatic')}
             className={classes.radioGroup}
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
