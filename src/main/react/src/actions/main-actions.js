@@ -165,7 +165,7 @@ export const press_modal_button = () => (dispatch, getState) => {
 
     if (all_symptoms_non_null(getState()) && can_submit) {
       submit_form(
-        { name, email, phone, account_type },
+        { name, email, phone, account_type, supervisor_email },
         {
           feverish,
           coughing,

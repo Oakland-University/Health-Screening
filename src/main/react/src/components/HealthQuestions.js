@@ -28,7 +28,10 @@ import {
   update_confirmation,
   update_fully_vaccinated,
   update_tested_positive,
+  update_supervisor_email,
+  update_student_employee,
 } from '../actions/main-actions'
+import { account_types } from '../utils/enums'
 
 const useStyles = makeStyles((theme) => ({
   radioGroup: {
@@ -53,6 +56,11 @@ const useStyles = makeStyles((theme) => ({
     padding: '0px',
     paddingRight: '10px',
   },
+  formLabel2: {
+    marginBottom: '0px !important',
+    marginTop: 20,
+    border: 'none',
+  },
 }))
 
 export default function HealthQuestions(props) {
@@ -60,6 +68,10 @@ export default function HealthQuestions(props) {
   const dispatch = useDispatch()
 
   const {
+    account_type,
+    supervisor_email,
+    supervisor_email_error,
+    student_employee,
     coughing,
     feverish,
     exposed,
@@ -319,6 +331,58 @@ export default function HealthQuestions(props) {
             value={phone}
             onChange={(event) => dispatch(update_phone(event.target.value))}
           />
+          <Divider className={classes.divider} />
+          {account_type === account_types.EMPLOYEE ? (
+            <>
+              <Typography paragraph className={classes.phoneLabel}>
+                Please provide your supervisor's email in the field below.
+              </Typography>
+              <TextField
+                fullWidth
+                required
+                label='Supervisor Email'
+                variant='outlined'
+                error={supervisor_email_error}
+                value={supervisor_email}
+                onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
+              />
+            </>
+          ) : (
+            <>
+              <FormLabel className={classes.formLabel2} component='legend'>
+                {`Are you a${
+                  account_type === account_types.STUDENT ? ' student' : 'n'
+                } employee of OU who is planning on working today?`}
+              </FormLabel>
+              <RadioGroup
+                aria-label='student-employee'
+                name='student-employee'
+                value={student_employee}
+                onChange={(event) =>
+                  dispatch(update_student_employee(event.target.value === 'true'))
+                }
+                className={classes.radioGroup}
+              >
+                <FormControlLabel value={true} control={<Radio />} label='Yes' />
+                <FormControlLabel value={false} control={<Radio />} label='No' />
+              </RadioGroup>
+              <Collapse in={student_employee} unmountOnExit>
+                <Typography paragraph className={classes.emailLabel}>
+                  Please provide your supervisor's email in the field below.
+                </Typography>
+                <TextField
+                  fullWidth
+                  required={student_employee}
+                  label='Supervisor Email'
+                  variant='outlined'
+                  type='email'
+                  error={supervisor_email_error}
+                  value={supervisor_email}
+                  onChange={(event) => dispatch(update_supervisor_email(event.target.value))}
+                />
+              </Collapse>
+            </>
+          )}
         </FormControl>
       </CardContent>
     </>
