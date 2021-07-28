@@ -5,9 +5,5 @@ export const allowed_on_campus = (data) => {
 }
 
 export const all_questions_non_null = (symptom_data) => {
-  return (
-    symptom_data.exposed !== null &&
-    symptom_data.fully_vaccinated !== null &&
-    symptom_data.symptomatic !== null
-  )
+  return !Object.values(symptom_data).some((symptom) => symptom === null)
 }
