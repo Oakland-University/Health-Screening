@@ -3,8 +3,6 @@ package edu.oakland.healthscreening.model;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
-import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
@@ -48,7 +46,7 @@ public class HealthInfo {
           + phone
           + "\n\tEmail: "
           + email
-          + "\n\n They currently are not reporting any symptoms";
+          + "\n\n They are reporting in a way that should clear them to come to campus";
     } else {
       return "A potential positive self-screening response was submitted by a "
           + accountType.toString()
@@ -59,9 +57,7 @@ public class HealthInfo {
           + "\n\tPhone: "
           + phone
           + "\n\tEmail: "
-          + email
-          + "\n\nResponses: \n\t- "
-          + this.responseSummary();
+          + email;
     }
   }
 
@@ -101,10 +97,4 @@ public class HealthInfo {
 
         return info;
       };
-
-  private String responseSummary() {
-    final List<String> summaryList = new LinkedList<>();
-
-    return String.join("\n\t- ", summaryList);
-  }
 }
