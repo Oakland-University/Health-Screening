@@ -114,7 +114,7 @@ export default function reducer(state = initial_state, action) {
       if (current_modal_page === modal_pages.CAMPUS_CHECK) {
         if (state.coming_to_campus) {
           // modal page is either USER_INFO or HEALTH_QUESTIONS depending on
-          // if use is a guest or now
+          // if user is a guest or not
           new_modal_page =
             state.account_type === account_types.GUEST
               ? modal_pages.USER_INFO
@@ -126,12 +126,8 @@ export default function reducer(state = initial_state, action) {
         }
       } else if (current_modal_page === modal_pages.USER_INFO) {
         const name_error = !state.name
-        let email_error = !state.email
+        let email_error = !state.email || !email_expression.test(state.email)
         const phone_error = !state.phone
-
-        if (!email_error) {
-          email_error = !email_expression.test(state.email)
-        }
 
         const modal_page =
           name_error || email_error || phone_error ? state.modal_page : modal_pages.HEALTH_SCREENING
