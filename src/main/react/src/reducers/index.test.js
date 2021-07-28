@@ -9,35 +9,21 @@ import { actions, user_statuses, modal_pages, account_types } from '../utils/enu
 const initial_state = {
   account_type: ACCOUNT_TYPE,
   coming_to_campus: null,
-  congested: null,
-  coughing: null,
-  diarrhea: null,
-  distancing: null,
   email: EMAIL.includes('guest') ? '' : EMAIL,
   email_error: false,
   exposed: null,
-  face_covering: null,
-  feverish: null,
-  good_hygiene: null,
-  headache: null,
-  loss_of_taste_or_smell: null,
   modal_page: modal_pages.CAMPUS_CHECK,
-  muscle_ache: null,
   name: NAME.includes('Guest') ? '' : NAME,
   name_error: false,
-  nauseous: null,
   phone: PHONE,
   phone_error: false,
-  short_of_breath: null,
-  sore_throat: null,
   student_employee: null,
   submission_time: '',
   supervisor_email: '',
   supervisor_email_error: false,
+  symptomatic: null,
   user_status: user_statuses.LOADING,
-  confirmation: null,
   fully_vaccinated: null,
-  tested_positive: null,
 }
 
 describe('General', () => {
@@ -79,185 +65,84 @@ describe('Coming to Campus Page', () => {
 })
 
 describe('Health Questions Page', () => {
-  const all_false = {
+  const all_clear = {
     ...initial_state,
     user_status: user_statuses.NOT_COMPLETED,
     modal_page: modal_pages.HEALTH_SCREENING,
     coming_to_campus: true,
     account_type: account_types.STUDENT,
     student_employee: false,
-    face_covering: true,
-    good_hygiene: true,
-    distancing: true,
-    coughing: false,
-    feverish: false,
     exposed: false,
-    congested: false,
-    diarrhea: false,
-    tested_positive: false,
-    headache: false,
-    loss_of_taste_or_smell: false,
-    muscle_ache: false,
-    nauseous: false,
-    short_of_breath: false,
-    fully_vaccinated: false,
-    sore_throat: false,
+    fully_vaccinated: true,
+    symptomatic: false,
   }
 
-  it('should not submit a HS if coughing is null', () => {
+  it('should not submit a HS if symptomatic is null', () => {
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    expect(reducer({ ...all_false, coughing: null }, action)).toEqual({
-      ...all_false,
-      coughing: null,
-    })
-  })
-
-  it('should not submit a HS if feverish field is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_false, feverish: null }, action)).toEqual({
-      ...all_false,
-      feverish: null,
-    })
-  })
-
-  it('should not submit a HS if exposed field is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_false, exposed: null }, action)).toEqual({
-      ...all_false,
-      exposed: null,
-    })
-  })
-
-  it('should not submit a HS if congested is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_false, congested: null }, action)).toEqual({
-      ...all_false,
-      congested: null,
-    })
-  })
-
-  it('should not submit a HS if diarrhea is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_false, diarrhea: null }, action)).toEqual({
-      ...all_false,
-      diarrhea: null,
-    })
-  })
-
-  it('should not submit a HS if tested_positive is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_false, tested_positive: null }, action)).toEqual({
-      ...all_false,
-      tested_positive: null,
-    })
-  })
-
-  it('should not submit a HS if headache is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_false, headache: null }, action)).toEqual({
-      ...all_false,
-      headache: null,
-    })
-  })
-
-  it('should not submit a HS if loss_of_taste_smell is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_false, loss_of_taste_or_smell: null }, action)).toEqual({
-      ...all_false,
-      loss_of_taste_or_smell: null,
-    })
-  })
-
-  it('should not submit a HS if muscle_ache is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_false, muscle_ache: null }, action)).toEqual({
-      ...all_false,
-      muscle_ache: null,
-    })
-  })
-
-  it('should not submit a HS if nauseous is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_false, nauseous: null }, action)).toEqual({
-      ...all_false,
-      nauseous: null,
+    expect(reducer({ ...all_clear, symptomatic: null }, action)).toEqual({
+      ...all_clear,
+      symptomatic: null,
     })
   })
 
   it('should not submit a HS if exposed is null', () => {
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    expect(reducer({ ...all_false, exposed: null }, action)).toEqual({
-      ...all_false,
+    expect(reducer({ ...all_clear, exposed: null }, action)).toEqual({
+      ...all_clear,
       exposed: null,
     })
   })
 
-  it('should not submit a HS if exposed is true and fully_vaccinated is null', () => {
+  it('should not submit a HS if fully_vaccinated is null', () => {
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    expect(reducer({ ...all_false, exposed: true, fully_vaccinated: null }, action)).toEqual({
-      ...all_false,
-      exposed: true,
+    expect(reducer({ ...all_clear, fully_vaccinated: null }, action)).toEqual({
+      ...all_clear,
       fully_vaccinated: null,
     })
   })
 
-  it('should not submit a HS if short_of_breath is null', () => {
+  it('should not submit a HS if phone is null', () => {
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    expect(reducer({ ...all_false, short_of_breath: null }, action)).toEqual({
-      ...all_false,
-      short_of_breath: null,
+    expect(reducer({ ...all_clear, phone: null }, action)).toEqual({
+      ...all_clear,
+      phone: null,
+      phone_error: true,
     })
   })
 
-  it('should not submit a HS if sore_throat is null', () => {
+  it('should not submit a HS if user is employee and supervisor_email_error is null', () => {
     const action = { type: actions.NEXT_MODAL_PAGE }
 
-    expect(reducer({ ...all_false, sore_throat: null }, action)).toEqual({
-      ...all_false,
-      sore_throat: null,
+    expect(
+      reducer({ ...all_clear, student_employee: true, supervisor_email: null }, action)
+    ).toEqual({
+      ...all_clear,
+      supervisor_email_error: true,
+      supervisor_email: null,
+      student_employee: true,
     })
   })
 
-  it('should give DISALLOWED if coughing symptom is true', () => {
+  it('should give DISALLOWED if symptomatic is true', () => {
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-    expect(reducer({ ...all_false, coughing: true }, action)).toEqual({
-      ...all_false,
+    expect(reducer({ ...all_clear, symptomatic: true }, action)).toEqual({
+      ...all_clear,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      coughing: true,
-    })
-  })
-
-  it('should give DISALLOWED if feverish is true', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer({ ...all_false, feverish: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      feverish: true,
+      symptomatic: true,
     })
   })
 
   it('should give DISALLOWED if exposed is true and fully_vaccinated is false', () => {
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-    expect(reducer({ ...all_false, exposed: true, fully_vaccinated: false }, action)).toEqual({
-      ...all_false,
+    expect(reducer({ ...all_clear, exposed: true, fully_vaccinated: false }, action)).toEqual({
+      ...all_clear,
       user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
       exposed: true,
@@ -265,122 +150,33 @@ describe('Health Questions Page', () => {
     })
   })
 
-  it('should give ALLOWED if both exposed and fully_vaccinated are true', () => {
+  it('should give ALL CLEAR if exposed is true and fully_vaccinated is true', () => {
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-    expect(reducer({ ...all_false, exposed: true, fully_vaccinated: true }, action)).toEqual({
-      ...all_false,
+    expect(reducer({ ...all_clear, exposed: true }, action)).toEqual({
+      ...all_clear,
       user_status: user_statuses.ALLOWED,
       modal_page: modal_pages.SUBMITTED,
       exposed: true,
-      fully_vaccinated: true,
     })
   })
 
-  it('should give DISALLOWED if congested is true', () => {
+  it('should give ALL CLEAR if symptomatic and exposed are false, and fully_vaccinated is false', () => {
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-    expect(reducer({ ...all_false, congested: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
+    expect(reducer({ ...all_clear, fully_vaccinated: false }, action)).toEqual({
+      ...all_clear,
+      user_status: user_statuses.ALLOWED,
       modal_page: modal_pages.SUBMITTED,
-      congested: true,
+      fully_vaccinated: false,
     })
   })
 
-  it('should give DISALLOWED if diarrhea is true', () => {
+  it('should give ALL CLEAR if symptomatic and exposed are false, and fully_vaccinated is true', () => {
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-    expect(reducer({ ...all_false, diarrhea: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      diarrhea: true,
-    })
-  })
-
-  it('should give DISALLOWED if tested_positive is true', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer({ ...all_false, tested_positive: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      tested_positive: true,
-    })
-  })
-
-  it('should give DISALLOWED if headache is true', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer({ ...all_false, headache: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      headache: true,
-    })
-  })
-
-  it('should give DISALLOWED if loss_of_taste_smell is true', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer({ ...all_false, loss_of_taste_or_smell: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      loss_of_taste_or_smell: true,
-    })
-  })
-
-  it('should give DISALLOWED if muscle_ache is true', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer({ ...all_false, muscle_ache: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      muscle_ache: true,
-    })
-  })
-
-  it('should give DISALLOWED if nauseous is true', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer({ ...all_false, nauseous: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      nauseous: true,
-    })
-  })
-
-  it('should give DISALLOWED if short_of_breath is true', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer({ ...all_false, short_of_breath: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      short_of_breath: true,
-    })
-  })
-
-  it('should give DISALLOWED if sore_throat is true', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer({ ...all_false, sore_throat: true }, action)).toEqual({
-      ...all_false,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      sore_throat: true,
-    })
-  })
-
-  it('should give ALL CLEAR if all symptoms are false', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer(all_false, action)).toEqual({
-      ...all_false,
+    expect(reducer(all_clear, action)).toEqual({
+      ...all_clear,
       user_status: user_statuses.ALLOWED,
       modal_page: modal_pages.SUBMITTED,
     })
