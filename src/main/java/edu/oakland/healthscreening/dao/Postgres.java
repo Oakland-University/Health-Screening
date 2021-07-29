@@ -1,6 +1,5 @@
 package edu.oakland.healthscreening.dao;
 
-import static edu.oakland.healthscreening.dao.Constants.DELETE_OLD_RECORDS;
 import static edu.oakland.healthscreening.dao.Constants.GET_ALL_RESPONSES;
 import static edu.oakland.healthscreening.dao.Constants.GET_ANALYTICS_BY_TYPE;
 import static edu.oakland.healthscreening.dao.Constants.GET_ANONYMOUS_ANALYTIC_INFO;
@@ -46,8 +45,7 @@ public class Postgres {
                 new SqlParameter("p_phone", Types.VARCHAR),
                 new SqlParameter("p_name", Types.VARCHAR),
                 new SqlParameter("p_is_exposed", Types.BOOLEAN),
-                new SqlParameter("p_supervisor_email", Types.VARCHAR),
-                new SqlParameter("p_is_fully_vaccinated", Types.BOOLEAN));
+                new SqlParameter("p_supervisor_email", Types.VARCHAR));
 
     final SqlParameterSource parameterSource =
         new MapSqlParameterSource()
@@ -57,8 +55,7 @@ public class Postgres {
             .addValue("p_phone", info.getPhone())
             .addValue("p_name", info.getName())
             .addValue("p_is_exposed", info.isExposed())
-            .addValue("p_supervisor_email", info.getSupervisorEmail())
-            .addValue("p_is_fully_vaccinated", info.getFullyVaccinated());
+            .addValue("p_supervisor_email", info.getSupervisorEmail());
 
     log.debug("Preparing to save health info: {}", info);
 
@@ -122,9 +119,5 @@ public class Postgres {
       log.debug("No supervisor found for {}", email);
       return Optional.empty();
     }
-  }
-
-  public void deleteOldRecords() {
-    jdbcTemplate.update(DELETE_OLD_RECORDS);
   }
 }

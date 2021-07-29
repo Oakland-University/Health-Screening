@@ -174,13 +174,6 @@ public class HealthScreeningController {
     }
   }
 
-  @GetMapping(value = "health-info/analytics/{interval}/csv", produces = "text/csv")
-  public String getAnalyticsCsv(
-      @RequestParam("amount") int amount,
-      @PathVariable(value = "interval", required = true) String interval) {
-    return analytics.getAnalyticCSV(amount, interval);
-  }
-
   private AccountType getAccountFromRequest(Claim groupsClaim) {
     if (groupsClaim == null) {
       return GUEST;

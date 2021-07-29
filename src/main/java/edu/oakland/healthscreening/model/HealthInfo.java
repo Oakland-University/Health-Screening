@@ -26,12 +26,11 @@ public class HealthInfo {
   private boolean symptomatic;
   private boolean exposed;
   private boolean allowed_on_campus;
-  private Boolean fullyVaccinated;
   private Timestamp submissionTime;
   private String supervisorEmail;
 
   public boolean shouldStayHome() {
-    return (symptomatic || (exposed && !Boolean.TRUE.equals(fullyVaccinated)));
+    return (symptomatic || exposed);
   }
 
   public String summarize() {
@@ -92,8 +91,8 @@ public class HealthInfo {
         info.setEmail(rs.getString("email"));
         info.setPhone(rs.getString("phone"));
         info.setExposed(rs.getBoolean("is_exposed"));
-        info.setFullyVaccinated(rs.getObject("is_fully_vaccinated", Boolean.class));
         info.setSubmissionTime(rs.getTimestamp("submission_time"));
+        info.setSymptomatic(rs.getBoolean("symptomatic"));
 
         return info;
       };

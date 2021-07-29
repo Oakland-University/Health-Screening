@@ -1,7 +1,5 @@
 package edu.oakland.healthscreening.service;
 
-import static edu.oakland.healthscreening.dao.Constants.CSV_HEADER;
-
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.AnalyticInfo;
@@ -55,11 +53,6 @@ public class AnalyticsService {
     totalInfo.setSubTypeAnalytics(subTypeAnalytics);
 
     return totalInfo;
-  }
-
-  public String getAnalyticCSV(final int amount, final String interval) {
-    final String cleanedInterval = amountToString(amount) + " " + sanitizedInterval(interval);
-    return CSV_HEADER + postgres.getAnalyticInfo(cleanedInterval).toCSVString();
   }
 
   private String amountToString(final int amount) {
