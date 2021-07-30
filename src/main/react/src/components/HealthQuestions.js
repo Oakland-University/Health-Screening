@@ -14,7 +14,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   update_exposure,
   update_phone,
-  update_fully_vaccinated,
   update_supervisor_email,
   update_student_employee,
   update_symptomatic,
@@ -63,7 +62,6 @@ export default function HealthQuestions(props) {
     exposed,
     phone,
     phone_error,
-    fully_vaccinated,
     symptomatic,
   } = useSelector((state) => state)
 
@@ -99,30 +97,6 @@ export default function HealthQuestions(props) {
           >
             <FormControlLabel value={true} control={<Radio />} label='Yes' />
             <FormControlLabel value={false} control={<Radio />} label='No' />
-          </RadioGroup>
-        </FormControl>
-
-        <FormControl component='fieldset'>
-          <FormLabel className={classes.formLabel} component='legend'>
-            Are you fully vaccinated?
-          </FormLabel>
-          <RadioGroup
-            aria-label='vaccination status'
-            name='vaccination status'
-            value={fully_vaccinated}
-            onChange={(event) => dispatch(update_fully_vaccinated(event.target.value === 'true'))}
-            className={classes.radioGroup}
-          >
-            <FormControlLabel
-              value={true}
-              control={<Radio />}
-              label='I am fully vaccinated and my final dose was over 14 days ago'
-            />
-            <FormControlLabel
-              value={false}
-              control={<Radio />}
-              label='I am not fully vaccinated, or I would prefer not to answer'
-            />
           </RadioGroup>
         </FormControl>
 
