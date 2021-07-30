@@ -25,7 +25,6 @@ public class HealthInfo {
 
   private boolean symptomatic;
   private boolean exposed;
-  private boolean allowed_on_campus;
   private Timestamp submissionTime;
   private String supervisorEmail;
 
