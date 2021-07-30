@@ -45,7 +45,8 @@ public class Postgres {
                 new SqlParameter("p_phone", Types.VARCHAR),
                 new SqlParameter("p_name", Types.VARCHAR),
                 new SqlParameter("p_is_exposed", Types.BOOLEAN),
-                new SqlParameter("p_supervisor_email", Types.VARCHAR));
+                new SqlParameter("p_supervisor_email", Types.VARCHAR),
+                new SqlParameter("p_symptomatic", Types.BOOLEAN));
 
     final SqlParameterSource parameterSource =
         new MapSqlParameterSource()
@@ -55,7 +56,8 @@ public class Postgres {
             .addValue("p_phone", info.getPhone())
             .addValue("p_name", info.getName())
             .addValue("p_is_exposed", info.isExposed())
-            .addValue("p_supervisor_email", info.getSupervisorEmail());
+            .addValue("p_supervisor_email", info.getSupervisorEmail())
+            .addValue("p_symptomatic", info.isSymptomatic());
 
     log.debug("Preparing to save health info: {}", info);
 
