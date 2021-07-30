@@ -23,7 +23,6 @@ const initial_state = {
   supervisor_email_error: false,
   symptomatic: null,
   user_status: user_statuses.LOADING,
-  fully_vaccinated: null,
 }
 
 describe('General', () => {
@@ -73,7 +72,6 @@ describe('Health Questions Page', () => {
     account_type: account_types.STUDENT,
     student_employee: false,
     exposed: false,
-    fully_vaccinated: true,
     symptomatic: false,
   }
 
@@ -92,15 +90,6 @@ describe('Health Questions Page', () => {
     expect(reducer({ ...all_clear, exposed: null }, action)).toEqual({
       ...all_clear,
       exposed: null,
-    })
-  })
-
-  it('should not submit a HS if fully_vaccinated is null', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE }
-
-    expect(reducer({ ...all_clear, fully_vaccinated: null }, action)).toEqual({
-      ...all_clear,
-      fully_vaccinated: null,
     })
   })
 
@@ -138,44 +127,21 @@ describe('Health Questions Page', () => {
     })
   })
 
-  it('should give DISALLOWED if exposed is true and fully_vaccinated is false', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer({ ...all_clear, exposed: true, fully_vaccinated: false }, action)).toEqual({
-      ...all_clear,
-      user_status: user_statuses.DISALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      exposed: true,
-      fully_vaccinated: false,
-    })
-  })
-
-  it('should give ALL CLEAR if exposed is true and fully_vaccinated is true', () => {
+  it('should give DISALLOWED if exposed is true', () => {
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
     expect(reducer({ ...all_clear, exposed: true }, action)).toEqual({
       ...all_clear,
-      user_status: user_statuses.ALLOWED,
+      user_status: user_statuses.DISALLOWED,
       modal_page: modal_pages.SUBMITTED,
       exposed: true,
     })
   })
 
-  it('should give ALL CLEAR if symptomatic and exposed are false, and fully_vaccinated is false', () => {
+  it('should give ALL CLEAR if symptomatic and exposed are false', () => {
     const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
 
-    expect(reducer({ ...all_clear, fully_vaccinated: false }, action)).toEqual({
-      ...all_clear,
-      user_status: user_statuses.ALLOWED,
-      modal_page: modal_pages.SUBMITTED,
-      fully_vaccinated: false,
-    })
-  })
-
-  it('should give ALL CLEAR if symptomatic and exposed are false, and fully_vaccinated is true', () => {
-    const action = { type: actions.NEXT_MODAL_PAGE, payload: modal_pages.SUBMITTED }
-
-    expect(reducer(all_clear, action)).toEqual({
+    expect(reducer({ ...all_clear }, action)).toEqual({
       ...all_clear,
       user_status: user_statuses.ALLOWED,
       modal_page: modal_pages.SUBMITTED,

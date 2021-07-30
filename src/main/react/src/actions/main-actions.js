@@ -61,10 +61,6 @@ export const update_symptomatic = (new_symptomatic) => (dispatch) => {
   dispatch({ type: actions.UPDATE_SYMPTOMATIC, payload: new_symptomatic })
 }
 
-export const update_fully_vaccinated = (new_fully_vaccinated) => (dispatch) => {
-  dispatch({ type: actions.UPDATE_FULLY_VACCINATED, payload: new_fully_vaccinated })
-}
-
 export const update_user_status = (new_user_status) => (dispatch) => {
   dispatch({ type: actions.UPDATE_USER_STATUS, payload: new_user_status })
 }
@@ -81,22 +77,14 @@ export const press_modal_button = () => (dispatch, getState) => {
   if (current_page === modal_pages.HEALTH_SCREENING) {
     payload = modal_pages.SUBMITTED
 
-    const {
-      exposed,
-      name,
-      email,
-      phone,
-      account_type,
-      supervisor_email,
-      student_employee,
-      fully_vaccinated,
-    } = getState()
+    const { exposed, name, email, phone, account_type, supervisor_email, student_employee } =
+      getState()
 
     const is_employee = account_type === account_types.EMPLOYEE || student_employee
     const can_submit = (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
     if (all_questions_non_null(getState()) && can_submit) {
-      submit_form({ name, email, phone, account_type, supervisor_email, exposed, fully_vaccinated })
+      submit_form({ name, email, phone, account_type, supervisor_email, exposed })
     }
   }
 

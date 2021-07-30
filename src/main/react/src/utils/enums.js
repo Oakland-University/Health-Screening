@@ -33,7 +33,5 @@ export const actions = {
   GET_PREVIOUS_HEALTH_INFO: 'get-previous-health-info',
   CLEAR_MODAL: 'clear-modal',
   NEXT_MODAL_PAGE: 'next-modal-page',
-  UPDATE_FULLY_VACCINATED: 'update-fully-vaccinated',
-  UPDATE_NOT_FULLY_VACCINATED: 'update-not-fully-vaccinated',
   UPDATE_SYMPTOMATIC: 'update-symptomatic',
 }

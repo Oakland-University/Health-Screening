@@ -19,7 +19,6 @@ const {
   GET_PREVIOUS_HEALTH_INFO,
   CLEAR_MODAL,
   NEXT_MODAL_PAGE,
-  UPDATE_FULLY_VACCINATED,
   UPDATE_TESTED_POSITIVE,
   UPDATE_SYMPTOMATIC,
 } = actions
@@ -41,7 +40,6 @@ const initial_state = {
   supervisor_email_error: false,
   symptomatic: null,
   user_status: user_statuses.LOADING,
-  fully_vaccinated: null,
 }
 
 const email_expression = /.+@.+\..+/
@@ -97,9 +95,6 @@ export default function reducer(state = initial_state, action) {
         phone: state.phone,
         email: state.email,
       }
-    }
-    case UPDATE_FULLY_VACCINATED: {
-      return { ...state, fully_vaccinated: action.payload }
     }
     case UPDATE_TESTED_POSITIVE: {
       return { ...state, tested_positive: action.payload }
