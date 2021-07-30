@@ -79,8 +79,9 @@ public class HealthScreeningController {
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
-    info.setAccountType(accountType);
     String supervisorEmail = info.getSupervisorEmail();
+
+    info.setAccountType(accountType);
     info.setSupervisorEmail(supervisorEmail);
 
     boolean previousPositive = false;
@@ -92,6 +93,7 @@ public class HealthScreeningController {
       info.setEmail(email);
 
       // Only replace the provided phone if it's null or empty
+      // TODO: Figure out if this gets run, and if so, when
       if (info.getPhone() == null || info.getPhone().isEmpty()) {
         info.setPhone(
             personInfo.get("telephoneNumber") == null
@@ -170,13 +172,6 @@ public class HealthScreeningController {
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
-  }
-
-  @GetMapping(value = "health-info/analytics/{interval}/csv", produces = "text/csv")
-  public String getAnalyticsCsv(
-      @RequestParam("amount") int amount,
-      @PathVariable(value = "interval", required = true) String interval) {
-    return analytics.getAnalyticCSV(amount, interval);
   }
 
   private AccountType getAccountFromRequest(Claim groupsClaim) {

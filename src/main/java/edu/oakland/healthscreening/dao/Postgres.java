@@ -1,6 +1,5 @@
 package edu.oakland.healthscreening.dao;
 
-import static edu.oakland.healthscreening.dao.Constants.DELETE_OLD_RECORDS;
 import static edu.oakland.healthscreening.dao.Constants.GET_ALL_RESPONSES;
 import static edu.oakland.healthscreening.dao.Constants.GET_ANALYTICS_BY_TYPE;
 import static edu.oakland.healthscreening.dao.Constants.GET_ANONYMOUS_ANALYTIC_INFO;
@@ -45,20 +44,9 @@ public class Postgres {
                 new SqlParameter("p_email", Types.VARCHAR),
                 new SqlParameter("p_phone", Types.VARCHAR),
                 new SqlParameter("p_name", Types.VARCHAR),
-                new SqlParameter("p_is_coughing", Types.BOOLEAN),
-                new SqlParameter("p_is_feverish", Types.BOOLEAN),
                 new SqlParameter("p_is_exposed", Types.BOOLEAN),
                 new SqlParameter("p_supervisor_email", Types.VARCHAR),
-                new SqlParameter("p_is_short_of_breath", Types.BOOLEAN),
-                new SqlParameter("p_has_sore_throat", Types.BOOLEAN),
-                new SqlParameter("p_is_congested", Types.BOOLEAN),
-                new SqlParameter("p_has_muscle_aches", Types.BOOLEAN),
-                new SqlParameter("p_has_lost_taste_smell", Types.BOOLEAN),
-                new SqlParameter("p_has_headache", Types.BOOLEAN),
-                new SqlParameter("p_has_diarrhea", Types.BOOLEAN),
-                new SqlParameter("p_is_nauseous", Types.BOOLEAN),
-                new SqlParameter("p_is_fully_vaccinated", Types.BOOLEAN),
-                new SqlParameter("p_has_tested_positive", Types.BOOLEAN));
+                new SqlParameter("p_symptomatic", Types.BOOLEAN));
 
     final SqlParameterSource parameterSource =
         new MapSqlParameterSource()
@@ -67,20 +55,9 @@ public class Postgres {
             .addValue("p_email", info.getEmail())
             .addValue("p_phone", info.getPhone())
             .addValue("p_name", info.getName())
-            .addValue("p_is_coughing", info.isCoughing())
-            .addValue("p_is_feverish", info.isFeverish())
             .addValue("p_is_exposed", info.isExposed())
             .addValue("p_supervisor_email", info.getSupervisorEmail())
-            .addValue("p_is_short_of_breath", info.isShortOfBreath())
-            .addValue("p_has_sore_throat", info.isSoreThroat())
-            .addValue("p_is_congested", info.isCongested())
-            .addValue("p_has_muscle_aches", info.isMuscleAche())
-            .addValue("p_has_lost_taste_smell", info.isLossOfTasteOrSmell())
-            .addValue("p_has_headache", info.isHeadache())
-            .addValue("p_has_diarrhea", info.isDiarrhea())
-            .addValue("p_is_nauseous", info.isNauseous())
-            .addValue("p_is_fully_vaccinated", info.getFullyVaccinated())
-            .addValue("p_has_tested_positive", info.isTestedPositive());
+            .addValue("p_symptomatic", info.isSymptomatic());
 
     log.debug("Preparing to save health info: {}", info);
 
@@ -144,9 +121,5 @@ public class Postgres {
       log.debug("No supervisor found for {}", email);
       return Optional.empty();
     }
-  }
-
-  public void deleteOldRecords() {
-    jdbcTemplate.update(DELETE_OLD_RECORDS);
   }
 }
