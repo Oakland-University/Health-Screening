@@ -2,8 +2,6 @@ package edu.oakland.healthscreening.model;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
