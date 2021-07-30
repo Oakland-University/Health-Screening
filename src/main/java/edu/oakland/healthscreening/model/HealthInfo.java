@@ -58,7 +58,10 @@ public class HealthInfo {
           + email
           + "\nResponses to HS questions:"
           + "\n\tSymptomatic:\tExposed"
-          + "\n\t" + symptomatic + "\t" + exposed;
+          + "\n\t"
+          + symptomatic
+          + "\t"
+          + exposed;
     }
   }
 
