@@ -112,7 +112,7 @@ const Certificate = (props) => {
 
       set_email_error(error)
 
-      if (error) {
+      if (!error) {
         set_email_sent(true)
       }
 
