@@ -10,21 +10,28 @@ import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.HealthInfo;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 @Service
 public class MailService {
 
-  @Autowired private MailSender mailSender;
+  @Autowired private JavaMailSender mailSender;
   @Autowired private Postgres postgres;
+  @Autowired private FreeMarkerConfigurer configurer;
 
   @Value("${health-screening.health-center-address}")
   String healthCenterAddress;
