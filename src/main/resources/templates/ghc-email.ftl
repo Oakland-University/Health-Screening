@@ -52,7 +52,7 @@
             <td>${info.phone}</td>
             <td>${info.email}</td>
             <td>${info.exposed}</td>
-            <td>${info.sympptomatic}</td>
+            <td>${info.symptomatic}</td>
         </tr>
         </tbody>
     </table>
