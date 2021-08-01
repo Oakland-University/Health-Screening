@@ -104,10 +104,18 @@ const Certificate = (props) => {
   const { name, email, phone } = useSelector((state) => state)
   const [open, set_open] = useState(false)
   const [email_error, set_email_error] = useState(false)
+  const [email_sent, set_email_sent] = useState(false)
 
   const handle_click = () => {
     send_certificate_email(name, email, phone).then((response) => {
-      set_email_error(!response)
+      const error = !response
+
+      set_email_error(error)
+
+      if (error) {
+        set_email_sent(true)
+      }
+
       set_open(true)
     })
   }
@@ -134,7 +142,7 @@ const Certificate = (props) => {
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Re-take Screening
         </Button>
-        <Button color='secondary' variant='outlined' onClick={handle_click}>
+        <Button color='secondary' variant='outlined' disabled={email_sent} onClick={handle_click}>
           Send Email
         </Button>
       </CardActions>
