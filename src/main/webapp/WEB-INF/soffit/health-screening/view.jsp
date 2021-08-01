@@ -3,8 +3,10 @@
 <script>
 
   const determine_account_type = (groups) => {
-    if (groups.includes('OU Employee')) {
-      return 'employee'
+    if (groups.includes('OU Staff')) {
+      return 'staff'
+    } else if (groups.includes('OU Faculty')) {
+      return 'faculty'
     } else if (groups.includes('OU Student')) {
       return 'student'
     } else {
