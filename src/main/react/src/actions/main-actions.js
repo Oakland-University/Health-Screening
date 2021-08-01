@@ -77,14 +77,22 @@ export const press_modal_button = () => (dispatch, getState) => {
   if (current_page === modal_pages.HEALTH_SCREENING) {
     payload = modal_pages.SUBMITTED
 
-    const { exposed, name, email, phone, account_type, supervisor_email, student_employee } =
-      getState()
+    const {
+      exposed,
+      name,
+      email,
+      phone,
+      account_type,
+      supervisor_email,
+      student_employee,
+      symptomatic,
+    } = getState()
 
     const is_employee = account_type === account_types.EMPLOYEE || student_employee
     const can_submit = (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
     if (all_questions_non_null(getState()) && can_submit) {
-      submit_form({ name, email, phone, account_type, supervisor_email, exposed })
+      submit_form({ name, email, phone, account_type, supervisor_email, exposed, symptomatic })
     }
   }
 
