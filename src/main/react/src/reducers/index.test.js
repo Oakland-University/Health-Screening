@@ -103,7 +103,7 @@ describe('Health Questions Page', () => {
     })
   })
 
-  it('should not submit a HS if user is employee and supervisor_email_error is null', () => {
+  it('should not submit a HS if user is employee and supervisor_email is null', () => {
     const action = { type: actions.NEXT_MODAL_PAGE }
 
     expect(
