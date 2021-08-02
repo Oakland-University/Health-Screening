@@ -1,3 +1,5 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
 alter table screening.health_screening
     add column is_symptomatic boolean,
     alter column is_coughing drop not null,
@@ -88,13 +90,13 @@ begin
         has_headache,
         has_diarrhea,
         is_nauseous,
-        is_fully_vaccinated,
         has_tested_positive,
         submission_time,
         now() as archived_time,
         supervisor_email,
         supervisor_name,
         supervisor_phone,
+        is_fully_vaccinated,
         is_symptomatic
     from
         screening.health_screening

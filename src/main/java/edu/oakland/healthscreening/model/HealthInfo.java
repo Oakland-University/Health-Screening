@@ -97,7 +97,7 @@ public class HealthInfo {
         info.setPhone(rs.getString("phone"));
         info.setExposed(rs.getBoolean("is_exposed"));
         info.setSubmissionTime(rs.getTimestamp("submission_time"));
-        info.setSymptomatic(rs.getBoolean("symptomatic"));
+        info.setSymptomatic(rs.getBoolean("is_symptomatic"));
 
         return info;
       };
