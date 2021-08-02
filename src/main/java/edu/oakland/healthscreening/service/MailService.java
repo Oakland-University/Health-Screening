@@ -44,11 +44,10 @@ public class MailService {
     msg.setText(info.summarize());
     msg.setTo(healthCenterAddress);
     log.debug(
-        "Sending mail to: {}\nFor {}'s potential postive screening", msg.getTo(), info.getName());
+        "Sending mail to: {}\nFor {}'s potential positive screening", msg.getTo(), info.getName());
     mailSender.send(msg);
   }
 
-  // TODO: Edit so supervisor email is reachable
   public void emailSupervisor(HealthInfo info) {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setFrom(mailFrom);
