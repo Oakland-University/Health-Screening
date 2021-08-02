@@ -11,7 +11,6 @@ import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
-import edu.oakland.healthscreening.model.Pledge;
 import edu.oakland.healthscreening.service.AnalyticsService;
 import edu.oakland.healthscreening.service.MailService;
 import edu.oakland.soffit.auth.AuthService;
@@ -58,25 +57,6 @@ public class HealthScreeningController {
     log.error("Unspecified exception", e);
   }
 
-  @PostMapping("pledge")
-  public void saveHealthInfo(@Valid @RequestBody Pledge pledge, HttpServletRequest request)
-      throws SoffitAuthException {
-
-    Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
-
-    AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
-
-    if (accountType != GUEST) {
-      pledge.setEmail(personInfo.get("mail") == null ? null : personInfo.get("mail").asString());
-      pledge.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
-      postgres.savePledge(pledge);
-    }
-
-    if (!pledge.fullAgreement()) {
-      mailService.sendPledgeDisagreement(pledge, accountType);
-    }
-  }
-
   @GetMapping("campus-status")
   public Optional<HealthInfo> getCampusStatus(HttpServletRequest request)
       throws SoffitAuthException {
@@ -99,9 +79,9 @@ public class HealthScreeningController {
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
+    String supervisorEmail = info.getSupervisorEmail();
+
     info.setAccountType(accountType);
-    String supervisorEmail = info.getPledge().getSupervisorEmail();
-    info.setSupervisorEmail(supervisorEmail);
 
     boolean previousPositive = false;
 
@@ -110,17 +90,15 @@ public class HealthScreeningController {
       info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
       String email = personInfo.get("mail") == null ? null : personInfo.get("mail").asString();
       info.setEmail(email);
-      info.getPledge().setEmail(email);
 
-      //  Only replace the provided phone if it's null or empty
+      // Only replace the provided phone if it's null or empty
+      // TODO: Figure out if this gets run, and if so, when
       if (info.getPhone() == null || info.getPhone().isEmpty()) {
         info.setPhone(
             personInfo.get("telephoneNumber") == null
                 ? null
                 : personInfo.get("telephoneNumber").asString());
       }
-
-      postgres.savePledge(info.getPledge());
 
       previousPositive =
           postgres
@@ -193,13 +171,6 @@ public class HealthScreeningController {
     } else {
       throw new SoffitAuthException("User not allowed access to this resource", null);
     }
-  }
-
-  @GetMapping(value = "health-info/analytics/{interval}/csv", produces = "text/csv")
-  public String getAnalyticsCsv(
-      @RequestParam("amount") int amount,
-      @PathVariable(value = "interval", required = true) String interval) {
-    return analytics.getAnalyticCSV(amount, interval);
   }
 
   private AccountType getAccountFromRequest(Claim groupsClaim) {

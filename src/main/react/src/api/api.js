@@ -1,16 +1,9 @@
 /*global IS_DEMO*/
 /* global token */
 
-export const submit_form = async (pledge, user_info, questions) => {
-  let request_body = {
-    ...user_info,
-    ...questions,
-    account_type: user_info == null ? 'student' : 'guest',
-    pledge,
-  }
-
+export const submit_form = async (data) => {
   if (IS_DEMO) {
-    console.log(request_body)
+    console.log(data)
     return
   }
 
@@ -23,7 +16,7 @@ export const submit_form = async (pledge, user_info, questions) => {
         Authorization: 'Bearer ' + token,
       },
       method: 'POST',
-      body: JSON.stringify(request_body),
+      body: JSON.stringify(data),
     })
     const status = response.status
     if (status > 399 && status < 500) {
@@ -110,29 +103,6 @@ export const send_certificate_email = async (name, email, phone) => {
     )
     return await response.ok()
   } catch (err) {
-    return err
-  }
-}
-
-export const send_pledge_info = async (pledge_info) => {
-  if (IS_DEMO) {
-    return
-  }
-
-  try {
-    const response = await fetch('/health-screening/api/v1/pledge', {
-      credentials: 'include',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-      },
-      method: 'POST',
-      body: JSON.stringify(pledge_info),
-    })
-    return await response.ok
-  } catch (err) {
-    console.error(err)
     return err
   }
 }

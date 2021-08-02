@@ -9,7 +9,6 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import FinalPage from './components/FinalPage'
 import HealthQuestions from './components/HealthQuestions'
-import Pledge from './components/Pledge'
 import Typography from '@material-ui/core/Typography'
 import UserInfo from './components/UserInfo'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -57,8 +56,7 @@ export default function App() {
     )
   }, [user_status, modal_page])
 
-  const title =
-    modal_page === modal_pages.PLEDGE ? 'Coronavirus Honor Pledge' : 'OU Health Screening'
+  const title = 'OU Health Screening'
 
   const handle_close = () => {
     dispatch(close_modal())
@@ -78,7 +76,6 @@ export default function App() {
               Please be aware that GHC will be notified of your response.
             </Typography>
           )}
-          {modal_page === modal_pages.PLEDGE && <Pledge />}
           {modal_page === modal_pages.CAMPUS_CHECK && <ComingToCampus />}
           {modal_page === modal_pages.USER_INFO && <UserInfo />}
           {modal_page === modal_pages.HEALTH_SCREENING && <HealthQuestions view={modal_page} />}

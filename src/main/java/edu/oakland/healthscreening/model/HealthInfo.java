@@ -3,8 +3,6 @@ package edu.oakland.healthscreening.model;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
-import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
@@ -25,36 +23,13 @@ public class HealthInfo {
   @Email(message = "Email field should be a valid address")
   private String email;
 
-  private boolean congested;
-  private boolean coughing;
-  private boolean diarrhea;
+  private boolean symptomatic;
   private boolean exposed;
-  private boolean testedPositive;
-  private boolean feverish;
-  private boolean headache;
-  private boolean lossOfTasteOrSmell;
-  private boolean muscleAche;
-  private boolean nauseous;
-  private boolean shortOfBreath;
-  private boolean soreThroat;
-  private Boolean fullyVaccinated;
   private Timestamp submissionTime;
   private String supervisorEmail;
-  private Pledge pledge;
 
   public boolean shouldStayHome() {
-    return (coughing
-        || feverish
-        || (exposed && !Boolean.TRUE.equals(fullyVaccinated))
-        || shortOfBreath
-        || soreThroat
-        || congested
-        || muscleAche
-        || lossOfTasteOrSmell
-        || headache
-        || diarrhea
-        || nauseous
-        || testedPositive);
+    return (symptomatic || exposed);
   }
 
   public String summarize() {
@@ -69,7 +44,7 @@ public class HealthInfo {
           + phone
           + "\n\tEmail: "
           + email
-          + "\n\n They currently are not reporting any symptoms";
+          + "\n\n They are reporting in a way that should clear them to come to campus";
     } else {
       return "A potential positive self-screening response was submitted by a "
           + accountType.toString()
@@ -81,8 +56,12 @@ public class HealthInfo {
           + phone
           + "\n\tEmail: "
           + email
-          + "\n\nResponses: \n\t- "
-          + this.responseSummary();
+          + "\nResponses to HS questions:"
+          + "\n\tSymptomatic:\tExposed"
+          + "\n\t"
+          + symptomatic
+          + "\t"
+          + exposed;
     }
   }
 
@@ -116,81 +95,10 @@ public class HealthInfo {
         info.setName(rs.getString("name"));
         info.setEmail(rs.getString("email"));
         info.setPhone(rs.getString("phone"));
-        info.setCoughing(rs.getBoolean("is_coughing"));
-        info.setFeverish(rs.getBoolean("is_feverish"));
         info.setExposed(rs.getBoolean("is_exposed"));
-        info.setShortOfBreath(rs.getBoolean("is_short_of_breath"));
-        info.setSoreThroat(rs.getBoolean("has_sore_throat"));
-        info.setCongested(rs.getBoolean("is_congested"));
-        info.setMuscleAche(rs.getBoolean("has_muscle_aches"));
-        info.setLossOfTasteOrSmell(rs.getBoolean("has_lost_taste_smell"));
-        info.setHeadache(rs.getBoolean("has_headache"));
-        info.setDiarrhea(rs.getBoolean("has_diarrhea"));
-        info.setNauseous(rs.getBoolean("is_nauseous"));
-        info.setFullyVaccinated(rs.getObject("is_fully_vaccinated", Boolean.class));
-        info.setTestedPositive(rs.getBoolean(("has_tested_positive")));
         info.setSubmissionTime(rs.getTimestamp("submission_time"));
+        info.setSymptomatic(rs.getBoolean("is_symptomatic"));
 
         return info;
       };
-
-  private String responseSummary() {
-    final List<String> summaryList = new LinkedList<>();
-
-    if (coughing) {
-      summaryList.add("is experiencing a cough");
-    }
-
-    if (feverish) {
-      summaryList.add("is experiencing a fever");
-    }
-
-    if (exposed) {
-      if (fullyVaccinated == null) {
-        summaryList.add("has been exposed to someone with COVID");
-      } else if (Boolean.TRUE.equals(fullyVaccinated)) {
-        summaryList.add("has been exposed to someone with COVID, but has been vaccinated");
-      } else {
-        summaryList.add("has been exposed to someone with COVID, and has not been vaccinated");
-      }
-    }
-
-    if (shortOfBreath) {
-      summaryList.add("is experiencing shortness of breath");
-    }
-
-    if (soreThroat) {
-      summaryList.add("is experiencing a sore throat");
-    }
-
-    if (congested) {
-      summaryList.add("is experiencing new, unexplained congestion");
-    }
-
-    if (muscleAche) {
-      summaryList.add("is experiencing muscle aches");
-    }
-
-    if (lossOfTasteOrSmell) {
-      summaryList.add("is experiencing a loss of taste or smell");
-    }
-
-    if (headache) {
-      summaryList.add("is experiencing a headache");
-    }
-
-    if (diarrhea) {
-      summaryList.add("is experiencing diarrhea");
-    }
-
-    if (nauseous) {
-      summaryList.add("is experiencing nausea or vomiting");
-    }
-
-    if (testedPositive) {
-      summaryList.add("has tested positive for COVID-19 within the last 10 days");
-    }
-
-    return String.join("\n\t- ", summaryList);
-  }
 }

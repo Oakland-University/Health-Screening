@@ -2,13 +2,6 @@ package edu.oakland.healthscreening.dao;
 
 public class Constants {
 
-  public static final String INSERT_PLEDGE =
-      (" INSERT INTO screening.pledge                                         "
-              + "   (email, face_covering, good_hygiene, distancing)          "
-              + " VALUES                                                      "
-              + "   (?, ?, ?, ?)                                              ")
-          .replaceAll("\\s+", " ");
-
   public static final String GET_ANONYMOUS_ANALYTIC_INFO =
       (" SELECT                                                                           "
               + "     null as account_type,                                               "
@@ -84,19 +77,6 @@ public class Constants {
               + " LIMIT 1                                    ")
           .replaceAll("\\s+", " ");
 
-  public static final String GET_RECENT_PLEDGE =
-      (" SELECT                                              "
-              + "   *                                        "
-              + " FROM                                       "
-              + "   screening.pledge                         "
-              + " WHERE                                      "
-              + "   submission_time >= now()::date           "
-              + "   AND email = ?                            "
-              + " ORDER BY                                   "
-              + "   submission_time DESC                     "
-              + " LIMIT 1                                    ")
-          .replaceAll("\\s+", " ");
-
   public static final String GET_GUEST_INFO =
       (" SELECT                                              "
               + "   *                                        "
@@ -111,17 +91,4 @@ public class Constants {
               + "   submission_time DESC                     "
               + " LIMIT 1                                    ")
           .replaceAll("\\s+", " ");
-
-  public static final String DELETE_OLD_RECORDS =
-      (" DELETE FROM                                            "
-              + "   screening.health_screening                  "
-              + " WHERE                                         "
-              + "   age(submission_time) >= INTERVAL '30 days'  ")
-          .replaceAll("\\s+", " ");
-
-  public static final String CSV_HEADER =
-      "id,Date,State,County,Zip Code,Address,# of Screenings,workplace_exclusion_for_symptoms,"
-          + "fever,sore_throat,chills,headache,muscle_aches,abdominal_aches,runny_nose,nausea_vomiting,"
-          + "shortness_breath,loss_taste_smell,cough,temp,workplace_exclusion_for_contact,"
-          + "workplace_exclusion_for_travel\n";
 }

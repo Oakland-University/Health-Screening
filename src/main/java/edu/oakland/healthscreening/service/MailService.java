@@ -8,10 +8,8 @@ import static edu.oakland.healthscreening.model.AccountType.STUDENT;
 import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.HealthInfo;
-import edu.oakland.healthscreening.model.Pledge;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,31 +37,6 @@ public class MailService {
 
   private final Logger log = LoggerFactory.getLogger("health-screening");
 
-  public void sendPledgeDisagreement(Pledge pledge, AccountType accountType) {
-    SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setSubject("Coronavirus Honor Pledge Disagreement");
-    msg.setFrom(mailFrom);
-
-    ArrayList<String> emailList = new ArrayList<>();
-    String supervisorEmail = pledge.getSupervisorEmail();
-
-    if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
-      emailList.add(supervisorEmail);
-    } else if (accountType == GUEST) {
-      return;
-    }
-
-    if (accountType == STUDENT) {
-      emailList.add(deanAddress);
-    }
-
-    msg.setTo(emailList.toArray(new String[emailList.size()]));
-
-    msg.setText(pledge.summarize());
-    log.debug("Sending mail to: {}\nFor {}'s pledge disagreement", msg.getTo(), pledge.getEmail());
-    mailSender.send(msg);
-  }
-
   public void emailHealthCenter(HealthInfo info, AccountType accountType) {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setFrom(mailFrom);
@@ -71,7 +44,7 @@ public class MailService {
     msg.setText(info.summarize());
     msg.setTo(healthCenterAddress);
     log.debug(
-        "Sending mail to: {}\nFor {}'s potential postive screening", msg.getTo(), info.getName());
+        "Sending mail to: {}\nFor {}'s potential positive screening", msg.getTo(), info.getName());
     mailSender.send(msg);
   }
 
@@ -79,7 +52,7 @@ public class MailService {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setFrom(mailFrom);
     msg.setSubject("Employee Health Screening -- " + info.getEmail());
-    msg.setTo(info.getPledge().getSupervisorEmail());
+    msg.setTo(info.getSupervisorEmail());
     msg.setText(info.supervisorSummary());
     log.debug("Sending mail to: {}\nWho is {}'s supervisor'", msg.getTo(), info.getName());
     mailSender.send(msg);
