@@ -140,7 +140,7 @@ export default function HealthQuestions(props) {
               } employee of OU who is planning on working today?`}
             </FormLabel>
             <RadioGroup
-              aria-label='student-employee'
+              aria-label='Are you an employee?'
               name='student-employee'
               value={student_employee}
               onChange={(event) => dispatch(update_student_employee(event.target.value === 'true'))}
