@@ -82,7 +82,6 @@ public class HealthScreeningController {
     String supervisorEmail = info.getSupervisorEmail();
 
     info.setAccountType(accountType);
-    info.setSupervisorEmail(supervisorEmail);
 
     boolean previousPositive = false;
 
