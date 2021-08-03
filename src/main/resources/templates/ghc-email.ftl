@@ -26,11 +26,11 @@
 <body>
     <#if info.shouldStayHome()>
         <p>
-            A potential positive self-screening response was submitted by a ${info.accountType!}
+            A potential positive self-screening response was submitted by a ${info.accountType!"person"}
         </p>
     <#else>
         <p>
-            A health screening <strong>correction</strong> was submitted by a ${info.accountType!"student"}
+            A health screening <strong>correction</strong> was submitted by a ${info.accountType!"person"}
         </p>
     </#if>
     <p>
