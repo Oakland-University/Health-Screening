@@ -16,13 +16,16 @@ import edu.oakland.healthscreening.service.MailService;
 import edu.oakland.soffit.auth.AuthService;
 import edu.oakland.soffit.auth.SoffitAuthException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.auth0.jwt.interfaces.Claim;
+import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +77,7 @@ public class HealthScreeningController {
 
   @PostMapping("health-info")
   public void saveHealthInfo(@Valid @RequestBody HealthInfo info, HttpServletRequest request)
-      throws SoffitAuthException {
-
+      throws SoffitAuthException, IOException, TemplateException, MessagingException {
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
@@ -109,7 +111,7 @@ public class HealthScreeningController {
     }
 
     if (info.shouldStayHome() || previousPositive) {
-      mailService.emailHealthCenter(info, accountType);
+      mailService.emailHealthCenter(info);
     }
     if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
       mailService.emailSupervisor(info);
