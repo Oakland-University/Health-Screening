@@ -64,6 +64,7 @@ public class MailService {
 
     // Should see if UTF-8 is the default encoding, since it's an optional param
     MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+    helper.setFrom(mailFrom);
     helper.setTo(healthCenterAddress);
     helper.setText(text, true);
     mailSender.send(message);
