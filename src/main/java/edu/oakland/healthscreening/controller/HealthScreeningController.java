@@ -92,7 +92,8 @@ public class HealthScreeningController {
       info.setEmail(email);
 
       // Only replace the provided phone if it's null or empty
-      // TODO: Figure out if this gets run, and if so, when
+      // This is in case someone sends requests maliciously without a phone
+      // number. If they do, we just grab it from their JWT
       if (info.getPhone() == null || info.getPhone().isEmpty()) {
         info.setPhone(
             personInfo.get("telephoneNumber") == null
