@@ -6,27 +6,27 @@ import java.time.format.DateTimeFormatter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-import lombok.Data;
+import lombok.Builder;
 import org.springframework.jdbc.core.RowMapper;
 
-@Data
+@Builder(toBuilder = true)
 public class HealthInfo {
-  private AccountType accountType;
-  private String pidm;
+  public final AccountType accountType;
+  public final String pidm;
 
   @Size(max = 128, message = "Name field should be less than 128 characters")
-  private String name;
+  public final String name;
 
   @Size(max = 32, message = "Phone field should be less than 32 characters")
-  private String phone;
+  public final String phone;
 
   @Email(message = "Email field should be a valid address")
-  private String email;
+  public final String email;
 
-  private boolean symptomatic;
-  private boolean exposed;
-  private Timestamp submissionTime;
-  private String supervisorEmail;
+  public final boolean symptomatic;
+  public final boolean exposed;
+  public final Timestamp submissionTime;
+  public final String supervisorEmail;
 
   public boolean shouldStayHome() {
     return (symptomatic || exposed);
@@ -87,18 +87,15 @@ public class HealthInfo {
   }
 
   public static RowMapper<HealthInfo> mapper =
-      (rs, rowNum) -> {
-        final HealthInfo info = new HealthInfo();
-
-        info.setAccountType(AccountType.fromString(rs.getString("account_type")));
-        info.setPidm(rs.getString("pidm"));
-        info.setName(rs.getString("name"));
-        info.setEmail(rs.getString("email"));
-        info.setPhone(rs.getString("phone"));
-        info.setExposed(rs.getBoolean("is_exposed"));
-        info.setSubmissionTime(rs.getTimestamp("submission_time"));
-        info.setSymptomatic(rs.getBoolean("is_symptomatic"));
-
-        return info;
-      };
+      (rs, rowNum) ->
+          HealthInfo.builder()
+              .accountType(AccountType.fromString(rs.getString("account_type")))
+              .pidm(rs.getString("pidm"))
+              .name(rs.getString("name"))
+              .email(rs.getString("email"))
+              .phone(rs.getString("phone"))
+              .exposed(rs.getBoolean("is_exposed"))
+              .submissionTime(rs.getTimestamp("submission_time"))
+              .symptomatic(rs.getBoolean("is_symptomatic"))
+              .build();
 }

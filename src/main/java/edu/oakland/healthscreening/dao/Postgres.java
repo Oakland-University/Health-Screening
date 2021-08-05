@@ -50,14 +50,14 @@ public class Postgres {
 
     final SqlParameterSource parameterSource =
         new MapSqlParameterSource()
-            .addValue("p_account_type", info.getAccountType().toString())
-            .addValue("p_pidm", info.getPidm())
-            .addValue("p_email", info.getEmail())
-            .addValue("p_phone", info.getPhone())
-            .addValue("p_name", info.getName())
-            .addValue("p_is_exposed", info.isExposed())
-            .addValue("p_supervisor_email", info.getSupervisorEmail())
-            .addValue("p_symptomatic", info.isSymptomatic());
+            .addValue("p_account_type", info.accountType.toString())
+            .addValue("p_pidm", info.pidm)
+            .addValue("p_email", info.email)
+            .addValue("p_phone", info.phone)
+            .addValue("p_name", info.name)
+            .addValue("p_is_exposed", info.exposed)
+            .addValue("p_supervisor_email", info.supervisorEmail)
+            .addValue("p_symptomatic", info.symptomatic);
 
     log.debug("Preparing to save health info: {}", info);
 
