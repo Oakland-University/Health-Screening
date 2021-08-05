@@ -8,6 +8,7 @@ import { CssBaseline } from '@material-ui/core'
 import store from './store'
 import { Provider } from 'react-redux'
 
+// eslint-disable-next-line
 /* global token */
 const project_name = 'health-screening'
 
