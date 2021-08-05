@@ -1,0 +1,17 @@
+stages:
+  - spotless
+  - build
+
+dbb_spotless:
+  stage: spotless
+  tags:
+    - dev_bb
+  script:
+    - ./gradlew spotlessCheck
+
+dbb_build:
+  stage: build
+  tags:
+    - dev_bb
+  script:
+    - ./gradlew clean build
