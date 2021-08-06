@@ -7,9 +7,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.jdbc.core.RowMapper;
 
 @Builder(toBuilder = true)
+@ToString
+@Getter
 public class HealthInfo {
   public final AccountType accountType;
   public final String pidm;
