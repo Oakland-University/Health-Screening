@@ -220,7 +220,7 @@ begin
             in_has_muscle_aches, in_has_lost_taste_smell, in_has_headache, in_has_diarrhea, in_is_nauseous,
             in_is_fully_vaccinated, in_has_tested_positive);
 
--- Update supervisor email if it doesn't match the current record
+-- Update supervisor email and phone number if it doesn't match the current record
 
     select 
         phone,
