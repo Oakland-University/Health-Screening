@@ -80,32 +80,38 @@ public class HealthScreeningController {
       throws SoffitAuthException, IOException, TemplateException, MessagingException {
     Map<String, Claim> personInfo = authorizer.getClaimsFromJWE(request);
 
+    // We ignore the Health Screening account type just in case the user is lying
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
-    String supervisorEmail = info.getSupervisorEmail();
 
-    info.setAccountType(accountType);
+    if (accountType != info.accountType) {
+      log.info(
+          "User {} reported the wrong account type.\nExpected {}, Received {}",
+          info.email,
+          accountType,
+          info.accountType);
+      info = info.toBuilder().accountType(accountType).build();
+    }
 
     boolean previousPositive = false;
 
     if (accountType != GUEST) {
-      info.setPidm(personInfo.get("pidm").asString());
-      info.setName(personInfo.get("cn") == null ? null : personInfo.get("cn").asString());
-      String email = personInfo.get("mail") == null ? null : personInfo.get("mail").asString();
-      info.setEmail(email);
 
-      // Only replace the provided phone if it's null or empty
-      // This is in case someone sends requests maliciously without a phone
-      // number. If they do, we just grab it from their JWT
-      if (info.getPhone() == null || info.getPhone().isEmpty()) {
-        info.setPhone(
-            personInfo.get("telephoneNumber") == null
-                ? null
-                : personInfo.get("telephoneNumber").asString());
-      }
+      String claimsPhone =
+          personInfo.get("telephoneNumber") == null
+              ? null
+              : personInfo.get("telephoneNumber").asString();
+
+      info =
+          info.toBuilder()
+              .pidm(personInfo.get("pidm").asString())
+              .name(personInfo.get("cn") == null ? null : personInfo.get("cn").asString())
+              .email(personInfo.get("mail") == null ? null : personInfo.get("mail").asString())
+              .phone((info.phone == null || info.phone.isEmpty()) ? claimsPhone : info.phone)
+              .build();
 
       previousPositive =
           postgres
-              .getRecentSubmission(info.getPidm(), info.getEmail())
+              .getRecentSubmission(info.pidm, info.email)
               .map(HealthInfo::shouldStayHome)
               .orElse(false);
     }
@@ -113,7 +119,8 @@ public class HealthScreeningController {
     if (info.shouldStayHome() || previousPositive) {
       mailService.emailHealthCenter(info);
     }
-    if (supervisorEmail != null && !supervisorEmail.isEmpty()) {
+
+    if (info.supervisorEmail != null && !info.supervisorEmail.isEmpty()) {
       mailService.emailSupervisor(info);
     }
 

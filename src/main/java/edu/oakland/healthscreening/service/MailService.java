@@ -60,7 +60,7 @@ public class MailService {
     log.debug(
         "Sending mail to: {}\nFor {}'s potential postive screening",
         healthCenterAddress,
-        info.getName());
+        info.name);
 
     // Should see if UTF-8 is the default encoding, since it's an optional param
     MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -73,10 +73,10 @@ public class MailService {
   public void emailSupervisor(HealthInfo info) {
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setFrom(mailFrom);
-    msg.setSubject("Employee Health Screening -- " + info.getEmail());
-    msg.setTo(info.getSupervisorEmail());
+    msg.setSubject("Employee Health Screening -- " + info.email);
+    msg.setTo(info.supervisorEmail);
     msg.setText(info.supervisorSummary());
-    log.debug("Sending mail to: {}\nWho is {}'s supervisor'", msg.getTo(), info.getName());
+    log.debug("Sending mail to: {}\nWho is {}'s supervisor'", msg.getTo(), info.name);
     mailSender.send(msg);
   }
 
@@ -90,24 +90,24 @@ public class MailService {
 
   private String getEmailSubject(HealthInfo info) {
 
-    switch (info.getAccountType()) {
+    switch (info.accountType) {
       case STUDENT:
-        return "Student Health Screening -- " + info.getEmail();
+        return "Student Health Screening -- " + info.email;
       case GUEST:
-        return "Guest Health Screening -- " + info.getEmail();
+        return "Guest Health Screening -- " + info.email;
       case STAFF:
-        return "Staff Health Screening -- " + info.getEmail();
+        return "Staff Health Screening -- " + info.email;
       case FACULTY:
-        return "Faculty Health Screening -- " + info.getEmail();
+        return "Faculty Health Screening -- " + info.email;
       default:
-        return "Health Screening -- " + info.getEmail();
+        return "Health Screening -- " + info.email;
     }
   }
 
   private void sendCertificate(HealthInfo info) throws MailException {
     SimpleMailMessage msg = new SimpleMailMessage();
 
-    msg.setTo(info.getEmail());
+    msg.setTo(info.email);
     msg.setFrom(mailFrom);
 
     if (info.shouldStayHome()) {
@@ -117,12 +117,12 @@ public class MailService {
               + "Contact the Graham Health Center at (248) 370-2341.\n"
               + "Do Your Part to help maintain a safe and health campus: stay home.");
     } else {
-      String dateString = new SimpleDateFormat("MM/dd/yy").format(info.getSubmissionTime());
+      String dateString = new SimpleDateFormat("MM/dd/yy").format(info.submissionTime);
       msg.setSubject("Health Screening Certificate");
       String bodyText =
           String.format(
               "Thank you for doing your part to keep campus healthy!\n\nThis person, %s, is allowed on campus for the duration of %s.",
-              info.getName(), dateString);
+              info.name, dateString);
       msg.setText(bodyText);
     }
 
