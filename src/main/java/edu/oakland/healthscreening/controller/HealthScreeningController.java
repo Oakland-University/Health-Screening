@@ -83,6 +83,15 @@ public class HealthScreeningController {
     // We ignore the Health Screening account type just in case the user is lying
     AccountType accountType = getAccountFromRequest(personInfo.get("groups"));
 
+    if (accountType != info.accountType) {
+      log.info(
+          "User {} reported the wrong account type.\nExpected {}, Received {}",
+          info.email,
+          accountType,
+          info.accountType);
+      info = info.toBuilder().accountType(accountType).build();
+    }
+
     boolean previousPositive = false;
 
     if (accountType != GUEST) {
