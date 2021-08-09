@@ -71,8 +71,9 @@ export default function HealthQuestions(props) {
         <FormControl component='fieldset'>
           <FormLabel className={classes.formLabel} component='legend'>
             Are you experiencing any of the following symptoms related to COVID-19?
-            <br/>
-           (sore throat, fever, new loss of taste or smell, congestion/runny nose, cough, headache, nausea/vomiting, diarrhea, fatigue, muscle/body aches, shortness of breath)
+            <br />
+            (sore throat, fever, new loss of taste or smell, congestion/runny nose, cough, headache,
+            nausea/vomiting, diarrhea, fatigue, muscle/body aches, shortness of breath)
           </FormLabel>
           <RadioGroup
             aria-label='positive-test'
