@@ -66,6 +66,7 @@ public class MailService {
     MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
     helper.setFrom(mailFrom);
     helper.setTo(healthCenterAddress);
+    helper.setSubject(getEmailSubject(info));
     helper.setText(text, true);
     mailSender.send(message);
   }
