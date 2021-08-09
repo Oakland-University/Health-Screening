@@ -233,16 +233,31 @@ begin
     where
         previous_information.email = in_email;
 
-    if (old_supervisor_email ISNULL and in_supervisor_email IS NOT NULL) or old_phone ISNULL then
+    if (old_phone ISNULL) then 
         insert into screening.previous_information
-            (email, supervisor_email, phone)
+            (email, phone)
         values
-            (in_email, in_supervisor_email, in_phone);
-    elsif (old_supervisor_email <> in_supervisor_email and in_supervisor_email IS NOT NULL) or old_phone <> in_phone then
+            (in_email, in_phone);
+    elsif (old_phone <> in_phone) then 
         update
             screening.previous_information
         set
-            phone = in_phone,
+            phone = in_phone
+        where
+            previous_information.email = in_email;
+    end if;     
+
+    if (old_supervisor_email ISNULL and in_supervisor_email IS NOT NULL) then
+        update 
+            screening.previous_information
+        set
+            supervisor_email = in_supervisor_email
+        where
+            previous_information.email = in_email;
+    elsif (old_supervisor_email <> in_supervisor_email and in_supervisor_email IS NOT NULL) then
+        update
+            screening.previous_information
+        set
             supervisor_email = in_supervisor_email
         where
             previous_information.email = in_email;
