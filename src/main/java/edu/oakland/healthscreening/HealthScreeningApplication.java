@@ -21,7 +21,7 @@ public class HealthScreeningApplication {
   public FreeMarkerConfigurer freemarkerClassLoaderConfig() {
     Configuration configuration = new Configuration(Configuration.VERSION_2_3_30);
     // Print boolean values as the computer sees them (i.e. 'true' and 'false')
-    configuration.setBooleanFormat("c");
+    configuration.setBooleanFormat("Yes,No");
     // Look for 'ftl' files in src/main/resources/templates - and keep them in the classpath
     TemplateLoader templateLoader = new ClassTemplateLoader(this.getClass(), "/templates");
     configuration.setTemplateLoader(templateLoader);
