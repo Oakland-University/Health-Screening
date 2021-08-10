@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS screening.employee_supervisor (
 CREATE TABLE IF NOT EXISTS screening.previous_information (
     email text primary key,
     supervisor_email text not null,
-    phone text not null
+    phone text
 );
 
 INSERT INTO screening.previous_information 
