@@ -178,9 +178,13 @@ export default function HealthQuestions(props) {
         <Divider className={classes.divider} />
         <List>
           <ListItem>
-            <ListItemText primary="If you haven't already, upload your vaccine card to Graham Health Center's patient portal" />
+            <ListItemText primary="If you haven't already, upload your proof of vaccination to Graham Health Center's patient portal" />
             <ListItemSecondaryAction>
-              <IconButton aria-label='Upload Vaccination Card'>
+              <IconButton
+                href="https://myhealth.oakland.edu/home.aspx"
+                aria-label='Upload Vaccination Card'
+                target="_blank"
+                rel="noopener noreferrer">
                 <OpenInNew />
               </IconButton>
             </ListItemSecondaryAction>
