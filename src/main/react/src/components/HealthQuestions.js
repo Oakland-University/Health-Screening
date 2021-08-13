@@ -10,6 +10,12 @@ import Collapse from '@material-ui/core/Collapse'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import Divider from '@material-ui/core/Divider'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import OpenInNew from '@material-ui/icons/OpenInNew'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import ListItemText from '@material-ui/core/ListItemText'
+import IconButton from '@material-ui/core/IconButton'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   update_exposure,
@@ -169,6 +175,23 @@ export default function HealthQuestions(props) {
             </Collapse>
           </>
         )}
+        <Divider className={classes.divider} />
+        <List>
+          <ListItem>
+            <ListItemText primary="If you haven't already, upload your proof of vaccination to Graham Health Center's patient portal" />
+            <ListItemSecondaryAction>
+              <IconButton
+                href='https://myhealth.oakland.edu/home.aspx'
+                aria-label='Upload Vaccination Card'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <OpenInNew />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </List>
+        <Divider className={classes.divider} />
       </CardContent>
     </>
   )
