@@ -162,6 +162,9 @@ const Certificate = (props) => {
               variant='outlined'
               endIcon={<OpenInNew />}
               href='https://myhealth.oakland.edu/home.aspx'
+              aria-label='Upload Vaccination Card'
+              target='_blank'
+              rel='noopener noreferrer'
             >
               GHC Patient Portal - Enter COVID-19 Vaccine Info
             </Button>
@@ -246,6 +249,9 @@ const Prompt = (props) => {
             color='secondary'
             variant='outlined'
             href='https://myhealth.oakland.edu/home.aspx'
+            aria-label='Upload Vaccination Card'
+            target='_blank'
+            rel='noopener noreferrer'
             endIcon={<OpenInNew />}
           >
             GHC Patient Portal - Enter COVID-19 Vaccine Info
@@ -303,6 +309,9 @@ const Warning = (props) => {
             variant='outlined'
             href='https://myhealth.oakland.edu/home.aspx'
             endIcon={<OpenInNew />}
+            aria-label='Upload Vaccination Card'
+            target='_blank'
+            rel='noopener noreferrer'
           >
             GHC Patient Portal - Enter COVID-19 Vaccine Info
           </Button>
