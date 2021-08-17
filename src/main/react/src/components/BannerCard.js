@@ -152,7 +152,7 @@ const Certificate = (props) => {
           endIcon={<OpenInNew />}
           href='https://myhealth.oakland.edu/home.aspx'
         >
-          GHC Patient Portal - Enter COVID-19 Vaccine Info
+          Upload Vaccine Record
         </Button>
       </CardActions>
       <Snackbar
@@ -207,8 +207,13 @@ const Prompt = (props) => {
         </Typography>
         <Typography variant='body1' gutterBottom className={classes.mainText}>
           <Box textAlign='center'>
-            If you are planning on coming onto campus, please fill out this health-screening form
-            beforehand.
+            If you are planning to come to campus or attend an OU sponsored program or course
+            requirement, please complete the Daily Health Screening form (link below).
+          </Box>
+          <Box textAlign='center'>
+            OU Students & Employees: If you are fully vaccinated for COVID-19, and have not already
+            done so, please visit the GHC secure patient portal to upload your vaccine record by
+            clicking the link below.{' '}
           </Box>
         </Typography>
       </CardContent>
@@ -222,7 +227,7 @@ const Prompt = (props) => {
           href='https://myhealth.oakland.edu/home.aspx'
           endIcon={<OpenInNew />}
         >
-          GHC Patient Portal - Enter COVID-19 Vaccine Info
+          Upload Vaccine Record
         </Button>
       </CardActions>
       <Snackbar
@@ -275,7 +280,7 @@ const Warning = (props) => {
           href='https://myhealth.oakland.edu/home.aspx'
           endIcon={<OpenInNew />}
         >
-          GHC Patient Portal - Enter COVID-19 Vaccine Info
+          Upload Vaccine Record
         </Button>
       </CardActions>
     </>
