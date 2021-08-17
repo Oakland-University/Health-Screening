@@ -10,11 +10,14 @@ import CardMedia from '@material-ui/core/CardMedia'
 import CheckCircle from '@material-ui/icons/CheckCircle'
 import CloseIcon from '@material-ui/icons/Close'
 import ErrorIcon from '@material-ui/icons/Error'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import Typography from '@material-ui/core/Typography'
 import WarningIcon from '@material-ui/icons/Warning'
 import OpenInNew from '@material-ui/icons/OpenInNew'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/styles'
 import { useSelector, useDispatch } from 'react-redux'
 import { send_certificate_email } from '../api/api'
@@ -106,6 +109,15 @@ const Certificate = (props) => {
   const [open, set_open] = useState(false)
   const [email_error, set_email_error] = useState(false)
   const [email_sent, set_email_sent] = useState(false)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
+  const open_menu = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const close_menu = () => {
+    setAnchorEl(null)
+  }
 
   const handle_click = () => {
     send_certificate_email(name, email, phone).then((response) => {
@@ -143,17 +155,22 @@ const Certificate = (props) => {
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Re-take Screening
         </Button>
-        <Button color='secondary' variant='outlined' disabled={email_sent} onClick={handle_click}>
-          Send Email
-        </Button>
         <Button
           color='secondary'
           variant='outlined'
           endIcon={<OpenInNew />}
           href='https://myhealth.oakland.edu/home.aspx'
         >
-          Upload Vaccine Record
+          GHC Patient Portal - Enter COVID-19 Vaccine Info
         </Button>
+        <IconButton onClick={open_menu}>
+          <MoreVertIcon />
+        </IconButton>
+        <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={close_menu}>
+          <MenuItem onClick={handle_click} disabled={email_sent}>
+            Send Email
+          </MenuItem>
+        </Menu>
       </CardActions>
       <Snackbar
         anchorOrigin={{
@@ -207,13 +224,8 @@ const Prompt = (props) => {
         </Typography>
         <Typography variant='body1' gutterBottom className={classes.mainText}>
           <Box textAlign='center'>
-            If you are planning to come to campus or attend an OU sponsored program or course
-            requirement, please complete the Daily Health Screening form (link below).
-          </Box>
-          <Box textAlign='center'>
-            OU Students & Employees: If you are fully vaccinated for COVID-19, and have not already
-            done so, please visit the GHC secure patient portal to upload your vaccine record by
-            clicking the link below.{' '}
+            If you are planning on coming onto campus, please fill out this health-screening form
+            beforehand.
           </Box>
         </Typography>
       </CardContent>
@@ -227,7 +239,7 @@ const Prompt = (props) => {
           href='https://myhealth.oakland.edu/home.aspx'
           endIcon={<OpenInNew />}
         >
-          Upload Vaccine Record
+          GHC Patient Portal - Enter COVID-19 Vaccine Info
         </Button>
       </CardActions>
       <Snackbar
@@ -280,7 +292,7 @@ const Warning = (props) => {
           href='https://myhealth.oakland.edu/home.aspx'
           endIcon={<OpenInNew />}
         >
-          Upload Vaccine Record
+          GHC Patient Portal - Enter COVID-19 Vaccine Info
         </Button>
       </CardActions>
     </>
