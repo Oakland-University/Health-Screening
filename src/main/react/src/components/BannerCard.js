@@ -109,14 +109,14 @@ const Certificate = (props) => {
   const [open, set_open] = useState(false)
   const [email_error, set_email_error] = useState(false)
   const [email_sent, set_email_sent] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchor_element, set_anchor_element] = useState(null)
 
   const open_menu = (event) => {
-    setAnchorEl(event.currentTarget)
+    set_anchor_element(event.currentTarget)
   }
 
   const close_menu = () => {
-    setAnchorEl(null)
+    set_anchor_element(null)
   }
 
   const handle_click = () => {
@@ -171,7 +171,7 @@ const Certificate = (props) => {
             <IconButton onClick={open_menu}>
               <MoreVertIcon />
             </IconButton>
-            <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={close_menu}>
+            <Menu anchor_element={anchor_element} keepMounted open={Boolean(anchor_element)} onClose={close_menu}>
               <MenuItem onClick={handle_click} disabled={email_sent}>
                 Send Email
               </MenuItem>
