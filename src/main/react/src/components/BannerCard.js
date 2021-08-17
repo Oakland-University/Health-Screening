@@ -10,10 +10,14 @@ import CardMedia from '@material-ui/core/CardMedia'
 import CheckCircle from '@material-ui/icons/CheckCircle'
 import CloseIcon from '@material-ui/icons/Close'
 import ErrorIcon from '@material-ui/icons/Error'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import Typography from '@material-ui/core/Typography'
 import WarningIcon from '@material-ui/icons/Warning'
+import OpenInNew from '@material-ui/icons/OpenInNew'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/styles'
 import { useSelector, useDispatch } from 'react-redux'
 import { send_certificate_email } from '../api/api'
@@ -101,10 +105,19 @@ const BannerCard = (props) => {
 
 const Certificate = (props) => {
   const classes = useStyles()
-  const { name, email, phone } = useSelector((state) => state)
+  const { account_type, name, email, phone } = useSelector((state) => state)
   const [open, set_open] = useState(false)
   const [email_error, set_email_error] = useState(false)
   const [email_sent, set_email_sent] = useState(false)
+  const [anchor_element, set_anchor_element] = useState(null)
+
+  const open_menu = (event) => {
+    set_anchor_element(event.currentTarget)
+  }
+
+  const close_menu = () => {
+    set_anchor_element(null)
+  }
 
   const handle_click = () => {
     send_certificate_email(name, email, phone).then((response) => {
@@ -142,9 +155,33 @@ const Certificate = (props) => {
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Re-take Screening
         </Button>
-        <Button color='secondary' variant='outlined' disabled={email_sent} onClick={handle_click}>
-          Send Email
-        </Button>
+        {account_type !== 'guest' ? (
+          <>
+            <Button
+              color='secondary'
+              variant='outlined'
+              endIcon={<OpenInNew />}
+              href='https://myhealth.oakland.edu/home.aspx'
+              aria-label='Upload Vaccination Card'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              GHC Patient Portal - Enter COVID-19 Vaccine Info
+            </Button>
+            <IconButton onClick={open_menu}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu anchor_element={anchor_element} keepMounted open={Boolean(anchor_element)} onClose={close_menu}>
+              <MenuItem onClick={handle_click} disabled={email_sent}>
+                Send Email
+              </MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <Button color='secondary' variant='outlined' disabled={email_sent} onClick={handle_click}>
+            Send Email
+          </Button>
+        )}
       </CardActions>
       <Snackbar
         anchorOrigin={{
@@ -176,7 +213,7 @@ const Certificate = (props) => {
 
 const Prompt = (props) => {
   const classes = useStyles()
-  const { user_status } = useSelector((state) => state)
+  const { account_type, user_status } = useSelector((state) => state)
   const [open, set_open] = useState(false)
 
   useEffect(() => {
@@ -207,6 +244,19 @@ const Prompt = (props) => {
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Fill Out Form
         </Button>
+        {account_type !== 'guest' && (
+          <Button
+            color='secondary'
+            variant='outlined'
+            href='https://myhealth.oakland.edu/home.aspx'
+            aria-label='Upload Vaccination Card'
+            target='_blank'
+            rel='noopener noreferrer'
+            endIcon={<OpenInNew />}
+          >
+            GHC Patient Portal - Enter COVID-19 Vaccine Info
+          </Button>
+        )}
       </CardActions>
       <Snackbar
         anchorOrigin={{
@@ -234,6 +284,7 @@ const Prompt = (props) => {
 
 const Warning = (props) => {
   const classes = useStyles()
+  const { account_type } = useSelector((state) => state)
   return (
     <>
       <CardMedia className={classes.disallowedMedia} />
@@ -252,6 +303,19 @@ const Warning = (props) => {
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Re-take Screening
         </Button>
+        {account_type !== 'guest' && (
+          <Button
+            color='secondary'
+            variant='outlined'
+            href='https://myhealth.oakland.edu/home.aspx'
+            endIcon={<OpenInNew />}
+            aria-label='Upload Vaccination Card'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            GHC Patient Portal - Enter COVID-19 Vaccine Info
+          </Button>
+        )}
       </CardActions>
     </>
   )
