@@ -14,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import Typography from '@material-ui/core/Typography'
 import WarningIcon from '@material-ui/icons/Warning'
+import OpenInNew from '@material-ui/icons/OpenInNew'
 import { makeStyles } from '@material-ui/styles'
 import { useSelector, useDispatch } from 'react-redux'
 import { send_certificate_email } from '../api/api'
@@ -145,6 +146,14 @@ const Certificate = (props) => {
         <Button color='secondary' variant='outlined' disabled={email_sent} onClick={handle_click}>
           Send Email
         </Button>
+        <Button
+          color='secondary'
+          variant='outlined'
+          endIcon={<OpenInNew />}
+          href='https://myhealth.oakland.edu/home.aspx'
+        >
+          GHC Patient Portal - Enter COVID-19 Vaccine Info
+        </Button>
       </CardActions>
       <Snackbar
         anchorOrigin={{
@@ -207,6 +216,14 @@ const Prompt = (props) => {
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Fill Out Form
         </Button>
+        <Button
+          color='secondary'
+          variant='outlined'
+          href='https://myhealth.oakland.edu/home.aspx'
+          endIcon={<OpenInNew />}
+        >
+          GHC Patient Portal - Enter COVID-19 Vaccine Info
+        </Button>
       </CardActions>
       <Snackbar
         anchorOrigin={{
@@ -251,6 +268,14 @@ const Warning = (props) => {
       <CardActions className={classes.bannerCardActions}>
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Re-take Screening
+        </Button>
+        <Button
+          color='secondary'
+          variant='outlined'
+          href='https://myhealth.oakland.edu/home.aspx'
+          endIcon={<OpenInNew />}
+        >
+          GHC Patient Portal - Enter COVID-19 Vaccine Info
         </Button>
       </CardActions>
     </>
