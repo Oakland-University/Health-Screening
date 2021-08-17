@@ -109,7 +109,7 @@ const Certificate = (props) => {
   const [open, set_open] = useState(false)
   const [email_error, set_email_error] = useState(false)
   const [email_sent, set_email_sent] = useState(false)
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
 
   const open_menu = (event) => {
     setAnchorEl(event.currentTarget)
