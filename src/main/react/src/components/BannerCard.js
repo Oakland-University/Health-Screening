@@ -105,7 +105,7 @@ const BannerCard = (props) => {
 
 const Certificate = (props) => {
   const classes = useStyles()
-  const { name, email, phone } = useSelector((state) => state)
+  const { account_type, name, email, phone } = useSelector((state) => state)
   const [open, set_open] = useState(false)
   const [email_error, set_email_error] = useState(false)
   const [email_sent, set_email_sent] = useState(false)
@@ -155,22 +155,30 @@ const Certificate = (props) => {
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Re-take Screening
         </Button>
-        <Button
-          color='secondary'
-          variant='outlined'
-          endIcon={<OpenInNew />}
-          href='https://myhealth.oakland.edu/home.aspx'
-        >
-          GHC Patient Portal - Enter COVID-19 Vaccine Info
-        </Button>
-        <IconButton onClick={open_menu}>
-          <MoreVertIcon />
-        </IconButton>
-        <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={close_menu}>
-          <MenuItem onClick={handle_click} disabled={email_sent}>
+        {account_type !== 'guest' ? (
+          <>
+            <Button
+              color='secondary'
+              variant='outlined'
+              endIcon={<OpenInNew />}
+              href='https://myhealth.oakland.edu/home.aspx'
+            >
+              GHC Patient Portal - Enter COVID-19 Vaccine Info
+            </Button>
+            <IconButton onClick={open_menu}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={close_menu}>
+              <MenuItem onClick={handle_click} disabled={email_sent}>
+                Send Email
+              </MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <Button color='secondary' variant='outlined' disabled={email_sent} onClick={handle_click}>
             Send Email
-          </MenuItem>
-        </Menu>
+          </Button>
+        )}
       </CardActions>
       <Snackbar
         anchorOrigin={{
@@ -202,7 +210,7 @@ const Certificate = (props) => {
 
 const Prompt = (props) => {
   const classes = useStyles()
-  const { user_status } = useSelector((state) => state)
+  const { account_type, user_status } = useSelector((state) => state)
   const [open, set_open] = useState(false)
 
   useEffect(() => {
@@ -233,14 +241,16 @@ const Prompt = (props) => {
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Fill Out Form
         </Button>
-        <Button
-          color='secondary'
-          variant='outlined'
-          href='https://myhealth.oakland.edu/home.aspx'
-          endIcon={<OpenInNew />}
-        >
-          GHC Patient Portal - Enter COVID-19 Vaccine Info
-        </Button>
+        {account_type !== 'guest' && (
+          <Button
+            color='secondary'
+            variant='outlined'
+            href='https://myhealth.oakland.edu/home.aspx'
+            endIcon={<OpenInNew />}
+          >
+            GHC Patient Portal - Enter COVID-19 Vaccine Info
+          </Button>
+        )}
       </CardActions>
       <Snackbar
         anchorOrigin={{
@@ -268,6 +278,7 @@ const Prompt = (props) => {
 
 const Warning = (props) => {
   const classes = useStyles()
+  const { account_type } = useSelector((state) => state)
   return (
     <>
       <CardMedia className={classes.disallowedMedia} />
@@ -286,14 +297,16 @@ const Warning = (props) => {
         <Button color='secondary' variant='outlined' onClick={props.open_form}>
           Re-take Screening
         </Button>
-        <Button
-          color='secondary'
-          variant='outlined'
-          href='https://myhealth.oakland.edu/home.aspx'
-          endIcon={<OpenInNew />}
-        >
-          GHC Patient Portal - Enter COVID-19 Vaccine Info
-        </Button>
+        {account_type !== 'guest' && (
+          <Button
+            color='secondary'
+            variant='outlined'
+            href='https://myhealth.oakland.edu/home.aspx'
+            endIcon={<OpenInNew />}
+          >
+            GHC Patient Portal - Enter COVID-19 Vaccine Info
+          </Button>
+        )}
       </CardActions>
     </>
   )
