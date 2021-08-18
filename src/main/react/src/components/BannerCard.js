@@ -171,7 +171,7 @@ const Certificate = (props) => {
             <IconButton onClick={open_menu}>
               <MoreVertIcon />
             </IconButton>
-            <Menu anchor_element={anchor_element} keepMounted open={Boolean(anchor_element)} onClose={close_menu}>
+            <Menu anchorEl={anchor_element} keepMounted open={Boolean(anchor_element)} onClose={close_menu}>
               <MenuItem onClick={handle_click} disabled={email_sent}>
                 Send Email
               </MenuItem>
