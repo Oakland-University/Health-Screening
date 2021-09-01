@@ -76,7 +76,7 @@ export default function HealthQuestions(props) {
       <CardContent>
         <FormControl component='fieldset'>
           <FormLabel className={classes.formLabel} component='legend'>
-            Are you experiencing any of the following symptoms related to COVID-19 OR have you been
+            Are you experiencing any of the following symptoms related to COVID-19 or have you been
             diagnosed with COVID-19 in the past 10 days?
             <br />
             (sore throat, fever, new loss of taste or smell, congestion/runny nose, cough, headache,
