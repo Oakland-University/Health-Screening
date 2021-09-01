@@ -20,7 +20,7 @@ const FinalPage = (props) => {
         Thank you for completing your Daily Health Screening, if you have not uploaded your vaccine
         record, please do so
         <a
-          style={{ marginLeft: '5px' }}
+          style={{ marginLeft: '5px', color: '#0000EE' }}
           href='https://myhealth.oakland.edu/home.aspx'
           aria-label='Upload Vaccination Card'
           target='_blank'
