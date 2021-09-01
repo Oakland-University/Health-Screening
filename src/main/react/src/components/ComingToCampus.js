@@ -31,8 +31,8 @@ export default function ComingToCampus(props) {
       <CardContent>
         <FormControl component='fieldset'>
           <FormLabel className={classes.formLabel} component='legend'>
-            Are you a resident student (currently living in on-campus housing), or coming to campus
-            or a clinical site today?
+            Are you planning to be on campus or at a clinical site today, or are you a resident
+            student (currently living in on-campus housing)?
           </FormLabel>
           <RadioGroup
             aria-label='campus-visit'

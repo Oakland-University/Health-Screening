@@ -17,7 +17,16 @@ const FinalPage = (props) => {
   } else {
     return (
       <Typography variant='body1' component='p'>
-        Thank you for taking the time to fill out this form.
+        Thank you for completing your Daily Health Screening, if you have not uploaded your vaccine
+        record, please do so
+        <a
+          href='https://myhealth.oakland.edu/home.aspx'
+          aria-label='Upload Vaccination Card'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          here
+        </a>
       </Typography>
     )
   }

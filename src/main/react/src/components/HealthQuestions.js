@@ -76,7 +76,8 @@ export default function HealthQuestions(props) {
       <CardContent>
         <FormControl component='fieldset'>
           <FormLabel className={classes.formLabel} component='legend'>
-            Are you experiencing any of the following symptoms related to COVID-19?
+            Are you experiencing any of the following symptoms related to COVID-19 OR have you been
+            diagnosed with COVID-19 in the past 10 days?
             <br />
             (sore throat, fever, new loss of taste or smell, congestion/runny nose, cough, headache,
             nausea/vomiting, diarrhea, fatigue, muscle/body aches, shortness of breath)
@@ -113,8 +114,9 @@ export default function HealthQuestions(props) {
 
         <FormControl component='fieldset'>
           <Typography paragraph className={classes.phoneLabel} component='legend'>
-            The Graham Health Center might want to get in contact with you. Please fill out a good
-            phone number to reach you.
+            The Graham Health Center might want to get in contact with you. Please provide a phone
+            number you can be reached at today. Please do not use your OU Office phone number. Fill
+            out a good phone number to reach you.
           </Typography>
           <TextField
             required
@@ -146,7 +148,7 @@ export default function HealthQuestions(props) {
             <FormLabel className={classes.formLabel2} component='legend'>
               {`Are you a${
                 account_type === account_types.STUDENT ? ' student' : 'n'
-              } employee of OU who is planning on working today?`}
+              } employee of OU who is planning on working today, or a guest attending an OU special program?`}
             </FormLabel>
             <RadioGroup
               aria-label='Are you an employee?'
@@ -160,7 +162,7 @@ export default function HealthQuestions(props) {
             </RadioGroup>
             <Collapse in={student_employee} unmountOnExit>
               <Typography paragraph className={classes.emailLabel}>
-                Please provide your supervisor's email in the field below.
+                Please provide your supervisor's or program sponsor's email in the field below.
               </Typography>
               <TextField
                 fullWidth
@@ -180,7 +182,10 @@ export default function HealthQuestions(props) {
           <>
             <List>
               <ListItem>
-                <ListItemText primary="If you haven't already, upload your proof of vaccination to Graham Health Center's patient portal" />
+                <ListItemText
+                  primary='If you have not already done so, please upload your COVID-19 vaccine record to the Graham Health Center Secure Patient Portal, click here to be routed to the log in page.
+'
+                />
                 <ListItemSecondaryAction>
                   <IconButton
                     href='https://myhealth.oakland.edu/home.aspx'
