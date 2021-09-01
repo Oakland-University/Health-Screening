@@ -115,8 +115,7 @@ export default function HealthQuestions(props) {
         <FormControl component='fieldset'>
           <Typography paragraph className={classes.phoneLabel} component='legend'>
             The Graham Health Center might want to get in contact with you. Please provide a phone
-            number you can be reached at today. Please do not use your OU Office phone number. Fill
-            out a good phone number to reach you.
+            number you can be reached at today. Please do not use your OU Office phone number.
           </Typography>
           <TextField
             required
