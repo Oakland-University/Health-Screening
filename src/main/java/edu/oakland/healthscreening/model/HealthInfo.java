@@ -29,6 +29,7 @@ public class HealthInfo {
 
   public final boolean symptomatic;
   public final boolean exposed;
+  public final boolean isEmployee;
   public final Timestamp submissionTime;
   public final String supervisorEmail;
 

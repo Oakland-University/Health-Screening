@@ -120,7 +120,7 @@ public class HealthScreeningController {
       mailService.emailHealthCenter(info);
     }
 
-    if (info.supervisorEmail != null && !info.supervisorEmail.isEmpty()) {
+    if (info.isEmployee && (info.supervisorEmail != null && !info.supervisorEmail.isEmpty())) {
       mailService.emailSupervisor(info);
     }
 
