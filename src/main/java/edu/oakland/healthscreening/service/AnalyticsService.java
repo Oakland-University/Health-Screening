@@ -41,13 +41,15 @@ public class AnalyticsService {
     final List<AnalyticInfo> infoByType = postgres.getAnalyticsByType(cleanedInterval);
     EnumSet<AccountType> accountTypes = EnumSet.allOf(AccountType.class);
 
-    final AnalyticInfo totalInfo = infoByType.stream().reduce(new AnalyticInfo(), infoAccumulator);
+    final AnalyticInfo totalInfo =
+        infoByType.stream().reduce(AnalyticInfo.builder().build(), infoAccumulator);
 
     Map<AccountType, AnalyticInfo> subTypeAnalytics =
         infoByType.stream()
             .collect(Collectors.toMap(AnalyticInfo::getAccountType, Function.identity()));
 
-    accountTypes.forEach(type -> subTypeAnalytics.putIfAbsent(type, new AnalyticInfo()));
+    accountTypes.forEach(
+        type -> subTypeAnalytics.putIfAbsent(type, AnalyticInfo.builder().build()));
 
     return totalInfo.toBuilder().subTypeAnalytics(subTypeAnalytics).build();
   }
