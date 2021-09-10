@@ -3,23 +3,21 @@ package edu.oakland.healthscreening.dao;
 public class Constants {
 
   public static final String GET_ANONYMOUS_ANALYTIC_INFO =
-      (" SELECT                                                                           "
-              + "     null as account_type,                                               "
-              + "     COUNT(*) AS total,                                                  "
-              + "     SUM                                                                 "
-              + "     (CASE                                                               "
-              + "         WHEN is_feverish = TRUE                                         "
-              + "         OR is_coughing = TRUE                                           "
-              + "         OR is_exposed = TRUE THEN 1                                     "
-              + "         ELSE 0                                                          "
-              + "     END) AS sick,                                                       "
-              + "     SUM(CASE WHEN is_coughing = TRUE THEN 1 ELSE 0 END) AS coughing,    "
-              + "     SUM(CASE WHEN is_feverish = TRUE THEN 1 ELSE 0 END) AS feverish,    "
-              + "     SUM(CASE WHEN is_exposed = TRUE THEN 1 ELSE 0 END) AS exposed       "
-              + " FROM                                                                    "
-              + "     screening.anonymous_data                                            "
-              + " WHERE                                                                   "
-              + "     AGE(submission_time) <= ?::INTERVAL                                 ")
+      (" SELECT                                                                              "
+              + "     null as account_type,                                                  "
+              + "     COUNT(*) AS total,                                                     "
+              + "     SUM                                                                    "
+              + "     (CASE                                                                  "
+              + "         WHEN is_symptomatic = TRUE                                         "
+              + "         OR is_exposed = TRUE THEN 1                                        "
+              + "         ELSE 0                                                             "
+              + "     END) AS potentially_positive,                                          "
+              + "     SUM(CASE WHEN is_symptomatic = TRUE THEN 1 ELSE 0 END) AS symptomatic, "
+              + "     SUM(CASE WHEN is_exposed = TRUE THEN 1 ELSE 0 END) AS exposed          "
+              + " FROM                                                                       "
+              + "     screening.anonymous_data                                               "
+              + " WHERE                                                                      "
+              + "     AGE(submission_time) <= ?::INTERVAL                                    ")
           .replaceAll("\\s+", " ");
 
   public static final String GET_ANALYTICS_BY_TYPE =

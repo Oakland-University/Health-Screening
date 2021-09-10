@@ -30,14 +30,13 @@ public class AnalyticsService {
     final String cleanedInterval = amountToString(amount) + " " + sanitizedInterval(interval);
 
     final BinaryOperator<AnalyticInfo> infoAccumulator =
-        (info, subType) -> {
-          info.setCoughing(info.getCoughing() + subType.getCoughing());
-          info.setExposed(info.getExposed() + subType.getExposed());
-          info.setFeverish(info.getFeverish() + subType.getFeverish());
-          info.setSick(info.getSick() + subType.getSick());
-          info.setTotal(info.getTotal() + subType.getTotal());
-          return info;
-        };
+        (info, subType) ->
+            AnalyticInfo.builder()
+                .exposed(info.getExposed() + subType.getExposed())
+                .potentiallyPositive(
+                    info.getPotentiallyPositive() + subType.getPotentiallyPositive())
+                .total(info.getTotal() + subType.getTotal())
+                .build();
 
     final List<AnalyticInfo> infoByType = postgres.getAnalyticsByType(cleanedInterval);
     EnumSet<AccountType> accountTypes = EnumSet.allOf(AccountType.class);
@@ -50,9 +49,7 @@ public class AnalyticsService {
 
     accountTypes.forEach(type -> subTypeAnalytics.putIfAbsent(type, new AnalyticInfo()));
 
-    totalInfo.setSubTypeAnalytics(subTypeAnalytics);
-
-    return totalInfo;
+    return totalInfo.toBuilder().subTypeAnalytics(subTypeAnalytics).build();
   }
 
   private String amountToString(final int amount) {
