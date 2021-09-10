@@ -51,13 +51,12 @@ export default function App() {
   const [modal_open, set_modal_open] = useState(false)
 
   const day = new Date();
-  //let today = day.setDate(3);
-  let today = day.toDateString();
+  const today = day.toDateString();
   window.localStorage.setItem('Current Day', today);
 
   useEffect(() => {
     set_modal_open(
-      window.localStorage.getItem('today') !== 'not coming' || (modal_page === modal_pages.SUBMITTED && user_status !== user_statuses.NOT_COMPLETED)
+      !window.localStorage.getItem('today') || (modal_page === modal_pages.SUBMITTED && user_status !== user_statuses.NOT_COMPLETED)
     )
   }, [user_status, modal_page])
 

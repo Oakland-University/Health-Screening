@@ -152,7 +152,7 @@ export default function reducer(state = initial_state, action) {
 
         if (all_questions_non_null(state) && can_submit) {
 
-          window.localStorage.setItem('today', 'not coming');
+          window.localStorage.setItem('today', 'completed');
 
           new_user_status = allowed_on_campus(state)
             ? user_statuses.ALLOWED
