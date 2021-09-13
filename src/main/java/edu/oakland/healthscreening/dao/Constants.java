@@ -11,7 +11,7 @@ public class Constants {
               + "         WHEN is_symptomatic = TRUE                                         "
               + "         OR is_exposed = TRUE THEN 1                                        "
               + "         ELSE 0                                                             "
-              + "     END) AS potentially_positive,                                            "
+              + "     END) AS potentially_positive,                                          "
               + "     SUM(CASE WHEN is_symptomatic = TRUE THEN 1 ELSE 0 END) AS symptomatic, "
               + "     SUM(CASE WHEN is_exposed = TRUE THEN 1 ELSE 0 END) AS exposed          "
               + " FROM                                                                       "
