@@ -11,7 +11,7 @@ public class Constants {
               + "         WHEN is_symptomatic = TRUE                                         "
               + "         OR is_exposed = TRUE THEN 1                                        "
               + "         ELSE 0                                                             "
-              + "     END) AS potentially_positive,                                          "
+              + "     END) AS potentially_positive,                                            "
               + "     SUM(CASE WHEN is_symptomatic = TRUE THEN 1 ELSE 0 END) AS symptomatic, "
               + "     SUM(CASE WHEN is_exposed = TRUE THEN 1 ELSE 0 END) AS exposed          "
               + " FROM                                                                       "
@@ -21,25 +21,23 @@ public class Constants {
           .replaceAll("\\s+", " ");
 
   public static final String GET_ANALYTICS_BY_TYPE =
-      (" select                                                                       "
-              + "   account_type,                                                     "
-              + "   COUNT(*) as total,                                                "
-              + "   SUM                                                               "
-              + "   (case                                                             "
-              + "     when is_feverish = true                                         "
-              + "     or is_coughing = true                                           "
-              + "     or is_exposed = true then 1                                     "
-              + "     else 0                                                          "
-              + "   end) as sick,                                                     "
-              + "   SUM(case when is_coughing = true then 1 else 0 end) as coughing,  "
-              + "   SUM(case when is_feverish = true then 1 else 0 end) as feverish,  "
-              + "   SUM(case when is_exposed = true then 1 else 0 end) as exposed     "
-              + " from                                                                "
-              + "     screening.anonymous_data                                        "
-              + " where                                                               "
-              + "   AGE(submission_time) <= ?::INTERVAL                               "
-              + " group by                                                            "
-              + "   account_type                                                     ")
+      (" select                                                                              "
+              + "   account_type,                                                            "
+              + "   COUNT(*) as total,                                                       "
+              + "   SUM                                                                      "
+              + "     (CASE                                                                  "
+              + "         WHEN is_symptomatic = TRUE                                         "
+              + "         OR is_exposed = TRUE THEN 1                                        "
+              + "         ELSE 0                                                             "
+              + "     END) AS potentially_positive,                                          "
+              + "     SUM(CASE WHEN is_symptomatic = TRUE THEN 1 ELSE 0 END) AS symptomatic, "
+              + "     SUM(CASE WHEN is_exposed = TRUE THEN 1 ELSE 0 END) AS exposed          "
+              + " from                                                                       "
+              + "     screening.anonymous_data                                               "
+              + " where                                                                      "
+              + "   AGE(submission_time) <= ?::INTERVAL                                      "
+              + " group by                                                                   "
+              + "   account_type                                                             ")
           .replaceAll("\\s+", " ");
 
   public static final String GET_ALL_RESPONSES =
