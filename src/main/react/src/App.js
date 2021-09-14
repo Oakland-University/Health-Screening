@@ -49,10 +49,8 @@ export default function App() {
   const user_status = useSelector((state) => state.user_status)
 
   const [modal_open, set_modal_open] = useState(false)
-
-  const day = new Date();
-  const today = day.toDateString();
-  window.localStorage.setItem('Current Day', today);
+  
+  window.localStorage.setItem('Current Day', new Date().toDateString());
 
   useEffect(() => {
     set_modal_open(
