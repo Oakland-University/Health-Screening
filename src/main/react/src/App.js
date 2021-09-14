@@ -20,7 +20,7 @@ import {
   press_modal_button,
   close_modal,
 } from './actions/main-actions'
-import { modal_pages, user_statuses } from './utils/enums'
+import { modal_pages } from './utils/enums'
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -56,7 +56,7 @@ export default function App() {
 
   useEffect(() => {
     set_modal_open(
-      !window.localStorage.getItem('Today') || (modal_page === modal_pages.SUBMITTED && user_status !== user_statuses.NOT_COMPLETED)
+      !window.localStorage.getItem('Today') || modal_page === modal_pages.SUBMITTED
     )
   }, [user_status, modal_page])
 
