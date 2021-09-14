@@ -56,7 +56,7 @@ export default function App() {
 
   useEffect(() => {
     set_modal_open(
-      !window.localStorage.getItem('today') || (modal_page === modal_pages.SUBMITTED && user_status !== user_statuses.NOT_COMPLETED)
+      !window.localStorage.getItem('Today') || (modal_page === modal_pages.SUBMITTED && user_status !== user_statuses.NOT_COMPLETED)
     )
   }, [user_status, modal_page])
 
