@@ -49,7 +49,7 @@ let dateClicked = new Date();
 if (window.localStorage.getItem('Current Day') !== window.localStorage.getItem('Screening Decline Date')){
   window.localStorage.removeItem('Current Day');
   window.localStorage.removeItem('Screening Decline Date');
-  window.localStorage.removeItem('Today');
+  window.localStorage.removeItem('mySail');
 }
 
 export default function reducer(state = initial_state, action) {
@@ -122,10 +122,10 @@ export default function reducer(state = initial_state, action) {
               ? modal_pages.USER_INFO
               : modal_pages.HEALTH_SCREENING
           new_user_status = user_statuses.NOT_COMPLETED
-          window.localStorage.removeItem('Today');
+          window.localStorage.removeItem('mySail');
         } else if (state.coming_to_campus === false) {
           new_user_status = user_statuses.NOT_COMING
-          window.localStorage.setItem('Today', 'not coming');
+          window.localStorage.setItem('mySail', 'not coming');
           window.localStorage.setItem('Screening Decline Date', dateClicked.toDateString());
         }
       } else if (current_modal_page === modal_pages.USER_INFO) {
@@ -154,7 +154,7 @@ export default function reducer(state = initial_state, action) {
 
         if (all_questions_non_null(state) && can_submit) {
 
-          window.localStorage.setItem('Today', 'completed');
+          window.localStorage.setItem('mySail', 'completed');
 
           new_user_status = allowed_on_campus(state)
             ? user_statuses.ALLOWED
