@@ -54,7 +54,7 @@ export default function App() {
 
   useEffect(() => {
     set_modal_open(
-      !window.localStorage.getItem('mySail') || modal_page === modal_pages.SUBMITTED
+      !window.localStorage.getItem('mySail-today') || modal_page === modal_pages.SUBMITTED
     )
   }, [user_status, modal_page])
 
