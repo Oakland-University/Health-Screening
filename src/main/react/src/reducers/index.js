@@ -46,9 +46,9 @@ const email_expression = /.+@.+\..+/
 const supervisor_email_expression = /.+@oakland.edu/
 let dateClicked = new Date();
 
-if (window.localStorage.getItem('Current Day') !== window.localStorage.getItem('Screening Decline Date')){
-  window.localStorage.removeItem('Current Day');
-  window.localStorage.removeItem('Screening Decline Date');
+if (window.localStorage.getItem('mySail-Current Day') !== window.localStorage.getItem('mySail-Screening Decline Date')){
+  window.localStorage.removeItem('mySail-Current Day');
+  window.localStorage.removeItem('mySail-Screening Decline Date');
   window.localStorage.removeItem('mySail-today');
 }
 
@@ -126,7 +126,7 @@ export default function reducer(state = initial_state, action) {
         } else if (state.coming_to_campus === false) {
           new_user_status = user_statuses.NOT_COMING
           window.localStorage.setItem('mySail-today', 'not coming');
-          window.localStorage.setItem('Screening Decline Date', dateClicked.toDateString());
+          window.localStorage.setItem('mySail-Screening Decline Date', dateClicked.toDateString());
         }
       } else if (current_modal_page === modal_pages.USER_INFO) {
         const name_error = !state.name

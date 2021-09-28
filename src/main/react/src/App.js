@@ -50,7 +50,7 @@ export default function App() {
 
   const [modal_open, set_modal_open] = useState(false)
   
-  window.localStorage.setItem('Current Day', new Date().toDateString());
+  window.localStorage.setItem('mySail-Current Day', new Date().toDateString());
 
   useEffect(() => {
     set_modal_open(
