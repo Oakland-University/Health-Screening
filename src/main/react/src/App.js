@@ -20,7 +20,7 @@ import {
   press_modal_button,
   close_modal,
 } from './actions/main-actions'
-import { modal_pages, user_statuses } from './utils/enums'
+import { modal_pages } from './utils/enums'
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -49,10 +49,12 @@ export default function App() {
   const user_status = useSelector((state) => state.user_status)
 
   const [modal_open, set_modal_open] = useState(false)
+  
+  window.localStorage.setItem('mySail-Current Day', new Date().toDateString());
 
   useEffect(() => {
     set_modal_open(
-      user_status === user_statuses.NOT_COMPLETED || modal_page === modal_pages.SUBMITTED
+      !window.localStorage.getItem('mySail-today') || modal_page === modal_pages.SUBMITTED
     )
   }, [user_status, modal_page])
 

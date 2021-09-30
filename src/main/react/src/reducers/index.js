@@ -44,6 +44,13 @@ const initial_state = {
 
 const email_expression = /.+@.+\..+/
 const supervisor_email_expression = /.+@oakland.edu/
+let dateClicked = new Date();
+
+if (window.localStorage.getItem('mySail-Current Day') !== window.localStorage.getItem('mySail-Screening Decline Date')){
+  window.localStorage.removeItem('mySail-Current Day');
+  window.localStorage.removeItem('mySail-Screening Decline Date');
+  window.localStorage.removeItem('mySail-today');
+}
 
 export default function reducer(state = initial_state, action) {
   switch (action.type) {
@@ -115,9 +122,11 @@ export default function reducer(state = initial_state, action) {
               ? modal_pages.USER_INFO
               : modal_pages.HEALTH_SCREENING
           new_user_status = user_statuses.NOT_COMPLETED
+          window.localStorage.removeItem('mySail-today');
         } else if (state.coming_to_campus === false) {
-          //TODO: Save not coming in local storage, just to be nice
           new_user_status = user_statuses.NOT_COMING
+          window.localStorage.setItem('mySail-today', 'not coming');
+          window.localStorage.setItem('mySail-Screening Decline Date', dateClicked.toDateString());
         }
       } else if (current_modal_page === modal_pages.USER_INFO) {
         const name_error = !state.name
@@ -144,6 +153,9 @@ export default function reducer(state = initial_state, action) {
           (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
         if (all_questions_non_null(state) && can_submit) {
+
+          window.localStorage.setItem('mySail-today', 'completed');
+
           new_user_status = allowed_on_campus(state)
             ? user_statuses.ALLOWED
             : user_statuses.DISALLOWED
