@@ -1,62 +1,12 @@
 -- noinspection SqlNoDataSourceInspectionForFile
 
-alter table screening.health_screening
-    add column is_symptomatic boolean,
-    alter column is_coughing drop not null,
-    alter column is_feverish drop not null;
-
-alter table screening.analytics
-    add column is_symptomatic boolean,
-    alter column is_coughing drop not null,
-    alter column is_feverish drop not null;
-
-alter table screening.archived_health_screening
-    add column is_symptomatic boolean,
-    alter column is_coughing drop not null,
-    alter column is_feverish drop not null;
-
-CREATE OR REPLACE VIEW screening.anonymous_data AS
+INSERT INTO screening.previous_information
+    (email, supervisor_email)
 SELECT
-    id,
-    account_type,
-    is_coughing,
-    is_feverish,
-    is_exposed,
-    is_short_of_breath,
-    has_sore_throat,
-    is_congested,
-    has_muscle_aches,
-    has_lost_taste_smell,
-    has_headache,
-    has_diarrhea,
-    is_nauseous,
-    has_tested_positive,
-    submission_time,
-    is_fully_vaccinated,
-    is_symptomatic
+    email,
+    supervisor_email
 FROM
-    screening.health_screening
-UNION
-SELECT
-    id,
-    account_type,
-    is_coughing,
-    is_feverish,
-    is_exposed,
-    is_short_of_breath,
-    has_sore_throat,
-    is_congested,
-    has_muscle_aches,
-    has_lost_taste_smell,
-    has_headache,
-    has_diarrhea,
-    is_nauseous,
-    has_tested_positive,
-    submission_time,
-    is_fully_vaccinated,
-    is_symptomatic
-FROM
-    screening.analytics;
+    screening.employee_supervisor;
 
 
 -- previous three statements have been validated
