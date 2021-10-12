@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS screening.health_screening (
     email text not null,
     phone text,
     name text,
-    is_coughing boolean not null,
-    is_feverish boolean not null,
+    is_coughing boolean,
+    is_feverish boolean,
     is_exposed boolean not null,
     is_short_of_breath boolean,
     has_sore_throat boolean,
@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS screening.health_screening (
     has_diarrhea boolean,
     is_nauseous boolean,
     is_fully_vaccinated boolean,
+    is_symptomatic boolean,
     has_tested_positive boolean,
     submission_time timestamp not null default now(),
     supervisor_email text,
@@ -36,8 +37,8 @@ CREATE TABLE IF NOT EXISTS screening.archived_health_screening (
     email text not null,
     phone text,
     name text,
-    is_coughing boolean not null,
-    is_feverish boolean not null,
+    is_coughing boolean,
+    is_feverish boolean,
     is_exposed boolean not null,
     is_short_of_breath boolean,
     has_sore_throat boolean,
@@ -48,6 +49,7 @@ CREATE TABLE IF NOT EXISTS screening.archived_health_screening (
     has_diarrhea boolean,
     is_nauseous boolean,
     is_fully_vaccinated boolean,
+    is_symptomatic boolean,
     has_tested_positive boolean,
     submission_time timestamp not null default now(),
     archived_time timestamp not null default now(),
@@ -59,8 +61,8 @@ CREATE TABLE IF NOT EXISTS screening.archived_health_screening (
 CREATE TABLE IF NOT EXISTS screening.analytics (
     id serial primary key,
     account_type screening.account_type not null default 'guest',
-    is_coughing boolean not null,
-    is_feverish boolean not null,
+    is_coughing boolean,
+    is_feverish boolean,
     is_exposed boolean not null,
     is_short_of_breath boolean,
     has_sore_throat boolean,
@@ -71,39 +73,17 @@ CREATE TABLE IF NOT EXISTS screening.analytics (
     has_diarrhea boolean,
     is_nauseous boolean,
     is_fully_vaccinated boolean,
+    is_symptomatic boolean,
     has_tested_positive boolean,
     submission_time timestamp not null default now(),
     notes text
 );
 
-CREATE TABLE IF NOT EXISTS screening.pledge (
-    id serial primary key,
-    email text,
-    face_covering boolean,
-    good_hygiene boolean,
-    distancing boolean,
-    submission_time timestamp not null default now()
-);
-
-
-CREATE TABLE IF NOT EXISTS screening.employee_supervisor (
-    email text primary key,
-    supervisor_email text not null
-);
-
 CREATE TABLE IF NOT EXISTS screening.previous_information (
     email text primary key,
-    supervisor_email text not null,
+    supervisor_email text,
     phone text
 );
-
-INSERT INTO screening.previous_information 
-    (email, supervisor_email)
-SELECT
-    email,
-    supervisor_email
-FROM 
-    screening.employee_supervisor;
 
 CREATE OR REPLACE VIEW screening.anonymous_data AS
 SELECT
@@ -120,9 +100,10 @@ SELECT
     has_headache,
     has_diarrhea,
     is_nauseous,
-    is_fully_vaccinated,
     has_tested_positive,
-    submission_time
+    submission_time,
+    is_fully_vaccinated,
+    is_symptomatic
 FROM
     screening.health_screening
 UNION
@@ -140,19 +121,23 @@ SELECT
     has_headache,
     has_diarrhea,
     is_nauseous,
-    is_fully_vaccinated,
     has_tested_positive,
-    submission_time
+    submission_time,
+    is_fully_vaccinated,
+    is_symptomatic
 FROM
     screening.analytics;
 
 
-create or replace function screening.save_health_info(in_account_type text, in_pidm text, in_email text, in_phone text,
-            in_name text, in_is_coughing boolean, in_is_feverish boolean, in_is_exposed boolean,
-            in_supervisor_email text, in_is_is_short_of_breath boolean, in_has_sore_throat boolean,
-            in_is_congested boolean, in_has_muscle_aches boolean, in_has_lost_taste_smell boolean,
-            in_has_headache boolean, in_has_diarrhea boolean, in_is_nauseous boolean, in_is_fully_vaccinated boolean,
-            in_has_tested_positive boolean) returns void as $$
+create or replace function screening.save_health_info(
+            in_account_type text,
+            in_pidm text,
+            in_email text,
+            in_phone text,
+            in_name text,
+            in_is_exposed boolean,
+            in_supervisor_email text,
+            in_is_symptomatic boolean) returns void as $$
 declare
     old_supervisor_email text;
     old_phone text;
@@ -170,24 +155,10 @@ begin
         email,
         phone,
         name,
-        is_coughing,
-        is_feverish,
         is_exposed,
-        is_short_of_breath,
-        has_sore_throat,
-        is_congested,
-        has_muscle_aches,
-        has_lost_taste_smell,
-        has_headache,
-        has_diarrhea,
-        is_nauseous,
-        has_tested_positive,
         submission_time,
         now() as archived_time,
-        supervisor_email,
-        supervisor_name,
-        supervisor_phone,
-        is_fully_vaccinated,
+        supervisor_email
     from
         screening.health_screening
     where
@@ -211,14 +182,9 @@ begin
     -- Insert into the health-screening table
 
     insert into screening.health_screening
-        (account_type, pidm, email, name, phone, is_coughing, is_feverish, is_exposed,
-        is_short_of_breath, has_sore_throat, is_congested, has_muscle_aches, has_lost_taste_smell,
-        has_headache, has_diarrhea, is_nauseous, is_fully_vaccinated, has_tested_positive)
+        (account_type, pidm, email, name, phone, is_exposed, is_symptomatic)
     values
-        (cast(in_account_type as screening.account_type), in_pidm, in_email, in_name, in_phone, in_is_coughing,
-            in_is_feverish, in_is_exposed, in_is_is_short_of_breath, in_has_sore_throat, in_is_congested,
-            in_has_muscle_aches, in_has_lost_taste_smell, in_has_headache, in_has_diarrhea, in_is_nauseous,
-            in_is_fully_vaccinated, in_has_tested_positive);
+        (cast(in_account_type as screening.account_type), in_pidm, in_email, in_name, in_phone, in_is_exposed, in_in_symptomatic);
 
 -- Update supervisor email and phone number if it doesn't match the current record
 
@@ -233,32 +199,20 @@ begin
     where
         previous_information.email = in_email;
 
+    -- phone number is a required field, so if no phone exists, this must be the person's first record
     if (old_phone ISNULL) then 
         insert into screening.previous_information
-            (email, phone)
+            (email, phone, supervisor_email)
         values
-            (in_email, in_phone);
-    elsif (old_phone <> in_phone) then 
+            (in_email, in_phone, in_supervisor_email);
+    -- if either phone or supervisor_email is updated, we'll update both using COALESCE to make sure we don't
+    -- accidentally write a null value
+    elsif (old_phone is distinct from in_phone or old_supervisor_email is distinct from in_supervisor_email) then
         update
             screening.previous_information
         set
-            phone = in_phone
-        where
-            previous_information.email = in_email;
-    end if;     
-
-    if (old_supervisor_email ISNULL and in_supervisor_email IS NOT NULL) then
-        update 
-            screening.previous_information
-        set
-            supervisor_email = in_supervisor_email
-        where
-            previous_information.email = in_email;
-    elsif (old_supervisor_email <> in_supervisor_email and in_supervisor_email IS NOT NULL) then
-        update
-            screening.previous_information
-        set
-            supervisor_email = in_supervisor_email
+            phone = COALESCE(in_phone, old_phone),
+            supervisor_email = COALESCE(in_supervisor_email, old_supervisor_email)
         where
             previous_information.email = in_email;
     end if;
