@@ -108,7 +108,7 @@ export default function reducer(state = initial_state, action) {
       return { ...state, tested_positive: action.payload }
     }
     case UPDATE_PREVIOUS_INFO: {
-      return { ...state, phone: action.payload, phone_error: false, supervisor_email: action.payload, supervisor_email_error: false }
+      return { ...state, phone: action.payload.phone, phone_error: false, supervisor_email: action.payload.supervisor_email, supervisor_email_error: false }
     }
 
     case NEXT_MODAL_PAGE: {

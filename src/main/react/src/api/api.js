@@ -71,7 +71,7 @@ export const get_previous_info = async () => {
 
   try {
     const response = await fetch(
-      '/health-screening/api/v1/previous-info',
+      '/health-screening/api/v1/previous-information',
       {
         credentials: 'include',
         headers: {
