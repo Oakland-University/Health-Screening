@@ -47,10 +47,9 @@ const email_expression = /.+@.+\..+/
 const supervisor_email_expression = /.+@oakland.edu/
 let dateClicked = new Date();
 
-if (window.localStorage.getItem('mySail-Current Day') !== window.localStorage.getItem('mySail-Screening Decline Date')){
-  window.localStorage.removeItem('mySail-Current Day');
+if (window.localStorage.getItem('mysail-completed-hs') !== window.localStorage.getItem('mySail-Screening Decline Date')){
   window.localStorage.removeItem('mySail-Screening Decline Date');
-  window.localStorage.removeItem('mySail-today');
+  window.localStorage.removeItem('mysail-completed-hs');
 }
 
 export default function reducer(state = initial_state, action) {
@@ -126,10 +125,10 @@ export default function reducer(state = initial_state, action) {
               ? modal_pages.USER_INFO
               : modal_pages.HEALTH_SCREENING
           new_user_status = user_statuses.NOT_COMPLETED
-          window.localStorage.removeItem('mySail-today');
+          window.localStorage.removeItem('mysail-completed-hs');
         } else if (state.coming_to_campus === false) {
           new_user_status = user_statuses.NOT_COMING
-          window.localStorage.setItem('mySail-today', 'not coming');
+          window.localStorage.setItem('mysail-completed-hs', 'not coming');
           window.localStorage.setItem('mySail-Screening Decline Date', dateClicked.toDateString());
         }
       } else if (current_modal_page === modal_pages.USER_INFO) {
@@ -158,7 +157,7 @@ export default function reducer(state = initial_state, action) {
 
         if (all_questions_non_null(state) && can_submit) {
 
-          window.localStorage.setItem('mySail-today', 'completed');
+          window.localStorage.setItem('mysail-completed-hs', 'completed');
 
           new_user_status = allowed_on_campus(state)
             ? user_statuses.ALLOWED
