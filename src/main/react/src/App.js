@@ -20,7 +20,7 @@ import {
   press_modal_button,
   close_modal,
 } from './actions/main-actions'
-import { modal_pages } from './utils/enums'
+import { modal_pages, WEB_STORAGE_KEY } from './utils/enums'
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -52,7 +52,7 @@ export default function App() {
   
   useEffect(() => {
     set_modal_open(
-      !window.localStorage.getItem('mysail-not-coming') || modal_page === modal_pages.SUBMITTED
+      !window.localStorage.getItem(WEB_STORAGE_KEY) || modal_page === modal_pages.SUBMITTED
     )
   }, [user_status, modal_page])
 

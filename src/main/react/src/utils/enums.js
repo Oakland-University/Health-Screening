@@ -36,3 +36,5 @@ export const actions = {
   UPDATE_SYMPTOMATIC: 'update-symptomatic',
   UPDATE_PREVIOUS_INFO: 'update-previous-info',
 }
+
+export const WEB_STORAGE_KEY = 'mysail-hs-not-coming'
