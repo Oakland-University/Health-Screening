@@ -47,7 +47,7 @@ const email_expression = /.+@.+\..+/
 const supervisor_email_expression = /.+@oakland.edu/
 let dateClicked = new Date();
 
-if (window.localStorage.getItem('mysail-completed-hs') !== window.localStorage.getItem('mySail-Screening Decline Date')){
+if (window.localStorage.getItem('mysail-decline-date') !== window.localStorage.getItem('mySail-Screening Decline Date')){
   window.localStorage.removeItem('mySail-Screening Decline Date');
   window.localStorage.removeItem('mysail-completed-hs');
 }

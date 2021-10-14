@@ -50,11 +50,9 @@ export default function App() {
 
   const [modal_open, set_modal_open] = useState(false)
   
-  window.localStorage.setItem('mysail-completed-hs', new Date().toDateString());
-
   useEffect(() => {
     set_modal_open(
-      !window.localStorage.getItem('mysail-completed-hs') || modal_page === modal_pages.SUBMITTED
+      !window.localStorage.getItem('mysail-not-coming') || modal_page === modal_pages.SUBMITTED
     )
   }, [user_status, modal_page])
 
