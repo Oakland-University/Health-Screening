@@ -148,6 +148,7 @@ begin
 
     insert into
         screening.archived_health_screening
+        (id, account_type, pidm, email, phone, name, is_exposed, submission_time, archived_time, supervisor_email)
     select
         id,
         account_type,
@@ -184,7 +185,7 @@ begin
     insert into screening.health_screening
         (account_type, pidm, email, name, phone, is_exposed, is_symptomatic)
     values
-        (cast(in_account_type as screening.account_type), in_pidm, in_email, in_name, in_phone, in_is_exposed, in_in_symptomatic);
+        (cast(in_account_type as screening.account_type), in_pidm, in_email, in_name, in_phone, in_is_exposed, in_is_symptomatic);
 
 -- Update supervisor email and phone number if it doesn't match the current record
 
@@ -200,11 +201,13 @@ begin
         previous_information.email = in_email;
 
     -- phone number is a required field, so if no phone exists, this must be the person's first record
-    if (old_phone ISNULL) then 
+    -- That above assumption isn't true for initial runs :(
+    if (old_phone ISNULL and old_supervisor_email ISNULL) then
         insert into screening.previous_information
             (email, phone, supervisor_email)
         values
             (in_email, in_phone, in_supervisor_email);
+
     -- if either phone or supervisor_email is updated, we'll update both using COALESCE to make sure we don't
     -- accidentally write a null value
     elsif (old_phone is distinct from in_phone or old_supervisor_email is distinct from in_supervisor_email) then

@@ -1,5 +1,14 @@
 -- noinspection SqlNoDataSourceInspectionForFile
 
+CREATE TABLE IF NOT EXISTS screening.previous_information (
+    email text primary key,
+    supervisor_email text,
+    phone text
+);
+
+
+--psql -d uportal5dev -U uportaladmin -c "select 'drop function ' || oid::regprocedure || ';' from pg_proc where proname = 'save_health_info'" -t >> drop-functions.sql
+
 INSERT INTO screening.previous_information
     (email, supervisor_email)
 SELECT
@@ -11,10 +20,18 @@ FROM
 
 -- previous three statements have been validated
 
-create or replace function screening.save_health_info(in_account_type text, in_pidm text, in_email text, in_phone text,
-            in_name text, in_is_exposed boolean, in_supervisor_email text, in_is_symptomatic boolean) returns void as $$
+create or replace function screening.save_health_info(
+            in_account_type text,
+            in_pidm text,
+            in_email text,
+            in_phone text,
+            in_name text,
+            in_is_exposed boolean,
+            in_supervisor_email text,
+            in_is_symptomatic boolean) returns void as $$
 declare
     old_supervisor_email text;
+    old_phone text;
     update_count integer;
 begin
 
@@ -22,6 +39,7 @@ begin
 
     insert into
         screening.archived_health_screening
+        (id, account_type, pidm, email, phone, name, is_exposed, submission_time, archived_time, supervisor_email)
     select
         id,
         account_type,
@@ -29,25 +47,10 @@ begin
         email,
         phone,
         name,
-        is_coughing,
-        is_feverish,
         is_exposed,
-        is_short_of_breath,
-        has_sore_throat,
-        is_congested,
-        has_muscle_aches,
-        has_lost_taste_smell,
-        has_headache,
-        has_diarrhea,
-        is_nauseous,
-        has_tested_positive,
         submission_time,
         now() as archived_time,
-        supervisor_email,
-        supervisor_name,
-        supervisor_phone,
-        is_fully_vaccinated,
-        is_symptomatic
+        supervisor_email
     from
         screening.health_screening
     where
@@ -75,29 +78,35 @@ begin
     values
         (cast(in_account_type as screening.account_type), in_pidm, in_email, in_name, in_phone, in_is_exposed, in_is_symptomatic);
 
--- Update supervisor email if it doesn't match the current record
+-- Update supervisor email and phone number if it doesn't match the current record
 
     select
+        phone,
         supervisor_email
     into
+        old_phone,
         old_supervisor_email
     from
-        screening.employee_supervisor
+        screening.previous_information
     where
-        employee_supervisor.email = in_email;
+        previous_information.email = in_email;
 
-    if old_supervisor_email ISNULL and in_supervisor_email IS NOT NULL then
-      insert into screening.employee_supervisor
-        (email, supervisor_email)
-      values
-        (in_email, in_supervisor_email);
-    elseif in_supervisor_email <> old_supervisor_email and in_supervisor_email IS NOT NULL then
+    -- phone number is a required field, so if no phone exists, this must be the person's first record
+    if (old_phone ISNULL) then
+        insert into screening.previous_information
+            (email, phone, supervisor_email)
+        values
+            (in_email, in_phone, in_supervisor_email);
+    -- if either phone or supervisor_email is updated, we'll update both using COALESCE to make sure we don't
+    -- accidentally write a null value
+    elsif (old_phone is distinct from in_phone or old_supervisor_email is distinct from in_supervisor_email) then
         update
-            screening.employee_supervisor
+            screening.previous_information
         set
-            supervisor_email = in_supervisor_email
+            phone = COALESCE(in_phone, old_phone),
+            supervisor_email = COALESCE(in_supervisor_email, old_supervisor_email)
         where
-            employee_supervisor.email = in_email;
+            previous_information.email = in_email;
     end if;
 end;
 $$ language plpgsql;
