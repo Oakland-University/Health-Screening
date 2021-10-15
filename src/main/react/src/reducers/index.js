@@ -1,4 +1,4 @@
-import { actions, user_statuses, modal_pages, account_types } from '../utils/enums'
+import { actions, user_statuses, modal_pages, account_types, WEB_STORAGE_KEY } from '../utils/enums'
 import { allowed_on_campus, all_questions_non_null } from '../utils/functions'
 
 /*global PHONE*/
@@ -21,7 +21,7 @@ const {
   NEXT_MODAL_PAGE,
   UPDATE_TESTED_POSITIVE,
   UPDATE_SYMPTOMATIC,
-  UPDATE_PREVIOUS_INFO
+  UPDATE_PREVIOUS_INFO,
 } = actions
 
 const initial_state = {
@@ -45,12 +45,9 @@ const initial_state = {
 
 const email_expression = /.+@.+\..+/
 const supervisor_email_expression = /.+@oakland.edu/
-let dateClicked = new Date();
 
-if (window.localStorage.getItem('mySail-Current Day') !== window.localStorage.getItem('mySail-Screening Decline Date')){
-  window.localStorage.removeItem('mySail-Current Day');
-  window.localStorage.removeItem('mySail-Screening Decline Date');
-  window.localStorage.removeItem('mySail-today');
+if (window.localStorage.getItem(WEB_STORAGE_KEY) !== new Date().toDateString()) {
+  window.localStorage.removeItem(WEB_STORAGE_KEY)
 }
 
 export default function reducer(state = initial_state, action) {
@@ -108,7 +105,13 @@ export default function reducer(state = initial_state, action) {
       return { ...state, tested_positive: action.payload }
     }
     case UPDATE_PREVIOUS_INFO: {
-      return { ...state, phone: action.payload, phone_error: false, supervisor_email: action.payload, supervisor_email_error: false }
+      return {
+        ...state,
+        phone: action.payload.phone,
+        phone_error: false,
+        supervisor_email: action.payload.supervisor_email,
+        supervisor_email_error: false,
+      }
     }
 
     case NEXT_MODAL_PAGE: {
@@ -126,11 +129,9 @@ export default function reducer(state = initial_state, action) {
               ? modal_pages.USER_INFO
               : modal_pages.HEALTH_SCREENING
           new_user_status = user_statuses.NOT_COMPLETED
-          window.localStorage.removeItem('mySail-today');
         } else if (state.coming_to_campus === false) {
           new_user_status = user_statuses.NOT_COMING
-          window.localStorage.setItem('mySail-today', 'not coming');
-          window.localStorage.setItem('mySail-Screening Decline Date', dateClicked.toDateString());
+          window.localStorage.setItem(WEB_STORAGE_KEY, new Date().toDateString())
         }
       } else if (current_modal_page === modal_pages.USER_INFO) {
         const name_error = !state.name
@@ -157,8 +158,7 @@ export default function reducer(state = initial_state, action) {
           (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
         if (all_questions_non_null(state) && can_submit) {
-
-          window.localStorage.setItem('mySail-today', 'completed');
+          window.localStorage.setItem(WEB_STORAGE_KEY, new Date().toDateString())
 
           new_user_status = allowed_on_campus(state)
             ? user_statuses.ALLOWED

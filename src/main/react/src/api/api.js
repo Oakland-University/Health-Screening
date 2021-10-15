@@ -59,29 +59,26 @@ export const get_user_submission = async () => {
 }
 
 export const get_previous_info = async () => {
-  if (IS_DEMO) { 
+  if (IS_DEMO) {
     let previous_info = {
-      supervisorEmail: "supervisor@oakland.edu",
-      phoneNumber: "5555555555"
+      supervisorEmail: 'supervisor@oakland.edu',
+      phoneNumber: '5555555555',
     }
     return {
-      previous_info
+      previous_info,
     }
   }
 
   try {
-    const response = await fetch(
-      '/health-screening/api/v1/previous-info',
-      {
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        method: 'GET',
-      }
-    )
+    const response = await fetch('/health-screening/api/v1/previous-information', {
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      method: 'GET',
+    })
     return await response.json()
   } catch (err) {
     return err
