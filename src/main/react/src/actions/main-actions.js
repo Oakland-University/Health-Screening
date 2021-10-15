@@ -1,4 +1,4 @@
-import { get_user_submission, submit_form, send_pledge_info, get_previous_info } from '../api/api'
+import { get_user_submission, submit_form, get_previous_info } from '../api/api'
 
 import { actions, user_statuses, account_types, modal_pages } from '../utils/enums'
 import { allowed_on_campus, all_questions_non_null } from '../utils/functions'
