@@ -204,7 +204,7 @@ public class HealthScreeningController {
   }
 
   @GetMapping("/previous-information")
-  public PreviousInformation getPreviousInformation(HttpServletRequest request){
+  public Optional<PreviousInformation> getPreviousInformation(HttpServletRequest request) throws SoffitAuthException {
     return postgres.getPreviousInformation(authorizer.getClaimFromJWE(request, "mail").asString());
   }
 }
