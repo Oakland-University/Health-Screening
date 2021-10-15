@@ -90,6 +90,8 @@ export const press_modal_button = () => (dispatch, getState) => {
 
     const is_employee = account_type === account_types.EMPLOYEE || student_employee
     const can_submit = (is_employee && supervisor_email.length !== 0) || student_employee !== null
+    const supervisor = is_employee ? supervisor_email : ''
+
 
     if (all_questions_non_null(getState()) && can_submit) {
       submit_form({
@@ -97,7 +99,7 @@ export const press_modal_button = () => (dispatch, getState) => {
         email,
         phone,
         account_type,
-        supervisor_email,
+        supervisor_email: supervisor,
         exposed,
         symptomatic,
         is_employee,

@@ -46,7 +46,7 @@ const initial_state = {
 const email_expression = /.+@.+\..+/
 const supervisor_email_expression = /.+@oakland.edu/
 
-if (window.localStorage.getItem(WEB_STORAGE_KEY) === new Date().toDateString()){
+if (window.localStorage.getItem(WEB_STORAGE_KEY) !== new Date().toDateString()){
   window.localStorage.removeItem(WEB_STORAGE_KEY);
 }
 
