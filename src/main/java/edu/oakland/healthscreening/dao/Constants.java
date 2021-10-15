@@ -60,7 +60,7 @@ public class Constants {
               + "     email = ?                     ")
           .replaceAll("\\s+", " ");
 
-  public static final String GET_PREVIOUS_INFORMATION = 
+  public static final String GET_PREVIOUS_INFORMATION =
       (" SELECT                                       "
               + "      supervisor_email,              "
               + "      phone                          "
@@ -68,7 +68,7 @@ public class Constants {
               + "      screening.previous_information "
               + " WHERE                               "
               + "       email = ?                     ")
-           .replaceAll("\\s+", " ");
+          .replaceAll("\\s+", " ");
 
   public static final String GET_RECENT_INFO =
       (" SELECT                                              "

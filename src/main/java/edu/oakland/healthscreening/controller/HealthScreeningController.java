@@ -11,7 +11,6 @@ import edu.oakland.healthscreening.dao.Postgres;
 import edu.oakland.healthscreening.model.AccountType;
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
-import edu.oakland.healthscreening.model.Pledge;
 import edu.oakland.healthscreening.model.PreviousInformation;
 import edu.oakland.healthscreening.service.AnalyticsService;
 import edu.oakland.healthscreening.service.MailService;
@@ -204,7 +203,8 @@ public class HealthScreeningController {
   }
 
   @GetMapping("/previous-information")
-  public Optional<PreviousInformation> getPreviousInformation(HttpServletRequest request) throws SoffitAuthException {
+  public Optional<PreviousInformation> getPreviousInformation(HttpServletRequest request)
+      throws SoffitAuthException {
     return postgres.getPreviousInformation(authorizer.getClaimFromJWE(request, "mail").asString());
   }
 }

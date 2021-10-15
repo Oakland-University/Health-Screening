@@ -4,9 +4,9 @@ import static edu.oakland.healthscreening.dao.Constants.GET_ALL_RESPONSES;
 import static edu.oakland.healthscreening.dao.Constants.GET_ANALYTICS_BY_TYPE;
 import static edu.oakland.healthscreening.dao.Constants.GET_ANONYMOUS_ANALYTIC_INFO;
 import static edu.oakland.healthscreening.dao.Constants.GET_GUEST_INFO;
+import static edu.oakland.healthscreening.dao.Constants.GET_PREVIOUS_INFORMATION;
 import static edu.oakland.healthscreening.dao.Constants.GET_RECENT_INFO;
 import static edu.oakland.healthscreening.dao.Constants.GET_SUPERVISOR_EMAIL;
-import static edu.oakland.healthscreening.dao.Constants.GET_PREVIOUS_INFORMATION;
 
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
