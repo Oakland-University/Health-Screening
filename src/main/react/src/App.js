@@ -20,7 +20,7 @@ import {
   press_modal_button,
   close_modal,
 } from './actions/main-actions'
-import { modal_pages, WEB_STORAGE_KEY } from './utils/enums'
+import { modal_pages, user_statuses, WEB_STORAGE_KEY } from './utils/enums'
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -51,9 +51,15 @@ export default function App() {
   const [modal_open, set_modal_open] = useState(false)
   
   useEffect(() => {
-    set_modal_open(
-      !window.localStorage.getItem(WEB_STORAGE_KEY) || modal_page === modal_pages.SUBMITTED
-    )
+    // If this is true _don't_ show the modal
+    const not_coming = window.localStorage.getItem(WEB_STORAGE_KEY) === new Date().toDateString();
+
+    if (not_coming) {
+      set_modal_open(false)
+    } else {
+      set_modal_open(user_status === user_statuses.NOT_COMPLETED || modal_page === modal_pages.SUBMITTED)
+    }
+
   }, [user_status, modal_page])
 
   const title = 'OU Health Screening'
