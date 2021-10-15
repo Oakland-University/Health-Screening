@@ -49,17 +49,18 @@ export default function App() {
   const user_status = useSelector((state) => state.user_status)
 
   const [modal_open, set_modal_open] = useState(false)
-  
+
   useEffect(() => {
     // If this is true _don't_ show the modal
-    const not_coming = window.localStorage.getItem(WEB_STORAGE_KEY) === new Date().toDateString();
+    const not_coming = window.localStorage.getItem(WEB_STORAGE_KEY) === new Date().toDateString()
 
     if (not_coming) {
       set_modal_open(false)
     } else {
-      set_modal_open(user_status === user_statuses.NOT_COMPLETED || modal_page === modal_pages.SUBMITTED)
+      set_modal_open(
+        user_status === user_statuses.NOT_COMPLETED || modal_page === modal_pages.SUBMITTED
+      )
     }
-
   }, [user_status, modal_page])
 
   const title = 'OU Health Screening'
