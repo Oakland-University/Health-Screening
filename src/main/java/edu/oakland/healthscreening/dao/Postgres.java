@@ -6,9 +6,11 @@ import static edu.oakland.healthscreening.dao.Constants.GET_ANONYMOUS_ANALYTIC_I
 import static edu.oakland.healthscreening.dao.Constants.GET_GUEST_INFO;
 import static edu.oakland.healthscreening.dao.Constants.GET_RECENT_INFO;
 import static edu.oakland.healthscreening.dao.Constants.GET_SUPERVISOR_EMAIL;
+import static edu.oakland.healthscreening.dao.Constants.GET_PREVIOUS_INFORMATION;
 
 import edu.oakland.healthscreening.model.AnalyticInfo;
 import edu.oakland.healthscreening.model.HealthInfo;
+import edu.oakland.healthscreening.model.PreviousInformation;
 
 import java.sql.Types;
 import java.util.List;
@@ -117,6 +119,16 @@ public class Postgres {
     try {
       return Optional.ofNullable(
           jdbcTemplate.queryForObject(GET_SUPERVISOR_EMAIL, String.class, email));
+    } catch (final EmptyResultDataAccessException e) {
+      log.debug("No supervisor found for {}", email);
+      return Optional.empty();
+    }
+  }
+
+  public Optional<PreviousInformation> getPreviousInformation(String email) {
+    try {
+      return Optional.ofNullable(
+          jdbcTemplate.queryForObject(GET_PREVIOUS_INFORMATION, PreviousInformation.mapper, email));
     } catch (final EmptyResultDataAccessException e) {
       log.debug("No supervisor found for {}", email);
       return Optional.empty();

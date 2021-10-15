@@ -204,8 +204,7 @@ public class HealthScreeningController {
   }
 
   @GetMapping("/previous-information")
-  public PreviousInformation getPreviousInformation(){
-    PreviousInformation previousInformation = new PreviousInformation();
-    return previousInformation;
+  public PreviousInformation getPreviousInformation(HttpServletRequest request){
+    return postgres.getPreviousInformation(authorizer.getClaimFromJWE(request, "mail").asString());
   }
 }
