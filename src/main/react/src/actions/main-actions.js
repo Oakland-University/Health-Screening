@@ -90,7 +90,8 @@ export const press_modal_button = () => (dispatch, getState) => {
 
     const is_employee = account_type === account_types.EMPLOYEE || student_employee
     const can_submit = (is_employee && supervisor_email.length !== 0) || student_employee !== null
-    const supervisor = is_employee ? supervisor_email : ''
+    // I know, it's gross but I think the backend will like it better if it's null rather than ''
+    const supervisor = is_employee ? supervisor_email : null
 
 
     if (all_questions_non_null(getState()) && can_submit) {
