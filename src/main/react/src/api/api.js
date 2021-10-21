@@ -58,13 +58,19 @@ export const get_user_submission = async () => {
   }
 }
 
-export const get_supervisor_email = async () => {
+export const get_previous_info = async () => {
   if (IS_DEMO) {
-    return 'demo-supervisor'
+    let previous_info = {
+      supervisorEmail: 'supervisor@oakland.edu',
+      phoneNumber: '5555555555',
+    }
+    return {
+      previous_info,
+    }
   }
 
   try {
-    const response = await fetch('/health-screening/api/v1/supervisor-email', {
+    const response = await fetch('/health-screening/api/v1/previous-information', {
       credentials: 'include',
       headers: {
         Accept: 'application/json',

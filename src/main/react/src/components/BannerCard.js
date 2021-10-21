@@ -22,7 +22,7 @@ import { makeStyles } from '@material-ui/styles'
 import { useSelector, useDispatch } from 'react-redux'
 import { send_certificate_email } from '../api/api'
 import { update_user_status } from '../actions/main-actions'
-import { user_statuses } from '../utils/enums'
+import { user_statuses, WEB_STORAGE_KEY } from '../utils/enums'
 
 const useStyles = makeStyles((_theme) => ({
   avatar: {
@@ -80,6 +80,7 @@ const BannerCard = (props) => {
   const { type, submission_time, banner_action } = props
 
   const open_form = () => {
+    localStorage.removeItem(WEB_STORAGE_KEY)
     props.set_modal_open(true)
     dispatch(update_user_status(user_statuses.NOT_COMPLETED))
   }

@@ -16,11 +16,11 @@ import { useTheme } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   fetch_past_submission,
-  fetch_supervisor_email,
+  fetch_previous_info,
   press_modal_button,
   close_modal,
 } from './actions/main-actions'
-import { modal_pages } from './utils/enums'
+import { modal_pages, user_statuses, WEB_STORAGE_KEY } from './utils/enums'
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -39,7 +39,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(fetch_past_submission())
-    dispatch(fetch_supervisor_email())
+    dispatch(fetch_previous_info())
   }, [dispatch])
 
   const theme = useTheme()
@@ -49,13 +49,18 @@ export default function App() {
   const user_status = useSelector((state) => state.user_status)
 
   const [modal_open, set_modal_open] = useState(false)
-  
-  window.localStorage.setItem('mySail-Current Day', new Date().toDateString());
 
   useEffect(() => {
-    set_modal_open(
-      !window.localStorage.getItem('mySail-today') || modal_page === modal_pages.SUBMITTED
-    )
+    // If this is true _don't_ show the modal
+    const not_coming = window.localStorage.getItem(WEB_STORAGE_KEY) === new Date().toDateString()
+
+    if (not_coming) {
+      set_modal_open(false)
+    } else {
+      set_modal_open(
+        user_status === user_statuses.NOT_COMPLETED || modal_page === modal_pages.SUBMITTED
+      )
+    }
   }, [user_status, modal_page])
 
   const title = 'OU Health Screening'
