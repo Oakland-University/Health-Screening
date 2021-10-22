@@ -4,14 +4,12 @@ import { useSelector } from 'react-redux'
 import { user_statuses } from '../utils/enums'
 
 const FinalPage = (props) => {
-  const { user_status, face_covering, good_hygiene, distancing } = useSelector((state) => state)
-
-  const person_notified = !face_covering || !good_hygiene || !distancing ? 'The University' : 'GHC'
+  const { user_status } = useSelector((state) => state)
 
   if (user_status === user_statuses.DISALLOWED) {
     return (
       <Typography variant='body1' component='p'>
-        Please do not come to campus. {person_notified} will be notified, and may reach out to you.
+        Please do not come to campus. Your response requires you to be cleared by Graham Health Center <a href="tel:248-370-2341">248-370-2341</a>
       </Typography>
     )
   } else {
