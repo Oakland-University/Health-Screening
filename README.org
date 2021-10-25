@@ -4,17 +4,24 @@
 
 This project is, at its core, a web form for students to answer the following questions:
 
-1. Have you developed a cough / shortness of breath recently
-2. Do you have a fever
-3. Have you been around anyone with COVID
+1. Are you experiencing any potential COVID symptoms?
+2. Have you been recently exposed to anyone with COVID?
 
-If they answer =yes= to any of those questions, the campus health center should be alerted, and a record of the information should be stored for 30 days
+If they answer =yes= to either of those questions, the campus health center should be alerted, and a record of the information should be stored for 1 year
 
+There are a number of additional features that this application also does, although they change regularly:
+- Supervisors are notified whether or not an employee (or student employee) will be coming to campus for a given day
+- GHC is notified if a user /changes/ their health screening status in a specifically-formatted follow-up email
+- Users can choose to send themselves a confirmation email specifying which date they're allowed on campus
+- Anonymized data are shared across campus for various reporting / decision making purposes
+  - These data are found in the ~screening.anonymous_data~ view, which is the only component of the schema that the ~ARGOSUSER~ has access to
 
 * Building
-
 ** Detached Frontend
-To run the frontend locally, in the =src/main/react=  folder run the command: =npm i && npm start=
+To start the frontend locally, run the following command in the ~src/main/react~ direcotry:
+#+begin_src shell :dir ./src/main/react
+npm i && npm start;
+#+end_src
 ** Backend
 *** Database
 This is a gradle-based spring-boot project made with the Spring-Initializer, so most commands should look pretty familiar.
@@ -35,19 +42,68 @@ However, as it's currently configured, it tries to grab some application propert
 *** Running
 After setting up your DB, and creating the env variable =PORTAL_HOME= with =global.properties= and =uPortal.properties= (OR hardcoding the values), run the command:
 
-#+BEGIN_SRC bash
+#+BEGIN_SRC bash :dir ./
 ./gradlew clean bootRun
 #+END_SRC
 
-And your backend should be started up
-** Inside uPortal
-To be added...
-* Screenshots
-** Guest View
-#+ATTR_HTML: width="300px"
-#+ATTR_ORG: :width 300
-[[./screenshots/guest-view.png]]
-** Health Form
-#+ATTR_HTML: width="300px"
-#+ATTR_ORG: :width 300
-[[./screenshots/health-form.png]]
+And your backend should start up on port 8080
+
+* Preparing to Upgrade
+
+#+name: get-default-branch
+#+begin_src shell :dir ./ :exports results :noweb yes
+git symbolic-ref refs/remotes/origin/HEAD | cut -d '/' -f4
+#+end_src
+
+#+name: project_url
+#+begin_src shell
+git remote -v | rg --only-matching 'git@(.*).git.*fetch.*$' --replace '$1/-/tags/new' | sd ':' '/'
+#+end_src
+
+1. Merge completed features into get-default-branch() branch
+2. Upgrade version in ~build.gradle~
+   First, we'll want to see what the current version is:
+   #+begin_src shell exports: code
+   echo "Current $(rg -N '^version = ' build.gradle)";
+   #+end_src
+
+   Then we can bump the number according to [[https://semver.org/][semantic versioning]] conventions:
+   #+header: :var new_version=(read-string "New version ")
+   #+begin_src shell :exports code
+   sd '^version = .*' "version = '$new_version'" build.gradle;
+   #+end_src
+
+   Here's a helpful script for non-emacs users:
+   #+begin_src shell :exports code
+    function bump_version() {
+        echo "Current $(rg -N '^version = ' build.gradle)";
+        echo -n "Desired version: ";
+        read new_version;
+        sd '^version = .*' "version = '$new_version'" build.gradle;
+    }
+   #+end_src
+
+   And just make sure that version bump is also merged in before proceeding
+3. Create a new tag in the project directory: call_project_url()
+4. Publish the tag you just created to ~maven.oakland.edu~ and run the following commands on the server:
+   #+begin_src shell
+   ./gradlew clean publishMavenWebPublicationToMavenCentral
+   #+end_src
+5. Change the project version in uportal-start's ~gradle.properties~ file
+
+* Upgrade
+1. Any necessary sql changes should be written out in the ~alter.sql~ file.
+
+   This allows the person upgrading to simply copy the file over to the database server, and run its contents as the uportal user:
+
+   #+begin_src shell :exports code
+    rsync --progress ./src/main/resources/alter.sql "$USER@uportaldb03.sys.oakland.edu:/tmp"
+   #+end_src
+
+   Once on the server, as the postgres user, you can run:
+
+   #+begin_src shell
+    psql -U uportal -d uportaladmin -d uportal5 -f /tmp/alter.sql
+   #+end_src
+
+2. The rest of the upgrade should continue as normal according to [[https://code.oakland.edu/mysail-development/uportal-start/-/blob/mysail/docs/upgrade.md][this doc]]
