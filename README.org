@@ -5,7 +5,7 @@
 This project is, at its core, a web form for students to answer the following questions:
 
 1. Are you experiencing any potential COVID symptoms?
-2. Have you been recently exposded to anyone with COVID?
+2. Have you been recently exposed to anyone with COVID?
 
 If they answer =yes= to either of those questions, the campus health center should be alerted, and a record of the information should be stored for 1 year
 
