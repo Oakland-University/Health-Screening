@@ -158,8 +158,6 @@ export default function reducer(state = initial_state, action) {
           (is_employee && supervisor_email.length !== 0) || student_employee !== null
 
         if (all_questions_non_null(state) && can_submit) {
-          window.localStorage.setItem(WEB_STORAGE_KEY, new Date().toDateString())
-
           new_user_status = allowed_on_campus(state)
             ? user_statuses.ALLOWED
             : user_statuses.DISALLOWED
