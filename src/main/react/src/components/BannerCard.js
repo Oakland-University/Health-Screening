@@ -297,9 +297,10 @@ const Warning = (props) => {
       <CardContent>
         <Typography variant='body1' gutterBottom>
           <Box textAlign='center'>
-            Please do not come to the Oakland University Campus.
+            Please do not come to campus.
             <br />
-            If you have any questions, contact the Graham Health Center at (248) 370-2341.
+            Your response requires you to be cleared by Graham Health Center{' '}
+            <a href='tel:248-370-2341'>248-370-2341</a>
             <br />
             Do Your Part to help maintain a safe and healthy campus: stay home.
           </Box>

@@ -9,7 +9,8 @@ const FinalPage = (props) => {
   if (user_status === user_statuses.DISALLOWED) {
     return (
       <Typography variant='body1' component='p'>
-        Please do not come to campus. Your response requires you to be cleared by Graham Health Center <a href="tel:248-370-2341">248-370-2341</a>
+        Please do not come to campus. Your response requires you to be cleared by Graham Health
+        Center <a href='tel:248-370-2341'>248-370-2341</a>
       </Typography>
     )
   } else {
