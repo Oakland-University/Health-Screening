@@ -50,11 +50,13 @@ And your backend should start up on port 8080
 
 * Preparing to Upgrade
 
+Get Default Branch Name:
 #+name: get-default-branch
-#+begin_src shell :dir ./ :exports results :noweb yes
+#+begin_src shell :dir ./ :noweb yes
 git symbolic-ref refs/remotes/origin/HEAD | cut -d '/' -f4
 #+end_src
 
+Get project URL
 #+name: project_url
 #+begin_src shell
 git remote -v | rg --only-matching 'git@(.*).git.*fetch.*$' --replace '$1/-/tags/new' | sd ':' '/'
@@ -97,7 +99,7 @@ git remote -v | rg --only-matching 'git@(.*).git.*fetch.*$' --replace '$1/-/tags
    This allows the person upgrading to simply copy the file over to the database server, and run its contents as the uportal user:
 
    #+begin_src shell :exports code
-    rsync --progress ./src/main/resources/alter.sql "$USER@uportaldb03.sys.oakland.edu:/tmp"
+    rsync --progress ./src/main/resources/alter.sql "$USER@<server>:/tmp"
    #+end_src
 
    Once on the server, as the postgres user, you can run:
